@@ -21,7 +21,7 @@ app.use(following);
 app.use(feed);
 
 // Admin routes
-app.use(admin);
+app.use('/admin', admin); // Add '/admin' prefix to the admin router
 
 // Start the server
 const PORT = 3000;

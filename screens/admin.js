@@ -3,15 +3,6 @@ const express = require('express');
 const router = express.Router();
 const { readUserData, readPostsData, saveUserData, savePostsData } = require('./persist');
 
-router.use((req, res, next) => {
-  // Check if the user is logged in and is the admin
-  const { session } = req.cookies;
-  if (!session || !session.username || session.username !== 'admin') {
-    return res.status(403).json({ error: 'Access denied.' });
-  }
-  next();
-});
-
 // Get all user activity (login/logout/post new story)
 router.get('/activity', (req, res) => {
   const usersData = readUserData();
