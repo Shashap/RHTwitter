@@ -1,8 +1,8 @@
 // persist.js
 const fs = require('fs');
 
-const userDataFilePath = './data/users.json';
-const postsDataFilePath = './data/posts.json';
+const userDataFilePath = './screens/data/users.json';
+const postsDataFilePath = './screens/data/posts.json';
 
 function readUserData() {
   try {
