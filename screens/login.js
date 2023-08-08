@@ -11,6 +11,8 @@ router.post('/login', async (req, res) => {
   const { username, password, rememberMe } = req.body;
   const usersData = readUserData();
 
+  console.info(usersData);
+  console.info(username);
   const user = usersData.find((user) => user.username === username);
   if (!user) {
     return res.status(401).json({ error: 'Invalid credentials.' });
@@ -18,7 +20,7 @@ router.post('/login', async (req, res) => {
 
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
-    return res.status(401).json({ error: 'Invalid credentials.' });
+    return res.status(401).json({ error: 'Invalid password.' });
   }
 
   // Set session cookie

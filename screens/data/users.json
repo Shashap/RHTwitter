@@ -2,5 +2,11 @@
   {
     "username": "admin",
     "password": "admin"
+  },
+  {
+    "username": "roee",
+    "password": "$2b$10$OTiFsSxwMQB0EAXnfZ9Hd.k/JhHg5/uKjfbRSkva.66y3MfPZ03LS",
+    "followers": [],
+    "following": []
   }
 ]
