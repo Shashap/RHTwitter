@@ -1,4 +1,5 @@
 // server.js
+const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
@@ -8,15 +9,38 @@ const following = require('./screens/following');
 const feed = require('./screens/feed');
 const admin = require('./screens/admin');
 
+// Middleware to check if the user is authenticated
+function requireAuthentication(req, res, next) {
+  const { session } = req.cookies;
+
+  // Check if the user is authenticated based on the session cookie
+  if (!session || !session.username) {
+    // If not authenticated, redirect to login page for protected routes
+    return res.redirect('./login.html'); // Replace with the appropriate login page URL
+  }
+
+  // If authenticated, proceed to the next middleware
+  next();
+}
+
 const app = express();
 app.use(bodyParser.json());
 app.use(cookieParser());
 
 // Register and login routes
-app.use(register);
-app.use(login);
+// Serve public pages without authentication
+app.get('/login.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+// Serve public pages without authentication
+app.get('/register.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'register.html'));
+});
 
 // Following and feed routes
+app.use(requireAuthentication);
+
 app.use(following);
 app.use(feed);
 
