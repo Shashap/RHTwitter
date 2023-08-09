@@ -1,93 +1,54 @@
-/* style.css */
-
-/* Reset some default styles */
-body, h1, h2, h3, p, ul, li {
+/* Reset default margin and padding for consistency */
+body, h1, p {
   margin: 0;
   padding: 0;
 }
 
-body {
-  font-family: Arial, sans-serif;
-  line-height: 1.6;
-}
-
+/* Basic styling for the header */
 header {
   background-color: #333;
-  color: #fff;
+  color: white;
+  text-align: center;
   padding: 10px;
 }
 
-header h1 {
-  font-size: 24px;
-}
-
-nav ul {
-  list-style: none;
-}
-
-nav ul li {
-  display: inline-block;
-  margin-right: 10px;
-}
-
-nav ul li a {
-  color: #fff;
-  text-decoration: none;
-}
-
+/* Center content in the middle of the viewport */
 main {
-  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
 }
 
-/* Style the content area */
-#content {
-  max-width: 800px;
-  margin: 0 auto;
+/* Style for the post form */
+.post-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-/* Style the feed posts */
-#content ul {
-  list-style: none;
+/* Styling for the posts container */
+.posts-container {
+  width: 80%;
+  max-width: 600px;
+  border: 1px solid #ccc;
+  padding: 10px;
 }
 
-#content li {
-  border-bottom: 1px solid #ddd;
-  padding: 10px 0;
+/* Style for the logout button */
+#logoutBtn {
+  background-color: #555;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  cursor: pointer;
 }
 
-#content li:last-child {
-  border-bottom: none;
-}
-
-/* Style the login and register forms */
-form {
-  max-width: 400px;
-  margin: 0 auto;
-  padding: 20px;
-  border: 1px solid #ddd;
-}
-
-form label,
-form input {
-  display: block;
+/* Style for individual posts */
+.post {
+  border: 1px solid #ccc;
+  padding: 10px;
   margin-bottom: 10px;
 }
-
-form input[type="text"],
-form input[type="password"] {
-  width: 100%;
-  padding: 10px;
-  font-size: 16px;
-  border: 1px solid #ddd;
-}
-
-form input[type="submit"] {
-  background-color: #333;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-/* Add more styles for other parts of the website as needed */

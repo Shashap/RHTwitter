@@ -1,0 +1,114 @@
+<!-- feed.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Social Media App - Feed</title>
+</head>
+<body>
+<header>
+  <h1>Welcome to My Social Media App</h1>
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <li><a href="/feed">Feed</a></li>
+      <li><a href="/logout">Logout</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+  <section>
+    <h2>Add a New Post</h2>
+    <form id="post-form">
+      <textarea id="post-text" maxlength="300" placeholder="Enter your post..."></textarea>
+      <button type="submit">Post</button>
+    </form>
+  </section>
+
+  <section>
+    <h2>Feed</h2>
+    <div id="feed-posts"></div>
+  </section>
+</main>
+
+<script>
+  // JavaScript code to interact with the backend
+  const postForm = document.getElementById('post-form');
+  const postText = document.getElementById('post-text');
+  const feedPosts = document.getElementById('feed-posts');
+
+  postForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const text = postText.value.trim();
+    if (!text) return;
+
+    try {
+      const response = await fetch('/feed', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ text }),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Clear the textarea and reload the feed
+        postText.value = '';
+        fetchFeed();
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  });
+
+  async function fetchFeed() {
+    try {
+      const response = await fetch('/feed');
+      const posts = await response.json();
+
+      if (response.ok) {
+        // Display posts in the feed
+        feedPosts.innerHTML = posts.map(post => `
+            <div>
+              <p>${post.text}</p>
+              <button onclick="likePost(${post.timestamp})">Like</button>
+              <p>Likes: ${post.likes}</p>
+            </div>
+          `).join('');
+      } else {
+        console.error(posts.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  async function likePost(postId) {
+    try {
+      const response = await fetch(`/feed/like/${postId}`, {
+        method: 'POST',
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        // Update the likes count and reload the feed
+        fetchFeed();
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
+  // Initial fetch of the feed
+  fetchFeed();
+</script>
+</body>
+</html>
