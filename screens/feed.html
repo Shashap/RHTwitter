@@ -11,7 +11,7 @@
   <nav class="nav">
     <a href="/feed.html" class="nav-link">Feed</a>
     <a href="/admin.html" class="nav-link">Admin</a>
-    <a href="/logout" class="nav-link">Logout</a>
+    <a href="#" class="nav-link" id="logout-link">Logout</a>
   </nav>
 </header>
 
@@ -32,7 +32,7 @@
   </main>
 
   <script>
-    // JavaScript code to interact with the backend
+    // JavaScript code to interact with the backend - login
     const postForm = document.getElementById('post-form');
     const postText = document.getElementById('post-text');
     const feedPosts = document.getElementById('feed-posts');
@@ -107,6 +107,30 @@
 
     // Initial fetch of the feed
     fetchFeed();
+
+    //logout
+    const logoutLink = document.getElementById('logout-link');
+
+    logoutLink.addEventListener('click', async (event) => {
+      event.preventDefault();
+
+      try {
+        const response = await fetch('/logout', {
+          method: 'POST',
+        });
+        console.info('res', response);
+        const data = await response.json();
+        if (response.ok) {
+          // Redirect to the login page or perform other actions
+          window.location.href = '/login.html';
+          console.log(data.message);
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
   </script>
 </body>
 </html>

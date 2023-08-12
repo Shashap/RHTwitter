@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const register = require('./screens/register');
 const login = require('./screens/login');
+const logout = require('./screens/logout');
 const following = require('./screens/following');
 const feed = require('./screens/feed');
 const admin = require('./screens/admin');
@@ -31,6 +32,7 @@ app.use(cookieParser());
 // Register and login routes
 // Serve public pages without authentication
 app.use(login);
+app.use(logout);
 app.use(register);
 
 app.get('/login.html', (req, res) => {

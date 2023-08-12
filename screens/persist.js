@@ -7,7 +7,6 @@ const postsDataFilePath = './screens/data/posts.json';
 function readUserData() {
   try {
     const usersData = JSON.parse(fs.readFileSync(userDataFilePath, 'utf-8'));
-    console.log('users', usersData);
     return usersData;
   } catch (error) {
     console.error('Error reading user data:', error);
