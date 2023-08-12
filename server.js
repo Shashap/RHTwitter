@@ -9,6 +9,7 @@ const logout = require('./screens/logout');
 const following = require('./screens/following');
 const feed = require('./screens/feed');
 const admin = require('./screens/admin');
+const search = require('./screens/search');
 
 // Middleware to check if the user is authenticated
 function requireAuthentication(req, res, next) {
@@ -54,9 +55,14 @@ app.get('/register.html', (req, res) => {
 app.use(requireAuthentication);
 app.use(following);
 app.use(feed);
+app.use(search);
 
 app.get('/feed.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/feed.html'));
+});
+
+app.get('/search.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'screens/search.html'));
 });
 
 // Admin routes

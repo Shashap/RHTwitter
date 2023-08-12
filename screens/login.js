@@ -11,8 +11,10 @@ router.post('/login', async (req, res) => {
 
   const {username, password, rememberMe} = req.body;
   const usersData = readUserData();
-  console.info('usersData', usersData);
-  console.info('username', username);
+  
+  //console.info('usersData', usersData);
+  //console.info('username', username);
+  
   const user = usersData.find((user) => user.username === username);
 
   if (!user) {

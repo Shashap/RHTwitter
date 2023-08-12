@@ -15,7 +15,7 @@
     "username": "roee",
     "text": "Watching my favorite movie tonight.",
     "timestamp": 1659200000000,
-    "likes": 15
+    "likes": 16
   },
   {
     "username": "admin",
@@ -27,12 +27,24 @@
     "username": "roee",
     "text": "Traveling to a beautiful beach destination!",
     "timestamp": 1658600000000,
-    "likes": 20
+    "likes": 21
   },
   {
     "username": "hadas",
     "text": "test",
     "timestamp": 1691593408537,
     "likes": 1
+  },
+  {
+    "username": "roee",
+    "text": "myfirstpost!!!!",
+    "timestamp": 1691841070103,
+    "likes": 0
+  },
+  {
+    "username": "roee",
+    "text": "Hadas I love your test posts. Beautiful",
+    "timestamp": 1691841097173,
+    "likes": 0
   }
 ]

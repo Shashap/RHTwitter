@@ -1,5 +1,6 @@
-// following.js
 const express = require('express');
+const cookieParser = require('cookie-parser');
+
 const router = express.Router();
 const { readUserData, saveUserData } = require('./persist');
 
@@ -21,7 +22,7 @@ router.get('/following/:username', (req, res) => {
 // Follow a user
 router.post('/follow/:username', (req, res) => {
   const { username } = req.params;
-  const { followerUsername } = req.body;
+  const followerUsername = req.cookies.session.username;
   const usersData = readUserData();
 
   const user = usersData.find((u) => u.username === username);
@@ -42,7 +43,7 @@ router.post('/follow/:username', (req, res) => {
 // Unfollow a user
 router.post('/unfollow/:username', (req, res) => {
   const { username } = req.params;
-  const { followerUsername } = req.body;
+  const followerUsername = req.cookies.session.username;
   const usersData = readUserData();
 
   const user = usersData.find((u) => u.username === username);

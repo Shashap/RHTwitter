@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>My Social Media App - Search Users</title>
+</head>
+<header class="header">
+  <nav class="nav">
+    <a href="/feed.html" class="nav-link">Home</a>
+    <a href="/admin.html" class="nav-link">Admin</a>
+    <a href="#" class="nav-link" id="logout-link">Logout</a>
+  </nav>
+</header>
+
+<body>
+  <main class="main-content">
+    <section class="search-section">
+      <h2 class="section-title">Search Users</h2>
+      <div class="search-bar">
+        <input type="text" id="search-input" class="search-input" placeholder="Search users...">
+        <button id="search-button" class="search-button">Search</button>
+      </div>
+      <ul id="user-list" class="user-list"></ul>
+    </section>
+  </main>
+
+  <script>
+    const searchInput = document.getElementById('search-input');
+  const searchButton = document.getElementById('search-button');
+  const userList = document.getElementById('user-list');
+
+  searchButton.addEventListener('click', async () => {
+    const searchTerm = searchInput.value.trim();
+    if (!searchTerm) {
+      userList.innerHTML = '';
+      return;
+    }
+
+    try {
+      const response = await fetch(`/search?query=${searchTerm}`, {
+        method: 'GET',
+      });
+      const users = await response.json();
+      if (response.ok) {
+        userList.innerHTML = users.map(user => `
+          <li>
+            <span>${user.username}</span>
+            <button onclick="followUser('${user.username}')">Follow</button>
+            <button onclick="unfollowUser('${user.username}')">Unfollow</button>
+          </li>
+        `).join('');
+      } else {
+        console.error(users.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  });
+
+  async function followUser(username) {
+    try {
+      const response = await fetch(`/follow/${username}`, {
+        method: 'POST'
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data.message);
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }    
+
+  async function unfollowUser(username) {
+    try {
+      const response = await fetch(`/unfollow/${username}`, {
+        method: 'POST'
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data.message);
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }    
+  </script>
+</body>
+</html>
