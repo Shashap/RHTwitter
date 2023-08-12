@@ -33,8 +33,6 @@
         body: JSON.stringify({ username, password }),
         redirect: 'manual'
       });
-      console.log('body', JSON.stringify({ username, password }));
-      console.log('res', response);
       const data = await response.json();
       if (response.ok) {
         alert('added user');

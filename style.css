@@ -1,54 +1,127 @@
-/* Reset default margin and padding for consistency */
-body, h1, p {
+/* styles.css */
+body {
+  font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
 }
 
-/* Basic styling for the header */
-header {
-  background-color: #333;
-  color: white;
-  text-align: center;
-  padding: 10px;
+.header {
+  background-color: #1877f2;
+  color: #fff;
+  padding: 10px 0;
 }
 
-/* Center content in the middle of the viewport */
-main {
+.header-container {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  margin-top: 20px;
+  padding: 0 20px;
 }
 
-/* Style for the post form */
+.logo {
+  font-size: 24px;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+}
+
+.nav-item {
+  margin-right: 15px;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #fff;
+  font-weight: bold;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #cfe0ff;
+}
+
+.main-content {
+  padding: 20px;
+}
+
+.section-heading {
+  font-size: 20px;
+  margin-bottom: 10px;
+}
+
 .post-form {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  align-items: center;
-  margin-bottom: 20px;
+  align-items: flex-start;
 }
 
-/* Styling for the posts container */
-.posts-container {
-  width: 80%;
-  max-width: 600px;
-  border: 1px solid #ccc;
+.post-input {
+  width: 100%;
   padding: 10px;
-}
-
-/* Style for the logout button */
-#logoutBtn {
-  background-color: #555;
-  color: white;
-  border: none;
-  padding: 5px 10px;
-  cursor: pointer;
-}
-
-/* Style for individual posts */
-.post {
   border: 1px solid #ccc;
-  padding: 10px;
+  border-radius: 5px;
   margin-bottom: 10px;
+  resize: vertical;
+}
+
+.post-button {
+  background-color: #1877f2;
+  color: #fff;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.post-button:hover {
+  background-color: #166fe5;
+}
+
+.feed-posts {
+  border-top: 1px solid #ccc;
+  padding-top: 10px;
+  margin-top: 20px;
+}
+
+.feed-posts > div {
+  margin-bottom: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.header {
+  background-color: #1877f2;
+  color: #fff;
+  padding: 10px 0;
+}
+
+.header .logo {
+  font-size: 24px;
+  margin-left: 20px;
+}
+
+.nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f0f2f5;
+  padding: 10px 0;
+}
+
+.nav-link {
+  text-decoration: none;
+  color: #1877f2;
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0 10px;
+  transition: color 0.3s ease-in-out;
+}
+
+.nav-link:hover {
+  color: #166fe5;
 }

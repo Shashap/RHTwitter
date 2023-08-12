@@ -52,9 +52,7 @@ app.get('/register.html', (req, res) => {
 app.use(requireAuthentication);
 app.use(following);
 app.use(feed);
-app.get('/index.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
-});
+
 app.get('/feed.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/feed.html'));
 });
