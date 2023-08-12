@@ -68,6 +68,10 @@ app.get('/search.html', (req, res) => {
 // Admin routes
 app.use('/admin', admin); // Add '/admin' prefix to the admin router
 
+app.get('/admin.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'screens/admin.html'));
+});
+
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {

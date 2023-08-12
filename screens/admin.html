@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>Admin Page</title>
+</head>
+<body>
+  <header class="header">
+    <nav class="nav">
+      <a href="/feed.html" class="nav-link">Home</a>
+      <a href="/search.html" class="nav-link">Search Users</a>
+      <a href="/admin.html" class="nav-link">Admin</a>
+      <a href="#" class="nav-link" id="logout-link">Logout</a>
+    </nav>
+  </header>
+
+  <main class="main-content">
+    <h2>Admin Panel</h2>
+    
+    <h3>User Activity</h3>
+    <ul id="activity-list"></ul>
+    
+    <h3>Enable/Disable Features</h3>
+    <div>
+      <label>
+        <input type="checkbox" id="feed-feature" />
+        Feed
+      </label>
+      <!-- Add more feature checkboxes here -->
+    </div>
+    <button id="update-features">Update Features</button>
+    
+    <h3>Remove Users</h3>
+    <ul id="user-list"></ul>
+  </main>
+
+  <script>
+    const activityList = document.getElementById('activity-list');
+    const feedFeature = document.getElementById('feed-feature');
+    const updateFeaturesButton = document.getElementById('update-features');
+    const userList = document.getElementById('user-list');
+
+    // Function to fetch user activity
+    async function fetchUserActivity() {
+      try {
+        const response = await fetch('/admin/activity', {
+          method: 'GET',
+        });
+        const activity = await response.json();
+
+        if (response.ok) {
+          activityList.innerHTML = activity.map(user => `
+            <li>
+              <strong>${user.username}</strong>:
+              Login Activity: ${user.loginActivity},
+              Logout Activity: ${user.logoutActivity},
+              Posts: ${user.posts.length}
+            </li>
+          `).join('');
+        } else {
+          console.error(activity.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    // Function to fetch user list
+    async function fetchUserList() {
+      try {
+        const response = await fetch('/admin/users', {
+          method: 'GET',
+        });
+        const users = await response.json();
+
+        if (response.ok) {
+          userList.innerHTML = users.map(user => `
+            <li>
+              <strong>${user.username}</strong>
+              <button onclick="removeUser('${user.username}')">Remove</button>
+            </li>
+          `).join('');
+        } else {
+          console.error(users.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    // Function to remove a user
+    async function removeUser(username) {
+      try {
+        const response = await fetch(`/admin/users/${username}`, {
+          method: 'DELETE',
+        });
+        const data = await response.json();
+
+        if (response.ok) {
+          console.log(data.message);
+          fetchUserList();
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    // Function to update enabled features
+    async function updateFeatures() {
+      const features = {
+        feed: feedFeature.checked,
+        // Add more features here
+      };
+
+      try {
+        const response = await fetch('/admin/features', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(features),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          console.log(data.message);
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    fetchUserActivity();
+    fetchUserList();
+
+    updateFeaturesButton.addEventListener('click', updateFeatures);
+  </script>
+</body>
+</html>
