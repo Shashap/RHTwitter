@@ -1,0 +1,136 @@
+<!-- feed.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>My Social Media App - Feed</title>
+</head>
+<header>
+  <nav class="nav">
+    <a href="/feed.html" class="nav-link">Feed</a>
+    <a href="/admin.html" class="nav-link">Admin</a>
+    <a href="#" class="nav-link" id="logout-link">Logout</a>
+  </nav>
+</header>
+
+<body>
+  <main class="main-content">
+    <section class="post-section">
+      <h2>Add a New Post</h2>
+      <form id="post-form">
+        <textarea id="post-text" maxlength="300" placeholder="Enter your post..."></textarea>
+        <button type="submit">Post</button>
+      </form>
+    </section>
+
+    <section class="feed-section">
+      <h2>Feed</h2>
+      <div id="feed-posts"></div>
+    </section>
+  </main>
+
+  <script>
+    // JavaScript code to interact with the backend - login
+    const postForm = document.getElementById('post-form');
+    const postText = document.getElementById('post-text');
+    const feedPosts = document.getElementById('feed-posts');
+
+    postForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const text = postText.value.trim();
+      if (!text) return;
+
+      try {
+        const response = await fetch('/feed', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ text }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          // Clear the textarea and reload the feed
+          postText.value = '';
+          fetchFeed();
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+
+    async function fetchFeed() {
+      try {
+        const response = await fetch('/feed');
+        const posts = await response.json();
+
+        if (response.ok) {
+          // Display posts in the feed
+          feedPosts.innerHTML = posts.map(post => `
+              <div>
+                <p>${post.text}</p>
+                <button onclick="likePost(${post.timestamp})">Like</button>
+                <p>Likes: ${post.likes}</p>
+              </div>
+            `).join('');
+        } else {
+          console.error(posts.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    async function likePost(postId) {
+      try {
+        const response = await fetch(`/feed/like/${postId}`, {
+          method: 'POST',
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          // Update the likes count and reload the feed
+          fetchFeed();
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    // Initial fetch of the feed
+    fetchFeed();
+
+    //logout
+    const logoutLink = document.getElementById('logout-link');
+
+    logoutLink.addEventListener('click', async (event) => {
+      event.preventDefault();
+
+      try {
+        const response = await fetch('/logout', {
+          method: 'POST',
+        });
+        console.info('res', response);
+        const data = await response.json();
+        if (response.ok) {
+          // Redirect to the login page or perform other actions
+          window.location.href = '/login.html';
+          console.log(data.message);
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+  </script>
+</body>
+</html>

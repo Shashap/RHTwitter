@@ -1,22 +1,48 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Login</title>
-  <link rel="stylesheet" href="stylelogin.css">
-</head>
-<body>
-  <div class="login-container">
-    <h1>Login to Your Account</h1>
+  <head>
+    <title>Login</title>
+  </head>
+  <body>
+    <h1>Login</h1>
     <form id="login-form">
       <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required>
+      <input type="text" id="username" name="username" required><br><br>
 
       <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required>
+      <input type="password" id="password" name="password" required><br><br>
+
+      <label for="rememberMe">Remember Me:</label>
+      <input type="checkbox" id="rememberMe" name="rememberMe"><br><br>
 
       <button type="submit">Login</button>
     </form>
-  </div>
 
-</body>
+    <script>
+      document.getElementById('login-form').addEventListener('submit', async function(event) {
+        event.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+        const rememberMe = document.getElementById('rememberMe').checked;
+
+        const response = await fetch('/login', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ username, password, rememberMe }),
+          redirect: 'manual'
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          // alert('login successful');
+          window.location.href = '/feed.html';
+        } else {
+          alert(data.error);
+        }
+      });
+    </script>
+  </body>
 </html>
