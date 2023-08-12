@@ -1,1 +1,38 @@
-{}
+[
+  {
+    "username": "hadas",
+    "text": "Just had an amazing meal!",
+    "timestamp": 1660000000000,
+    "likes": 12
+  },
+  {
+    "username": "hadas",
+    "text": "Exploring a new hiking trail today!",
+    "timestamp": 1659500000000,
+    "likes": 8
+  },
+  {
+    "username": "roee",
+    "text": "Watching my favorite movie tonight.",
+    "timestamp": 1659200000000,
+    "likes": 15
+  },
+  {
+    "username": "admin",
+    "text": "Coding all night to finish my project.",
+    "timestamp": 1658900000000,
+    "likes": 5
+  },
+  {
+    "username": "roee",
+    "text": "Traveling to a beautiful beach destination!",
+    "timestamp": 1658600000000,
+    "likes": 20
+  },
+  {
+    "username": "hadas",
+    "text": "test",
+    "timestamp": 1691593408537,
+    "likes": 1
+  }
+]
