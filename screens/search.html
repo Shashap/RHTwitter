@@ -91,7 +91,31 @@
     } catch (error) {
       console.error('Error:', error);
     }
-  }    
+  }
+
+  //logout
+  const logoutLink = document.getElementById('logout-link');
+
+  logoutLink.addEventListener('click', async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('/logout', {
+        method: 'POST',
+      });
+      console.info('res', response);
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to the login page or perform other actions
+        window.location.href = '/login.html';
+        console.log(data.message);
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  });    
   </script>
 </body>
 </html>

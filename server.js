@@ -25,6 +25,19 @@ function requireAuthentication(req, res, next) {
   next();
 }
 
+// Middleware to check if the user is admin
+function isAdmin(req, res, next) {
+  const { session } = req.cookies;
+  
+  // Check if the user is logged in and is the admin
+  if (!session || !session.username || session.username !== 'admin') {
+    return res.status(403).json({ error: 'Access denied.' });
+  }
+  
+  // User is authenticated and is an admin, proceed to the next middleware/route
+  next();
+}
+
 const app = express();
 app.use(express.json());
 app.use(bodyParser.json());
@@ -66,9 +79,9 @@ app.get('/search.html', (req, res) => {
 });
 
 // Admin routes
-app.use('/admin', admin); // Add '/admin' prefix to the admin router
+app.use('/admin', isAdmin, admin); 
 
-app.get('/admin.html', (req, res) => {
+app.get('/admin.html', isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/admin.html'));
 });
 

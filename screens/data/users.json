@@ -7,12 +7,16 @@
     "username": "roee",
     "password": "$2b$10$OTiFsSxwMQB0EAXnfZ9Hd.k/JhHg5/uKjfbRSkva.66y3MfPZ03LS",
     "followers": [],
-    "following": []
+    "following": [
+      "hadas"
+    ]
   },
   {
     "username": "hadas",
     "password": "$2b$10$Q5peZpFnaF0RKvP4uPuOHe2uyChMfaJ85K9XjGmiyNsJ9HFMMBoTO",
-    "followers": [],
+    "followers": [
+      "roee"
+    ],
     "following": []
   },
   {

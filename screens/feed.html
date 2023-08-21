@@ -33,8 +33,7 @@
   </main>
 
   <script>
-    // JavaScript code to interact with the backend - login
-    const postForm = document.getElementById('post-form');
+    const postForm = document.getElementById('post-form'); 
     const postText = document.getElementById('post-text');
     const feedPosts = document.getElementById('feed-posts');
 
@@ -66,6 +65,29 @@
       }
     });
 
+//    async function fetchFeed() {
+//      try {
+//        const response = await fetch('/feed');
+//        const posts = await response.json();
+//
+//        if (response.ok) {
+//          // Display posts in the feed
+//          feedPosts.innerHTML = posts.map(post => `
+//              <div>
+//                <p>${post.text}</p>
+//                <button onclick="likePost(${post.timestamp})">Like</button>
+//                <p>Likes: ${post.likes}</p>
+//              </div>
+//            `).join('');
+//        } else {
+//          console.error(posts.error);
+//        }
+//      } catch (error) {
+//        console.error('Error:', error);
+//      }
+//    }
+
+
     async function fetchFeed() {
       try {
         const response = await fetch('/feed');
@@ -76,12 +98,31 @@
           feedPosts.innerHTML = posts.map(post => `
               <div>
                 <p>${post.text}</p>
-                <button onclick="likePost(${post.timestamp})">Like</button>
+                <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
                 <p>Likes: ${post.likes}</p>
               </div>
             `).join('');
         } else {
           console.error(posts.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    async function toggleLike(postId, userHasLiked) {
+      try {
+        const method = userHasLiked ? 'DELETE' : 'POST'; // Determine the appropriate HTTP method
+        const response = await fetch(`/feed/like/${postId}`, {
+          method,
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          // Update the likes count and reload the feed
+          fetchFeed();
+        } else {
+          console.error(data.error);
         }
       } catch (error) {
         console.error('Error:', error);

@@ -39,12 +39,18 @@
     "username": "roee",
     "text": "myfirstpost!!!!",
     "timestamp": 1691841070103,
-    "likes": 0
+    "likes": 6
   },
   {
     "username": "roee",
     "text": "Hadas I love your test posts. Beautiful",
     "timestamp": 1691841097173,
     "likes": 0
+  },
+  {
+    "username": "roee",
+    "text": "Mynewpostisamazing",
+    "timestamp": 1692348740638,
+    "likes": 5
   }
 ]
