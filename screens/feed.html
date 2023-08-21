@@ -10,7 +10,7 @@
 <header>
   <nav class="nav">
     <a href="/feed.html" class="nav-link">Feed</a>
-    <a href="/admin.html" class="nav-link">Admin</a>
+    <a href="/admin.html" class="nav-link" id="admin-link">Admin</a>
     <a href="/search.html" class="nav-link">Search</a>
     <a href="#" class="nav-link" id="logout-link">Logout</a>
   </nav>
@@ -33,6 +33,17 @@
   </main>
 
   <script>
+    // show admin only if admin connected
+    // document.addEventListener('DOMContentLoaded', () => {
+    //   const adminLink = document.getElementById('admin-link');
+    //   const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
+    //   const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
+    //   console.log("ses ", cookies);
+    //   if (!sessionCookie || sessionCookie[1] !== 'admin') {
+    //     adminLink.style.display = 'none';
+    //   }
+    // });
+
     const postForm = document.getElementById('post-form'); 
     const postText = document.getElementById('post-text');
     const feedPosts = document.getElementById('feed-posts');
@@ -64,6 +75,8 @@
         console.error('Error:', error);
       }
     });
+
+
 
 //    async function fetchFeed() {
 //      try {

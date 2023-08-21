@@ -9,13 +9,11 @@ router.get('/activity', (req, res) => {
   const postsData = readPostsData();
 
   const activityLogs = usersData.map((user) => {
-    const userActivity = {
+    return {
       username: user.username,
-      loginActivity: user.loginActivity,
-      logoutActivity: user.logoutActivity,
+      activityHistory: user.activityHistory,
       posts: postsData.filter((post) => post.username === user.username),
     };
-    return userActivity;
   });
 
   res.json(activityLogs);
@@ -27,6 +25,12 @@ router.post('/features', (req, res) => {
 
   // Implement feature enabling/disabling logic here
   // For example, you can update a configuration file or database to store the state of features.
+
+  // Example: Update the feature status in usersData
+  const usersData = readUserData();
+  const adminUser = usersData.find((user) => user.username === 'admin');
+  adminUser.features[feature] = enabled;
+  saveUserData(usersData);
 
   res.json({ message: 'Feature status updated successfully.' });
 });

@@ -9,7 +9,7 @@
 <body>
   <header class="header">
     <nav class="nav">
-      <a href="/feed.html" class="nav-link">Home</a>
+      <a href="/feed.html" class="nav-link">Feed</a>
       <a href="/search.html" class="nav-link">Search Users</a>
       <a href="/admin.html" class="nav-link">Admin</a>
       <a href="#" class="nav-link" id="logout-link">Logout</a>
@@ -52,13 +52,16 @@
 
         if (response.ok) {
           activityList.innerHTML = activity.map(user => `
-            <li>
-              <strong>${user.username}</strong>:
-              Login Activity: ${user.loginActivity},
-              Logout Activity: ${user.logoutActivity},
-              Posts: ${user.posts.length}
-            </li>
-          `).join('');
+        <li>
+          <strong>${user.username}</strong>: <br>
+          activity: <br>
+          ${user.activityHistory.map(event => `
+            ${event.event.charAt(0).toUpperCase() + event.event.slice(1)}: ${event.timestamp}<br>
+          `).join('')}
+          <br>
+          Posts: ${user.posts.length} <br><br>
+        </li>
+      `).join('');
         } else {
           console.error(activity.error);
         }
@@ -164,6 +167,32 @@
         console.error('Error:', error);
       }
     });
+
+    async function updateFeatures() {
+      const features = {
+        feed: feedFeature.checked,
+        // Add more features here
+      };
+
+      try {
+        const response = await fetch('/admin/features', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(features),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          console.log(data.message);
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
   </script>
 </body>
 </html>
