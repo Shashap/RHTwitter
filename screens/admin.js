@@ -19,6 +19,17 @@ router.get('/activity', (req, res) => {
   res.json(activityLogs);
 });
 
+// get all users
+router.get('/users', (req, res) => {
+  const usersData = readUserData();
+
+  const users = usersData.map((user) => {
+    return {username: user.username};
+  });
+
+  res.json(users);
+});
+
 // Enable/disable additional features/pages
 router.post('/features', (req, res) => {
   const { feature, enabled } = req.body;
@@ -35,27 +46,20 @@ router.post('/features', (req, res) => {
   res.json({ message: 'Feature status updated successfully.' });
 });
 
-// Remove a user from the social network
-router.delete('/users/:username', (req, res) => {
-  const { username } = req.params;
+router.post('/users/delete', (req, res) => {
+  const { usersToDelete } = req.body;
   const usersData = readUserData();
   const postsData = readPostsData();
 
-  const userIndex = usersData.findIndex((user) => user.username === username);
-
-  if (userIndex === -1) {
-    return res.status(404).json({ error: 'User not found.' });
-  }
-
-  // Remove user's posts from postsData
-  const filteredPosts = postsData.filter((post) => post.username !== username);
+  // Remove selected users' posts from postsData
+  const filteredPosts = postsData.filter((post) => !usersToDelete.includes(post.username));
   savePostsData(filteredPosts);
 
-  // Remove user from usersData
-  usersData.splice(userIndex, 1);
-  saveUserData(usersData);
+  // Remove selected users from usersData
+  const remainingUsers = usersData.filter((user) => !usersToDelete.includes(user.username));
+  saveUserData(remainingUsers);
 
-  res.json({ message: 'User removed successfully.' });
+  res.json({ message: 'Selected users removed successfully.' });
 });
 
 module.exports = router;

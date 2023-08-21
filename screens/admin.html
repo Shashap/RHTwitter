@@ -28,17 +28,24 @@
         <input type="checkbox" id="feed-feature" />
         Feed
       </label>
-      <!-- Add more feature checkboxes here -->
+      <label>
+        <input type="checkbox" id="search-feature" />
+        Search
+      </label>
     </div>
     <button id="update-features">Update Features</button>
     
     <h3>Remove Users</h3>
-    <ul id="user-list"></ul>
+    <form id="delete-users-form">
+      <ul id="user-list"></ul>
+      <button type="submit">Delete Selected Users</button>
+    </form>
   </main>
 
   <script>
     const activityList = document.getElementById('activity-list');
     const feedFeature = document.getElementById('feed-feature');
+    const searchFeature = document.getElementById('search-feature');
     const updateFeaturesButton = document.getElementById('update-features');
     const userList = document.getElementById('user-list');
 
@@ -76,36 +83,18 @@
         const response = await fetch('/admin/users', {
           method: 'GET',
         });
+        console.log("res", response);
         const users = await response.json();
-
+        console.log("users", users);
         if (response.ok) {
           userList.innerHTML = users.map(user => `
-            <li>
-              <strong>${user.username}</strong>
-              <button onclick="removeUser('${user.username}')">Remove</button>
-            </li>
-          `).join('');
+        <li>
+          <input type="checkbox" name="user" value="${user.username}">
+          <strong>${user.username}</strong>
+        </li>
+      `).join('');
         } else {
           console.error(users.error);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
-
-    // Function to remove a user
-    async function removeUser(username) {
-      try {
-        const response = await fetch(`/admin/users/${username}`, {
-          method: 'DELETE',
-        });
-        const data = await response.json();
-
-        if (response.ok) {
-          console.log(data.message);
-          fetchUserList();
-        } else {
-          console.error(data.error);
         }
       } catch (error) {
         console.error('Error:', error);
@@ -116,7 +105,7 @@
     async function updateFeatures() {
       const features = {
         feed: feedFeature.checked,
-        // Add more features here
+        search: searchFeature.checked,
       };
 
       try {
@@ -168,31 +157,39 @@
       }
     });
 
-    async function updateFeatures() {
-      const features = {
-        feed: feedFeature.checked,
-        // Add more features here
-      };
+    const deleteUsersForm = document.getElementById('delete-users-form');
+
+    deleteUsersForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+
+      const selectedUsers = Array.from(deleteUsersForm.querySelectorAll('input[name="user"]:checked'))
+              .map(input => input.value);
+
+      if (selectedUsers.length === 0) {
+        console.log("No users selected to delete.");
+        return;
+      }
 
       try {
-        const response = await fetch('/admin/features', {
+        const response = await fetch('/admin/users/delete', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(features),
+          body: JSON.stringify({ usersToDelete: selectedUsers }),
         });
 
         const data = await response.json();
         if (response.ok) {
           console.log(data.message);
+          fetchUserList(); // Update the user list after deletion
         } else {
           console.error(data.error);
         }
       } catch (error) {
         console.error('Error:', error);
       }
-    }
+    });
   </script>
 </body>
 </html>
