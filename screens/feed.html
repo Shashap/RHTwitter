@@ -33,17 +33,6 @@
   </main>
 
   <script>
-    // show admin only if admin connected
-    // document.addEventListener('DOMContentLoaded', () => {
-    //   const adminLink = document.getElementById('admin-link');
-    //   const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
-    //   const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
-    //   console.log("ses ", cookies);
-    //   if (!sessionCookie || sessionCookie[1] !== 'admin') {
-    //     adminLink.style.display = 'none';
-    //   }
-    // });
-
     const postForm = document.getElementById('post-form'); 
     const postText = document.getElementById('post-text');
     const feedPosts = document.getElementById('feed-posts');
@@ -76,38 +65,12 @@
       }
     });
 
-
-
-//    async function fetchFeed() {
-//      try {
-//        const response = await fetch('/feed');
-//        const posts = await response.json();
-//
-//        if (response.ok) {
-//          // Display posts in the feed
-//          feedPosts.innerHTML = posts.map(post => `
-//              <div>
-//                <p>${post.text}</p>
-//                <button onclick="likePost(${post.timestamp})">Like</button>
-//                <p>Likes: ${post.likes}</p>
-//              </div>
-//            `).join('');
-//        } else {
-//          console.error(posts.error);
-//        }
-//      } catch (error) {
-//        console.error('Error:', error);
-//      }
-//    }
-
-
     async function fetchFeed() {
       try {
         const response = await fetch('/feed');
         const posts = await response.json();
 
         if (response.ok) {
-          // Display posts in the feed
           feedPosts.innerHTML = posts.map(post => `
               <div>
                 <p>${post.text}</p>
@@ -127,30 +90,13 @@
       try {
         const method = userHasLiked ? 'DELETE' : 'POST'; // Determine the appropriate HTTP method
         const response = await fetch(`/feed/like/${postId}`, {
-          method,
+          method
         });
 
         const data = await response.json();
         if (response.ok) {
           // Update the likes count and reload the feed
-          fetchFeed();
-        } else {
-          console.error(data.error);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    }
-
-    async function likePost(postId) {
-      try {
-        const response = await fetch(`/feed/like/${postId}`, {
-          method: 'POST',
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          // Update the likes count and reload the feed
+          console.info("Gotya, updating feed");
           fetchFeed();
         } else {
           console.error(data.error);

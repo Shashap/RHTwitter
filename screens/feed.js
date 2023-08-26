@@ -25,41 +25,12 @@ router.get('/feed', (req, res) => {
     return res.status(404).json({ error: 'User not found.' });
   }
 
-  const following = user.following;
-  const feedPosts = postsData.filter((post) => following.includes(post.username) || post.username === username);
+  const postsWithUserLikes = postsData.map(post => ({
+    ...post,
+    userHasLiked: post.likedUsers.includes(username),
+  }));
 
-  res.json(feedPosts);
-});
-
-// Add a new post
-router.post('/feed', (req, res) => {
-  const { session } = req.cookies;
-  const username = session.username;
-  const { text } = req.body;
-
-  const usersData = readUserData();
-  const postsData = readPostsData();
-
-  const user = usersData.find((user) => user.username === username);
-  if (!user) {
-    return res.status(404).json({ error: 'User not found.' });
-  }
-
-  if (!text || text.length > 300) {
-    return res.status(400).json({ error: 'Invalid post. Post must be less than 300 characters.' });
-  }
-
-  const newPost = {
-    username,
-    text,
-    timestamp: Date.now(),
-    likes: 0,
-  };
-
-  postsData.push(newPost);
-  savePostsData(postsData);
-
-  res.json({ message: 'Post created successfully.', post: newPost });
+  res.json(postsWithUserLikes);
 });
 
 // Like a post
@@ -76,15 +47,50 @@ router.post('/feed/like/:postId', (req, res) => {
     return res.status(404).json({ error: 'User not found.' });
   }
 
-  const post = postsData.find((post) => post.username === username && post.timestamp === parseInt(postId));
+  const post = postsData.find((post) => post.timestamp === parseInt(postId));
   if (!post) {
     return res.status(404).json({ error: 'Post not found.' });
   }
 
-  post.likes += 1;
-  savePostsData(postsData);
+  if (!post.likedUsers.includes(username)) {
+    post.likes += 1;
+    post.likedUsers.push(username);
+    savePostsData(postsData);
+  }
 
   res.json({ message: 'Post liked successfully.', likes: post.likes });
+});
+
+
+// Unlike a post
+router.delete('/feed/like/:postId', (req, res) => {
+  const { session } = req.cookies;
+  const username = session.username;
+  const { postId } = req.params
+  const usersData = readUserData();
+  const postsData = readPostsData();
+
+  const user = usersData.find((user) => user.username === username);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found.' });
+  }
+
+  const post = postsData.find((post) => post.timestamp === parseInt(postId));
+  if (!post) {
+    return res.status(404).json({ error: 'Post not found.' });
+  }
+
+  if (post.likedUsers.includes(username)) {
+    post.likes -= 1;
+
+    var index = post.likedUsers.indexOf(username);
+    if (index !== -1) {
+      post.likedUsers.splice(index, 1);
+    }
+    savePostsData(postsData);
+  }
+
+  res.json({ message: 'Post unliked successfully.', likes: post.likes });
 });
 
 module.exports = router;

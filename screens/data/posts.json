@@ -3,54 +3,80 @@
     "username": "hadas",
     "text": "Just had an amazing meal!",
     "timestamp": 1660000000000,
-    "likes": 12
+    "likes": 3,
+    "likedUsers": [
+      "hadas",
+      "roee",
+      "admin"
+    ]
   },
   {
     "username": "hadas",
     "text": "Exploring a new hiking trail today!",
     "timestamp": 1659500000000,
-    "likes": 8
+    "likes": 1,
+    "likedUsers": [
+      "roee"
+    ]
   },
   {
     "username": "roee",
     "text": "Watching my favorite movie tonight.",
     "timestamp": 1659200000000,
-    "likes": 16
+    "likes": 1,
+    "likedUsers": [
+      "hadas"
+    ]
   },
   {
     "username": "admin",
     "text": "Coding all night to finish my project.",
     "timestamp": 1658900000000,
-    "likes": 5
+    "likes": 0,
+    "likedUsers": []
   },
   {
     "username": "roee",
     "text": "Traveling to a beautiful beach destination!",
     "timestamp": 1658600000000,
-    "likes": 21
+    "likes": 1,
+    "likedUsers": [
+      "admin"
+    ]
   },
   {
     "username": "hadas",
     "text": "test",
     "timestamp": 1691593408537,
-    "likes": 1
+    "likes": 1,
+    "likedUsers": [
+      "roee"
+    ]
   },
   {
     "username": "roee",
     "text": "myfirstpost!!!!",
     "timestamp": 1691841070103,
-    "likes": 6
+    "likes": 1,
+    "likedUsers": [
+      "hadas"
+    ]
   },
   {
     "username": "roee",
     "text": "Hadas I love your test posts. Beautiful",
     "timestamp": 1691841097173,
-    "likes": 0
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "hadas"
+    ]
   },
   {
     "username": "roee",
     "text": "Mynewpostisamazing",
     "timestamp": 1692348740638,
-    "likes": 5
+    "likes": 0,
+    "likedUsers": []
   }
 ]
