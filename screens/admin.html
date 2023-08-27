@@ -9,9 +9,9 @@
 <body>
   <header class="header">
     <nav class="nav">
-      <a href="/feed.html" class="nav-link">Feed</a>
+      <a href="/feed.html" class="nav-link" id="feed-link">Feed</a>
       <a href="/admin.html" class="nav-link" id="admin-link">Admin</a>
-      <a href="/search.html" class="nav-link">Search</a>
+      <a href="/search.html" class="nav-link" id="search-link">Search</a>
       <a href="#" class="nav-link" id="logout-link">Logout</a>
     </nav>
   </header>
@@ -83,9 +83,7 @@
         const response = await fetch('/admin/users', {
           method: 'GET',
         });
-        console.log("res", response);
         const users = await response.json();
-        console.log("users", users);
         if (response.ok) {
           userList.innerHTML = users.map(user => `
         <li>
@@ -102,7 +100,28 @@
     }
 
     // Function to update enabled features
-    async function updateFeatures() {
+    async function fetchFeatures() {
+      try {
+        const response = await fetch('/admin/config');
+        const config = await response.json();
+
+        if (response.ok) {
+          feedFeature.checked = config.features.feed;
+          searchFeature.checked = config.features.search;
+        } else {
+          console.error(config.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    // Fetch user activity, user list, and features status
+    fetchUserActivity();
+    fetchUserList();
+    fetchFeatures(); // Fetch features when the page loads
+
+    updateFeaturesButton.addEventListener('click', async () => {
       const features = {
         feed: feedFeature.checked,
         search: searchFeature.checked,
@@ -126,79 +145,31 @@
       } catch (error) {
         console.error('Error:', error);
       }
-    }
-
-    fetchUserActivity();
-    fetchUserList();
-
-    updateFeaturesButton.addEventListener('click', updateFeatures);
-
-    //logout
-    const logoutLink = document.getElementById('logout-link');
-
-    logoutLink.addEventListener('click', async (event) => {
-      event.preventDefault();
-
-      try {
-        const response = await fetch('/logout', {
-          method: 'POST',
-        });
-        console.info('res', response);
-        const data = await response.json();
-        if (response.ok) {
-          // Redirect to the login page or perform other actions
-          window.location.href = '/login.html';
-          console.log(data.message);
-        } else {
-          console.error(data.error);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
-    });
-
-    const deleteUsersForm = document.getElementById('delete-users-form');
-
-    deleteUsersForm.addEventListener('submit', async (event) => {
-      event.preventDefault();
-
-      const selectedUsers = Array.from(deleteUsersForm.querySelectorAll('input[name="user"]:checked'))
-              .map(input => input.value);
-
-      if (selectedUsers.length === 0) {
-        console.log("No users selected to delete.");
-        return;
-      }
-
-      try {
-        const response = await fetch('/admin/users/delete', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({ usersToDelete: selectedUsers }),
-        });
-
-        const data = await response.json();
-        if (response.ok) {
-          console.log(data.message);
-          fetchUserList(); // Update the user list after deletion
-        } else {
-          console.error(data.error);
-        }
-      } catch (error) {
-        console.error('Error:', error);
-      }
     });
 
     document.addEventListener('DOMContentLoaded', () => {
       const adminLink = document.getElementById('admin-link');
+      const searchLink = document.getElementById('search-link');
+      const feedLink = document.getElementById('feed-link');
       const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
       const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
       decodedValue = decodeURIComponent(sessionCookie[1]);
       if (!sessionCookie || decodedValue !== 'j:{"username":"admin"}') {
         adminLink.style.display = 'none';
       }
+      fetch('/admin/config')
+          .then(response => response.json())
+          .then(data => {
+            if (!data.features.search) {
+              searchLink.style.display = 'none';
+            }
+            if (!data.features.feed) {
+              feedLink.style.display = 'none';
+            }
+          })
+          .catch(error => {
+            console.error('Error:', error);
+          });
     });
   </script>
 </body>
