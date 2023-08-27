@@ -10,6 +10,7 @@ const following = require('./screens/following');
 const feed = require('./screens/feed');
 const admin = require('./screens/admin');
 const search = require('./screens/search');
+// const features = require('./screens/features');
 
 // Middleware to check if the user is authenticated
 function requireAuthentication(req, res, next) {
@@ -84,6 +85,9 @@ app.use('/admin', isAdmin, admin);
 app.get('/admin.html', isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/admin.html'));
 });
+
+// app.use('/admin/features', isAdmin, features);
+// app.use('/admin/config', isAdmin, features);
 
 // Start the server
 const PORT = 3000;
