@@ -29,6 +29,10 @@
         Feed
       </label>
       <label>
+        <input type="checkbox" id="feed-filter-feature" />
+        Feed Filter
+      </label>
+      <label>
         <input type="checkbox" id="search-feature" />
         Search
       </label>
@@ -45,6 +49,7 @@
   <script>
     const activityList = document.getElementById('activity-list');
     const feedFeature = document.getElementById('feed-feature');
+    const feedFilterFeature = document.getElementById('feed-filter-feature');
     const searchFeature = document.getElementById('search-feature');
     const updateFeaturesButton = document.getElementById('update-features');
     const userList = document.getElementById('user-list');
@@ -102,11 +107,12 @@
     // Function to update enabled features
     async function fetchFeatures() {
       try {
-        const response = await fetch('/admin/config');
+        const response = await fetch('/config');
         const config = await response.json();
 
         if (response.ok) {
           feedFeature.checked = config.features.feed;
+          feedFilterFeature.checked = config.features.feedFilter;
           searchFeature.checked = config.features.search;
         } else {
           console.error(config.error);
@@ -124,6 +130,7 @@
     updateFeaturesButton.addEventListener('click', async () => {
       const features = {
         feed: feedFeature.checked,
+        feedFilter: feedFilterFeature.checked,
         search: searchFeature.checked,
       };
 
@@ -157,7 +164,7 @@
       if (!sessionCookie || decodedValue !== 'j:{"username":"admin"}') {
         adminLink.style.display = 'none';
       }
-      fetch('/admin/config')
+      fetch('/config')
           .then(response => response.json())
           .then(data => {
             if (!data.features.search) {

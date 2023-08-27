@@ -67,7 +67,7 @@ router.post('/users/delete', (req, res) => {
 
 
 router.post('/features', (req, res) => {
-  const { feed, search } = req.body;
+  const { feed, feedFilter, search } = req.body;
   try {
     const configFilePath = path.join(__dirname, 'data\\config.json');
     const configFileContent = fs.readFileSync(configFilePath, 'utf8');
@@ -75,6 +75,7 @@ router.post('/features', (req, res) => {
 
     // Update the feature statuses in the config
     config.features.feed = feed;
+    config.features.feedFilter = feedFilter;
     config.features.search = search;
 
     fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2));
@@ -86,16 +87,4 @@ router.post('/features', (req, res) => {
   }
 });
 
-router.get('/config', (req, res) => {
-  try {
-    const configFilePath = path.join(__dirname, 'data/config.json');
-    const configFileContent = fs.readFileSync(configFilePath, 'utf8');
-    const config = JSON.parse(configFileContent);
-
-    res.json({ features: config.features });
-  } catch (error) {
-    console.error('Error:', error);
-    res.status(500).json({ error: 'Internal server error.' });
-  }
-});
 module.exports = router;

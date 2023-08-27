@@ -128,7 +128,7 @@
       if (!sessionCookie || decodedValue !== 'j:{"username":"admin"}') {
         adminLink.style.display = 'none';
       }
-      fetch('/admin/config')
+      fetch('/config')
               .then(response => response.json())
               .then(data => {
                 console.log(data);

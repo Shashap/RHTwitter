@@ -2,6 +2,8 @@
 const express = require('express');
 const router = express.Router();
 const { readUserData, readPostsData, savePostsData } = require('./persist');
+const path = require("path");
+const fs = require("fs");
 
 // Middleware to check if the user is logged in
 router.use((req, res, next) => {
@@ -91,6 +93,19 @@ router.delete('/feed/like/:postId', (req, res) => {
   }
 
   res.json({ message: 'Post unliked successfully.', likes: post.likes });
+});
+
+router.get('/config', (req, res) => {
+  try {
+    const configFilePath = path.join(__dirname, 'data/config.json');
+    const configFileContent = fs.readFileSync(configFilePath, 'utf8');
+    const config = JSON.parse(configFileContent);
+
+    res.json({ features: config.features });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
 });
 
 module.exports = router;

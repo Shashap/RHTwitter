@@ -28,6 +28,17 @@
 
     <section class="feed-section">
       <h2>Feed</h2>
+      <div id="feed-filter">
+        <label for="likes-filter">Filter by Likes:</label>
+        <select id="likes-filter">
+          <option value="all">All</option>
+          <option value="greater">Likes > </option>
+          <option value="equal">Likes = </option>
+          <option value="smaller">Likes < </option>
+        </select>
+        <input type="number" id="likes-value" min="0" placeholder="Enter likes">
+        <button id="apply-filter">Apply Filter</button>
+      </div>
       <div id="feed-posts"></div>
     </section>
   </main>
@@ -109,6 +120,54 @@
     // Initial fetch of the feed
     fetchFeed();
 
+    const likesFilter = document.getElementById('likes-filter');
+    const likesValue = document.getElementById('likes-value');
+    const applyFilterButton = document.getElementById('apply-filter');
+
+    applyFilterButton.addEventListener('click', () => {
+      fetchFeedWithFilter();
+    });
+
+    async function fetchFeedWithFilter() {
+      try {
+        const response = await fetch('/feed');
+        const posts = await response.json();
+
+        if (response.ok) {
+          const filteredPosts = filterPostsByLikes(posts);
+          feedPosts.innerHTML = filteredPosts.map(post => `
+        <div>
+          <p>${post.text}</p>
+          <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
+          <p>Likes: ${post.likes}</p>
+        </div>
+      `).join('');
+        } else {
+          console.error(posts.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    function filterPostsByLikes(posts) {
+      const filterType = likesFilter.value;
+      const filterValue = parseInt(likesValue.value);
+
+      if (filterType === 'all') {
+        return posts;
+      } else if (filterType === 'greater') {
+        return posts.filter(post => post.likes > filterValue);
+      } else if (filterType === 'equal') {
+        return posts.filter(post => post.likes === filterValue);
+      } else if (filterType === 'smaller') {
+        return posts.filter(post => post.likes < filterValue);
+      }
+    }
+
+    // Call fetchFeedWithFilter initially to load the feed with no filter applied
+    fetchFeedWithFilter();
+
     //logout
     const logoutLink = document.getElementById('logout-link');
 
@@ -137,20 +196,25 @@
       const adminLink = document.getElementById('admin-link');
       const searchLink = document.getElementById('search-link');
       const feedLink = document.getElementById('feed-link');
+      const feedFilter = document.getElementById('feed-filter');
       const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
       const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
       decodedValue = decodeURIComponent(sessionCookie[1]);
       if (!sessionCookie || decodedValue !== 'j:{"username":"admin"}') {
         adminLink.style.display = 'none';
       }
-      fetch('/admin/config')
+      fetch('/config')
               .then(response => response.json())
               .then(data => {
+                console.log(data)
                 if (!data.features.search) {
                   searchLink.style.display = 'none';
                 }
                 if (!data.features.feed) {
                   feedLink.style.display = 'none';
+                }
+                if (!data.features.feedFilter) {
+                  feedFilter.style.display = 'none';
                 }
               })
               .catch(error => {
