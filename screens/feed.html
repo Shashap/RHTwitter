@@ -132,6 +132,16 @@
         console.error('Error:', error);
       }
     });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const adminLink = document.getElementById('admin-link');
+      const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
+      const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
+      decodedValue = decodeURIComponent(sessionCookie[1]);
+      if (!sessionCookie || decodedValue !== 'j:{"username":"admin"}') {
+        adminLink.style.display = 'none';
+      }
+    });
   </script>
 </body>
 </html>
