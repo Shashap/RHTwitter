@@ -10,8 +10,8 @@
   <header class="header">
     <nav class="nav">
       <a href="/feed.html" class="nav-link" id="feed-link">Feed</a>
-      <a href="/admin.html" class="nav-link" id="admin-link">Admin</a>
       <a href="/search.html" class="nav-link" id="search-link">Search</a>
+      <a href="/admin.html" class="nav-link" id="admin-link">Admin</a>
       <a href="#" class="nav-link" id="logout-link">Logout</a>
     </nav>
   </header>
@@ -33,6 +33,10 @@
         Feed Filter
       </label>
       <label>
+        <input type="checkbox" id="feed-sort-feature" />
+        Feed Filter
+      </label>
+      <label>
         <input type="checkbox" id="search-feature" />
         Search
       </label>
@@ -50,6 +54,7 @@
     const activityList = document.getElementById('activity-list');
     const feedFeature = document.getElementById('feed-feature');
     const feedFilterFeature = document.getElementById('feed-filter-feature');
+    const feedSortFeature = document.getElementById('feed-sort-feature');
     const searchFeature = document.getElementById('search-feature');
     const updateFeaturesButton = document.getElementById('update-features');
     const userList = document.getElementById('user-list');
@@ -113,6 +118,7 @@
         if (response.ok) {
           feedFeature.checked = config.features.feed;
           feedFilterFeature.checked = config.features.feedFilter;
+          feedSortFeature.checked = config.features.feedSort;
           searchFeature.checked = config.features.search;
         } else {
           console.error(config.error);
@@ -131,6 +137,7 @@
       const features = {
         feed: feedFeature.checked,
         feedFilter: feedFilterFeature.checked,
+        feedSort: feedSortFeature.checked,
         search: searchFeature.checked,
       };
 

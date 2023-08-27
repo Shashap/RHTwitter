@@ -10,8 +10,8 @@
 <header>
   <nav class="nav">
     <a href="/feed.html" class="nav-link" id="feed-link">Feed</a>
-    <a href="/admin.html" class="nav-link" id="admin-link">Admin</a>
     <a href="/search.html" class="nav-link" id="search-link">Search</a>
+    <a href="/admin.html" class="nav-link" id="admin-link">Admin</a>
     <a href="#" class="nav-link" id="logout-link">Logout</a>
   </nav>
 </header>
@@ -38,6 +38,14 @@
         </select>
         <input type="number" id="likes-value" min="0" placeholder="Enter likes">
         <button id="apply-filter">Apply Filter</button>
+      </div>
+      <div id="feed-sort">
+        <label for="sort-by-likes">Sort by Likes:</label>
+        <select id="sort-by-likes">
+          <option value="none">None</option>
+          <option value="asc">Ascending</option>
+          <option value="desc">Descending</option>
+        </select>
       </div>
       <div id="feed-posts"></div>
     </section>
@@ -168,6 +176,50 @@
     // Call fetchFeedWithFilter initially to load the feed with no filter applied
     fetchFeedWithFilter();
 
+    const sortByLikes = document.getElementById('sort-by-likes');
+
+    sortByLikes.addEventListener('change', () => {
+      fetchFeedWithFilterAndSort();
+    });
+
+    async function fetchFeedWithFilterAndSort() {
+      try {
+        const response = await fetch('/feed');
+        const posts = await response.json();
+
+        if (response.ok) {
+          const filteredPosts = filterPostsByLikes(posts);
+          const sortedPosts = sortPostsByLikes(filteredPosts);
+          feedPosts.innerHTML = sortedPosts.map(post => `
+            <div>
+              <p>${post.text}</p>
+              <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
+              <p>Likes: ${post.likes}</p>
+            </div>
+          `).join('');
+        } else {
+          console.error(posts.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    function sortPostsByLikes(posts) {
+      const sortBy = sortByLikes.value;
+
+      if (sortBy === 'asc') {
+        return posts.slice().sort((a, b) => a.likes - b.likes);
+      } else if (sortBy === 'desc') {
+        return posts.slice().sort((a, b) => b.likes - a.likes);
+      } else {
+        return posts;
+      }
+    }
+
+    // Call fetchFeedWithFilterAndSort initially to load the feed with no filter or sorting applied
+    fetchFeedWithFilterAndSort();
+
     //logout
     const logoutLink = document.getElementById('logout-link');
 
@@ -197,6 +249,8 @@
       const searchLink = document.getElementById('search-link');
       const feedLink = document.getElementById('feed-link');
       const feedFilter = document.getElementById('feed-filter');
+      const feedSort = document.getElementById('feed-sort');
+
       const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
       const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
       decodedValue = decodeURIComponent(sessionCookie[1]);
@@ -215,6 +269,9 @@
                 }
                 if (!data.features.feedFilter) {
                   feedFilter.style.display = 'none';
+                }
+                if (!data.features.feedSort) {
+                  feedSort.style.display = 'none';
                 }
               })
               .catch(error => {
