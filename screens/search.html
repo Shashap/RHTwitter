@@ -8,8 +8,9 @@
 </head>
 <header class="header">
   <nav class="nav">
-    <a href="/feed.html" class="nav-link">Home</a>
-    <a href="/admin.html" class="nav-link">Admin</a>
+    <a href="/feed.html" class="nav-link" id="feed-link">Feed</a>
+    <a href="/search.html" class="nav-link" id="search-link">Search</a>
+    <a href="/admin.html" class="nav-link" id="admin-link">Admin</a>
     <a href="#" class="nav-link" id="logout-link">Logout</a>
   </nav>
 </header>
@@ -44,11 +45,11 @@
       });
       const users = await response.json();
       if (response.ok) {
+        const currentUser = 'YOUR_CURRENT_USERNAME'; // Replace with the actual username
         userList.innerHTML = users.map(user => `
-          <li>
+          <li data-username="${user.username}" data-following="${user.followers.includes(currentUser)}">
             <span>${user.username}</span>
-            <button onclick="followUser('${user.username}')">Follow</button>
-            <button onclick="unfollowUser('${user.username}')">Unfollow</button>
+            <button onclick="toggleFollow('${user.username}')">${user.followers.includes(currentUser) ? 'Unfollow' : 'Follow'}</button>
           </li>
         `).join('');
       } else {
@@ -59,6 +60,28 @@
     }
   });
 
+  async function toggleFollow(username) {
+    const listItem = userList.querySelector(`li[data-username="${username}"]`);
+    const isFollowing = listItem.getAttribute('data-following') === 'true';
+
+    try {
+      const response = await fetch(isFollowing ? `/unfollow/${username}` : `/follow/${username}`, {
+        method: 'POST'
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        console.log(data.message);
+        listItem.setAttribute('data-following', isFollowing ? 'false' : 'true');
+        listItem.querySelector('button').textContent = isFollowing ? 'Follow' : 'Unfollow';
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+
   async function followUser(username) {
     try {
       const response = await fetch(`/follow/${username}`, {
@@ -68,6 +91,7 @@
       const data = await response.json();
       if (response.ok) {
         console.log(data.message);
+        updateButton(username, true);
       } else {
         console.error(data.error);
       }
@@ -85,11 +109,27 @@
       const data = await response.json();
       if (response.ok) {
         console.log(data.message);
+        updateButton(username, false);
       } else {
         console.error(data.error);
       }
     } catch (error) {
       console.error('Error:', error);
+    }
+  }
+
+  async function updateButton(username, isFollowing) {
+    const userItem = userList.querySelector(`li[data-username="${username}"]`);
+    if (isFollowing) {
+      userItem.innerHTML = `
+    <span>${username}</span>
+    <button onclick="await unfollowUser('${username}')">Unfollow</button>
+  `;
+    } else {
+      userItem.innerHTML = `
+    <span>${username}</span>
+    <button onclick="await followUser('${username}')">Follow</button>
+  `;
     }
   }
 
@@ -115,7 +155,33 @@
     } catch (error) {
       console.error('Error:', error);
     }
-  });    
+  });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const adminLink = document.getElementById('admin-link');
+      const searchLink = document.getElementById('search-link');
+      const feedLink = document.getElementById('feed-link');
+      const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
+      const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
+      decodedValue = decodeURIComponent(sessionCookie[1]);
+      if (!sessionCookie || decodedValue !== 'j:{"username":"admin"}') {
+        adminLink.style.display = 'none';
+      }
+      fetch('/config')
+              .then(response => response.json())
+              .then(data => {
+                console.log(data);
+                if (!data.features.search) {
+                  searchLink.style.display = 'none';
+                }
+                if (!data.features.feed) {
+                  feedLink.style.display = 'none';
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+    });
   </script>
 </body>
 </html>

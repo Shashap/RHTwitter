@@ -37,7 +37,6 @@
 
         const data = await response.json();
         if (response.ok) {
-          alert('login successful');
           window.location.href = '/feed.html';
         } else {
           alert(data.error);
