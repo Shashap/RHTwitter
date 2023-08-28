@@ -321,6 +321,13 @@
                 if (!data.features.feedSort) {
                   feedSort.style.display = 'none';
                 }
+
+                const feedSave = document.querySelectorAll('[id^="feed-save"]');
+                if (!data.features.feedSave) {
+                  feedSave.forEach(element => {
+                    element.hidden = true;
+                  });
+                }
               })
               .catch(error => {
                 console.error('Error:', error);
