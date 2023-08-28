@@ -1,0 +1,8 @@
+{
+  "features": {
+    "feed": true,
+    "search": true,
+    "feedFilter": true,
+    "feedSort": true
+  }
+}

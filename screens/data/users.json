@@ -2,7 +2,13 @@
   {
     "username": "admin",
     "password": "$2b$10$DNPXL7AhmVUGSCBih6IDdebyeWiT6TvDG/SySAw1SxDrBBU7/qWMO",
-    "activityHistory": []
+    "activityHistory": [
+      {
+        "event": "login",
+        "timestamp": "2023-08-28T06:47:48.369Z"
+      }
+    ],
+    "lastLogin": "2023-08-28T06:47:48.369Z"
   },
   {
     "username": "roee",
@@ -79,9 +85,22 @@
       {
         "event": "login",
         "timestamp": "2023-08-26T14:42:34.080Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-08-26T14:51:06.336Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-08-28T06:46:57.647Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-08-28T06:47:44.501Z"
       }
     ],
-    "lastLogin": "2023-08-26T14:42:34.080Z"
+    "lastLogin": "2023-08-28T06:46:57.647Z",
+    "lastLogout": "2023-08-28T06:47:44.501Z"
   },
   {
     "username": "hadas",
