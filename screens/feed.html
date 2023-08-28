@@ -94,6 +94,7 @@
               <div>
                 <p>${post.text}</p>
                 <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
+                <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
                 <p>Likes: ${post.likes}</p>
               </div>
             `).join('');
@@ -125,6 +126,52 @@
       }
     }
 
+    async function saveOrUnsavePost(postId, userHasLiked, userHasSaved) {
+      if (userHasSaved) {
+        await unsavePost(postId);
+      } else {
+        await savePost(postId);
+      }
+
+      // Update the button text after saving/unsaving
+      const saveButton = document.getElementById(`feed-save-${postId}`);
+      saveButton.innerText = userHasSaved ? 'Save' : 'Unsave';
+
+      // Refresh the feed after saving/unsaving
+      fetchFeed();
+    }
+    async function savePost(postId) {
+      try {
+        const response = await fetch(`/feed/save/${postId}`, {
+          method: 'POST'
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          console.info("Post saved successfully");
+          // You may want to show some visual indication that the post was saved
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    async function unsavePost(postId) {
+      try {
+        const response = await fetch(`/feed/unsave/${postId}`, {
+          method: 'DELETE'
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
     // Initial fetch of the feed
     fetchFeed();
 
@@ -147,6 +194,7 @@
         <div>
           <p>${post.text}</p>
           <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
+          <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
           <p>Likes: ${post.likes}</p>
         </div>
       `).join('');
@@ -194,6 +242,7 @@
             <div>
               <p>${post.text}</p>
               <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
+              <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
               <p>Likes: ${post.likes}</p>
             </div>
           `).join('');
@@ -260,7 +309,6 @@
       fetch('/config')
               .then(response => response.json())
               .then(data => {
-                console.log(data)
                 if (!data.features.search) {
                   searchLink.style.display = 'none';
                 }

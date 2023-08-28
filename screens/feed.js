@@ -1,7 +1,7 @@
 // feed.js
 const express = require('express');
 const router = express.Router();
-const { readUserData, readPostsData, savePostsData } = require('./persist');
+const { readUserData, readPostsData, savePostsData, saveUserData } = require('./persist');
 const path = require("path");
 const fs = require("fs");
 
@@ -30,8 +30,8 @@ router.get('/feed', (req, res) => {
   const postsWithUserLikes = postsData.map(post => ({
     ...post,
     userHasLiked: post.likedUsers.includes(username),
+    userHasSaved: user.savedPosts.includes(post.timestamp.toString()),
   }));
-
   res.json(postsWithUserLikes);
 });
 
@@ -106,6 +106,52 @@ router.get('/config', (req, res) => {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal server error.' });
   }
+});
+
+router.post('/feed/save/:postId', (req, res) => {
+  const { session } = req.cookies;
+  const username = session.username;
+  const { postId } = req.params;
+
+  const usersData = readUserData();
+  const postsData = readPostsData();
+
+  const user = usersData.find((user) => user.username === username);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found.' });
+  }
+
+  const post = postsData.find((post) => post.timestamp === parseInt(postId));
+  if (!post) {
+    return res.status(404).json({ error: 'Post not found.' });
+  }
+
+  if (!user.savedPosts.includes(postId)) {
+    user.savedPosts.push(postId);
+    saveUserData(usersData);
+  }
+
+  res.json({ message: 'Post saved successfully.' });
+});
+
+router.delete('/feed/unsave/:postId', (req, res) => {
+  const { session } = req.cookies;
+  const username = session.username;
+  const { postId } = req.params;
+
+  const usersData = readUserData();
+  const user = usersData.find((user) => user.username === username);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found.' });
+  }
+
+  if (user.savedPosts.includes(postId)) {
+    const index = user.savedPosts.indexOf(postId);
+    user.savedPosts.splice(index, 1);
+    saveUserData(usersData);
+  }
+
+  res.json({ message: 'Post unsaved successfully.' });
 });
 
 module.exports = router;

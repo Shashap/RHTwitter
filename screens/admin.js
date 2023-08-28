@@ -32,23 +32,6 @@ router.get('/users', (req, res) => {
   res.json(users);
 });
 
-// Enable/disable additional features/pages
-// router.post('/features', (req, res) => {
-//   const { feature, enabled } = req.body;
-//
-//   // Implement feature enabling/disabling logic here
-//   // For example, you can update a configuration file or database to store the state of features.
-//
-//   // Example: Update the feature status in usersData
-//   const usersData = readUserData();
-//   const adminUser = usersData.find((user) => user.username === 'admin');
-//
-//   adminUser.features[feature] = enabled;
-//   saveUserData(usersData);
-//
-//   res.json({ message: 'Feature status updated successfully.' });
-// });
-
 router.post('/users/delete', (req, res) => {
   const { usersToDelete } = req.body;
   const usersData = readUserData();

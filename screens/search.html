@@ -170,7 +170,6 @@
       fetch('/config')
               .then(response => response.json())
               .then(data => {
-                console.log(data);
                 if (!data.features.search) {
                   searchLink.style.display = 'none';
                 }
