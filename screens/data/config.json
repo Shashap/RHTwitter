@@ -3,6 +3,7 @@
     "feed": true,
     "search": true,
     "feedFilter": true,
-    "feedSort": true
+    "feedSort": true,
+    "feedSave": true
   }
 }
