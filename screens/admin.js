@@ -32,23 +32,6 @@ router.get('/users', (req, res) => {
   res.json(users);
 });
 
-// Enable/disable additional features/pages
-// router.post('/features', (req, res) => {
-//   const { feature, enabled } = req.body;
-//
-//   // Implement feature enabling/disabling logic here
-//   // For example, you can update a configuration file or database to store the state of features.
-//
-//   // Example: Update the feature status in usersData
-//   const usersData = readUserData();
-//   const adminUser = usersData.find((user) => user.username === 'admin');
-//
-//   adminUser.features[feature] = enabled;
-//   saveUserData(usersData);
-//
-//   res.json({ message: 'Feature status updated successfully.' });
-// });
-
 router.post('/users/delete', (req, res) => {
   const { usersToDelete } = req.body;
   const usersData = readUserData();
@@ -67,7 +50,7 @@ router.post('/users/delete', (req, res) => {
 
 
 router.post('/features', (req, res) => {
-  const { feed, feedFilter, feedSort, search } = req.body;
+  const { feed, feedFilter, feedSort, feedSave, search } = req.body;
   try {
     const configFilePath = path.join(__dirname, 'data\\config.json');
     const configFileContent = fs.readFileSync(configFilePath, 'utf8');
@@ -77,8 +60,8 @@ router.post('/features', (req, res) => {
     config.features.feed = feed;
     config.features.feedFilter = feedFilter;
     config.features.feedSort = feedSort;
+    config.features.feedSave = feedSave;
     config.features.search = search;
-
     fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2));
 
     res.json({ message: 'Feature status updated successfully.' });

@@ -84,38 +84,20 @@
       }
     });
 
-    async function convertTimestampToReadable(timestamp) {
-      const date = new Date(timestamp);
-
-      const year = date.getFullYear();
-      const month = date.getMonth() + 1;
-      const day = date.getDate();
-      const hours = date.getHours();
-      const minutes = date.getMinutes();
-      const seconds = date.getSeconds();
-
-      const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
-      return formattedDate;
-    }
-
     async function fetchFeed() {
       try {
         const response = await fetch('/feed');
         const posts = await response.json();
 
         if (response.ok) {
-          feedPosts.innerHTML = await Promise.all(posts.map(async post => {
-            const formattedDate = await convertTimestampToReadable(post.timestamp);
-            return `
+          feedPosts.innerHTML = posts.map(post => `
               <div>
-                <p>${post.username}</p>
-                <p>${formattedDate}</p>
                 <p>${post.text}</p>
                 <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
+                <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
                 <p>Likes: ${post.likes}</p>
               </div>
-            `;
-          })).join('');
+            `).join('');
         } else {
           console.error(posts.error);
         }
@@ -123,7 +105,6 @@
         console.error('Error:', error);
       }
     }
-
 
     async function toggleLike(postId, userHasLiked) {
       try {
@@ -135,6 +116,7 @@
         const data = await response.json();
         if (response.ok) {
           // Update the likes count and reload the feed
+          console.info("Gotya, updating feed");
           fetchFeed();
         } else {
           console.error(data.error);
@@ -144,6 +126,52 @@
       }
     }
 
+    async function saveOrUnsavePost(postId, userHasLiked, userHasSaved) {
+      if (userHasSaved) {
+        await unsavePost(postId);
+      } else {
+        await savePost(postId);
+      }
+
+      // Update the button text after saving/unsaving
+      const saveButton = document.getElementById(`feed-save-${postId}`);
+      saveButton.innerText = userHasSaved ? 'Save' : 'Unsave';
+
+      // Refresh the feed after saving/unsaving
+      fetchFeed();
+    }
+    async function savePost(postId) {
+      try {
+        const response = await fetch(`/feed/save/${postId}`, {
+          method: 'POST'
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          console.info("Post saved successfully");
+          // You may want to show some visual indication that the post was saved
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+
+    async function unsavePost(postId) {
+      try {
+        const response = await fetch(`/feed/unsave/${postId}`, {
+          method: 'DELETE'
+        });
+
+        const data = await response.json();
+        if (!response.ok) {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
     // Initial fetch of the feed
     fetchFeed();
 
@@ -162,18 +190,14 @@
 
         if (response.ok) {
           const filteredPosts = filterPostsByLikes(posts);
-          feedPosts.innerHTML = await Promise.all(filteredPosts.map(async post => {
-            const formattedDate = await convertTimestampToReadable(post.timestamp);
-            return `
-              <div>
-                <p>${post.username}</p>
-                <p>${formattedDate}</p>
-                <p>${post.text}</p>
-                <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
-                <p>Likes: ${post.likes}</p>
-              </div>
-            `;
-          })).join('');
+          feedPosts.innerHTML = filteredPosts.map(post => `
+        <div>
+          <p>${post.text}</p>
+          <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
+          <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
+          <p>Likes: ${post.likes}</p>
+        </div>
+      `).join('');
         } else {
           console.error(posts.error);
         }
@@ -214,18 +238,14 @@
         if (response.ok) {
           const filteredPosts = filterPostsByLikes(posts);
           const sortedPosts = sortPostsByLikes(filteredPosts);
-          feedPosts.innerHTML = await Promise.all(sortedPosts.map(async post => {
-            const formattedDate = await convertTimestampToReadable(post.timestamp);
-            return `
-              <div>
-                <p>${post.username}</p>
-                <p>${formattedDate}</p>
-                <p>${post.text}</p>
-                <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
-                <p>Likes: ${post.likes}</p>
-              </div>
-            `;
-          })).join('');
+          feedPosts.innerHTML = sortedPosts.map(post => `
+            <div>
+              <p>${post.text}</p>
+              <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
+              <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
+              <p>Likes: ${post.likes}</p>
+            </div>
+          `).join('');
         } else {
           console.error(posts.error);
         }
@@ -289,7 +309,6 @@
       fetch('/config')
               .then(response => response.json())
               .then(data => {
-                console.log(data)
                 if (!data.features.search) {
                   searchLink.style.display = 'none';
                 }
@@ -301,6 +320,13 @@
                 }
                 if (!data.features.feedSort) {
                   feedSort.style.display = 'none';
+                }
+
+                const feedSave = document.querySelectorAll('[id^="feed-save"]');
+                if (!data.features.feedSave) {
+                  feedSave.forEach(element => {
+                    element.hidden = true;
+                  });
                 }
               })
               .catch(error => {

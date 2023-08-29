@@ -37,6 +37,10 @@
         Feed Filter
       </label>
       <label>
+        <input type="checkbox" id="feed-save-feature" />
+        Feed Save
+      </label>
+      <label>
         <input type="checkbox" id="search-feature" />
         Search
       </label>
@@ -55,6 +59,7 @@
     const feedFeature = document.getElementById('feed-feature');
     const feedFilterFeature = document.getElementById('feed-filter-feature');
     const feedSortFeature = document.getElementById('feed-sort-feature');
+    const feedSaveFeature = document.getElementById('feed-save-feature');
     const searchFeature = document.getElementById('search-feature');
     const updateFeaturesButton = document.getElementById('update-features');
     const userList = document.getElementById('user-list');
@@ -119,6 +124,7 @@
           feedFeature.checked = config.features.feed;
           feedFilterFeature.checked = config.features.feedFilter;
           feedSortFeature.checked = config.features.feedSort;
+          feedSaveFeature.checked = config.features.feedSave;
           searchFeature.checked = config.features.search;
         } else {
           console.error(config.error);
@@ -138,6 +144,7 @@
         feed: feedFeature.checked,
         feedFilter: feedFilterFeature.checked,
         feedSort: feedSortFeature.checked,
+        feedSave: feedSaveFeature.checked,
         search: searchFeature.checked,
       };
 
