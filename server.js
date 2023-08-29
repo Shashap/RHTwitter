@@ -10,6 +10,7 @@ const following = require('./screens/following');
 const feed = require('./screens/feed');
 const admin = require('./screens/admin');
 const search = require('./screens/search');
+const favorites = require('./screens/favorites');
 // const features = require('./screens/features');
 
 // Middleware to check if the user is authenticated
@@ -70,6 +71,7 @@ app.use(requireAuthentication);
 app.use(following);
 app.use(feed);
 app.use(search);
+app.use(favorites);
 
 app.get('/feed.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/feed.html'));
@@ -77,6 +79,10 @@ app.get('/feed.html', (req, res) => {
 
 app.get('/search.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/search.html'));
+});
+
+app.get('/favorites.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'screens/favorites.html'));
 });
 
 // Admin routes
