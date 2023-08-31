@@ -52,7 +52,7 @@ router.post('/users/delete', (req, res) => {
 router.post('/features', (req, res) => {
   const { feed, feedFilter, feedSort, feedSave, search } = req.body;
   try {
-    const configFilePath = path.join(__dirname, 'data\\config.json');
+    const configFilePath = path.join(__dirname, 'data', 'config.json');
     const configFileContent = fs.readFileSync(configFilePath, 'utf8');
     const config = JSON.parse(configFileContent);
 

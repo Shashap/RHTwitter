@@ -4,6 +4,7 @@
     "search": true,
     "feedFilter": true,
     "feedSort": true,
-    "feedSave": true
+    "feedSave": true,
+    "favorites": true
   }
 }

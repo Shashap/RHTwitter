@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="styles.css">
+  <title>My Social Media App - Favorites</title>
+</head>
+<header class="header">
+  <nav class="nav">
+    <a href="/feed.html" class="nav-link" id="feed-link">Feed</a>
+    <a href="/search.html" class="nav-link" id="search-link">Search</a>
+    <a href="/admin.html" class="nav-link" id="admin-link">Admin</a>
+    <a href="#" class="nav-link" id="logout-link">Logout</a>
+  </nav>
+</header>
+
+<body>
+  <h1>Favorites</h1>
+  <div id="favorites-list"></div>
+  <script>
+    document.addEventListener('DOMContentLoaded', async () => {
+    const favoritesList = document.getElementById('favorites-list');
+
+    try {
+      const response = await fetch('/favorites');
+      const favoritePosts = await response.json();
+      console.info(favoritePosts);
+      if (response.ok) {
+        favoritesList.innerHTML = favoritePosts.map(post => `
+          <div>
+            <p>${post.username}</p>
+            <p>${post.text}</p>
+            <p>Likes: ${post.likes}</p>
+          </div>
+        `).join('');
+      } else {
+        console.error(favoritePosts.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+    });
+
+
+  //logout
+  const logoutLink = document.getElementById('logout-link');
+
+  logoutLink.addEventListener('click', async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('/logout', {
+        method: 'POST',
+      });
+      console.info('res', response);
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to the login page or perform other actions
+        window.location.href = '/login.html';
+        console.log(data.message);
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  });
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const adminLink = document.getElementById('admin-link');
+      const searchLink = document.getElementById('search-link');
+      const feedLink = document.getElementById('feed-link');
+      const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
+      const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
+      decodedValue = decodeURIComponent(sessionCookie[1]);
+      if (!sessionCookie || decodedValue !== 'j:{"username":"admin"}') {
+        adminLink.style.display = 'none';
+      }
+      fetch('/config')
+              .then(response => response.json())
+              .then(data => {
+                if (!data.features.search) {
+                  searchLink.style.display = 'none';
+                }
+                if (!data.features.feed) {
+                  feedLink.style.display = 'none';
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
+    });
+  </script>
+</body>
+</html>

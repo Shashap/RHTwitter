@@ -61,7 +61,9 @@
       event.preventDefault();
 
       const text = postText.value.trim();
-      if (!text) return;
+
+      // Checking the new post is not empty but limited to 300 chars
+      if ((!text) || text.length > 300) return;
 
       try {
         const response = await fetch('/feed', {
@@ -91,8 +93,10 @@
         const posts = await response.json();
 
         if (response.ok) {
-          feedPosts.innerHTML = posts.map(post => `
+          const sortedPosts = sortPostsByTimestamp(posts);
+          feedPosts.innerHTML = sortedPosts.map(post => `
               <div>
+                <p>${post.username}</p>
                 <p>${post.text}</p>
                 <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
                 <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
@@ -117,7 +121,6 @@
         const data = await response.json();
         if (response.ok) {
           // Update the likes count and reload the feed
-          console.info("Gotya, updating feed");
           fetchFeed();
         } else {
           console.error(data.error);
@@ -193,6 +196,7 @@
           const filteredPosts = filterPostsByLikes(posts);
           feedPosts.innerHTML = filteredPosts.map(post => `
         <div>
+          <p>${post.username}</p>
           <p>${post.text}</p>
           <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
           <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
@@ -241,6 +245,7 @@
           const sortedPosts = sortPostsByLikes(filteredPosts);
           feedPosts.innerHTML = sortedPosts.map(post => `
             <div>
+              <p>${post.username}</p>
               <p>${post.text}</p>
               <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
               <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
@@ -267,8 +272,16 @@
       }
     }
 
+    function sortPostsByTimestamp(posts){
+      return posts.slice().sort((a, b) => b.timestamp - a.timestamp);
+    }
+    
+
     // Call fetchFeedWithFilterAndSort initially to load the feed with no filter or sorting applied
     fetchFeedWithFilterAndSort();
+
+    // Initial fetch of the feed
+    fetchFeed();
 
     //logout
     const logoutLink = document.getElementById('logout-link');
@@ -322,7 +335,7 @@
                 }
                 if (!data.features.feedSort) {
                   feedSort.style.display = 'none';
-                }
+                } 
 
                 const feedSave = document.querySelectorAll('[id^="feed-save"]');
                 if (!data.features.feedSave) {

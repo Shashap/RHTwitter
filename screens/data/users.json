@@ -86,9 +86,17 @@
       {
         "event": "login",
         "timestamp": "2023-08-28T19:48:38.598Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-08-29T15:46:46.335Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-08-29T15:56:12.976Z"
       }
     ],
-    "lastLogin": "2023-08-28T19:48:38.598Z",
+    "lastLogin": "2023-08-29T15:56:12.976Z",
     "lastLogout": "2023-08-27T16:27:58.316Z",
     "savedPosts": [
       "1660000000000"
@@ -229,9 +237,37 @@
       {
         "event": "login",
         "timestamp": "2023-08-29T08:49:48.613Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-08-29T15:46:26.665Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-08-29T15:46:43.173Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-08-29T18:04:44.283Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-08-29T18:28:25.720Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-08-31T06:34:46.279Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-08-31T06:44:01.004Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-08-31T06:45:52.485Z"
       }
     ],
-    "lastLogin": "2023-08-29T08:49:48.613Z",
+    "lastLogin": "2023-08-31T06:45:52.485Z",
     "savedPosts": [
       "1691593408537",
       "1658600000000",
@@ -239,7 +275,7 @@
       "1659500000000",
       "1659200000000"
     ],
-    "lastLogout": "2023-08-29T08:09:12.771Z"
+    "lastLogout": "2023-08-29T15:46:43.173Z"
   },
   {
     "username": "hadas",
