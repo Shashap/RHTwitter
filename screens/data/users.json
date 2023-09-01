@@ -342,9 +342,57 @@
       {
         "event": "login",
         "timestamp": "2023-09-01T09:25:40.718Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T09:36:21.929Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T10:04:24.513Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T10:06:21.321Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T10:06:49.789Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T10:36:37.630Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T10:36:53.720Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T10:38:39.098Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T10:38:57.597Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T10:39:02.157Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T10:39:08.781Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T10:45:06.916Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T10:45:13.232Z"
       }
     ],
-    "lastLogin": "2023-09-01T09:25:40.718Z",
+    "lastLogin": "2023-09-01T10:45:13.232Z",
     "savedPosts": [
       "1691593408537",
       "1658600000000",
@@ -352,7 +400,7 @@
       "1659500000000",
       "1659200000000"
     ],
-    "lastLogout": "2023-09-01T09:25:36.890Z"
+    "lastLogout": "2023-09-01T10:38:39.100Z"
   },
   {
     "username": "hadas",
