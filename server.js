@@ -13,6 +13,7 @@ const search = require('./screens/search');
 const favorites = require('./screens/favorites');
 const config = require('./screens/data/config.json');
 
+
 // Middleware to check if the user is authenticated
 function requireAuthentication(req, res, next) {
   const { session } = req.cookies;
@@ -65,6 +66,9 @@ function favoritesEnabled(req, res, next) {
 }
 
 const app = express();
+// Serve static files (including CSS) from a directory
+app.use(express.static('public'));
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -105,6 +109,10 @@ app.use(search);
 if (config.features.favorites) {
   app.use(favorites);
 }
+app.get('/style.css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'screens/style.css'));
+});
+
 app.get('/feed.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/feed.html'));
 });
