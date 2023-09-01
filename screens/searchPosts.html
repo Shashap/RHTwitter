@@ -36,6 +36,10 @@
   const username = "";
 
   searchButton.addEventListener('click', async () => {
+    await performSearch();
+  });
+
+  async function performSearch() {
     const searchTerm = searchInput.value.trim();
     if (!searchTerm) {
       postList.innerHTML = '';
@@ -51,22 +55,21 @@
       if (response.ok) {
         const sortedPosts = sortPostsByTimestamp(posts);
         postList.innerHTML = sortedPosts.map(post => `
-          <li>
-            <p>Editor: ${post.editor}</p>
-            <p>${post.text}</p>
-            <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
-            <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
-            <p>Likes: ${post.likes}</p>
-          </li>
-            `).join('');
+        <li>
+          <p>Editor: ${post.editor}</p>
+          <p>${post.text}</p>
+          <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
+          <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
+          <p>Likes: ${post.likes}</p>
+        </li>
+      `).join('');
       } else {
         console.error(posts.error);
       }
     } catch (error) {
       console.error('Error:', error);
     }
-  });
-
+  }
   async function fetchPosts() {
     try {
       // Fetch and update the post list here
@@ -187,6 +190,16 @@
       }
     } catch (error) {
       console.error('Error:', error);
+    }
+  });
+
+  searchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      // Prevent the default form submission behavior
+      event.preventDefault();
+
+      // Trigger the search function when Enter is pressed
+      performSearch();
     }
   });
 

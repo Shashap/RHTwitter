@@ -47,6 +47,10 @@
   const userList = document.getElementById('user-list');
 
   searchButton.addEventListener('click', async () => {
+    performSearch();
+  });
+
+  async function performSearch() {
     const searchTerm = searchInput.value.trim();
     if (!searchTerm) {
       userList.innerHTML = '';
@@ -79,7 +83,7 @@
     } catch (error) {
       console.error('Error:', error);
     }
-  });
+  }
 
   async function toggleFollow(username) {
     const listItem = userList.querySelector(`li[data-username="${username}"]`);
@@ -172,6 +176,17 @@
       }
     } catch (error) {
       console.error('Error:', error);
+    }
+  });
+
+  // Add an event listener for "keydown" on the search input
+  searchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      // Prevent the default form submission behavior
+      event.preventDefault();
+
+      // Trigger the search function when Enter is pressed
+      performSearch();
     }
   });
 
