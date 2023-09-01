@@ -68,41 +68,33 @@
     }
   });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const adminLink = document.getElementById('admin-link');
-    const searchLink = document.getElementById('search-link');
-    const searchPostsLink = document.getElementById('search-posts-link');
-    const feedLink = document.getElementById('feed-link');
-    const favoritesLink = document.getElementById('favorites-link');
+    document.addEventListener('DOMContentLoaded', () => {
+      const adminLink = document.getElementById('admin-link');
+      const searchPostsLink = document.getElementById('search-posts-link');
+      const favoritesLink = document.getElementById('favorites-link');
 
-    const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
-    const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
-    const decodedValue = decodeURIComponent(sessionCookie[1]);
-    const username = JSON.parse(decodeURIComponent(decodedValue.slice(2))).username;
+      const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
+      const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
+      const decodedValue = decodeURIComponent(sessionCookie[1]);
+      const username = JSON.parse(decodeURIComponent(decodedValue.slice(2))).username;
 
-    if (!sessionCookie || username !== 'admin') {
-      adminLink.style.display = 'none';
-    }
+      if (!sessionCookie || username !== 'admin') {
+        adminLink.style.display = 'none';
+      }
 
-    fetch('/config')
-            .then(response => response.json())
-            .then(data => {
-              if (!data.features.search) {
-                searchLink.style.display = 'none';
-              }
-              if (!data.features.searchPosts) {
-                searchPostsLink.style.display = 'none';
-              }
-              if (!data.features.feed) {
-                feedLink.style.display = 'none';
-              }
-              if (!data.features.favorites) {
-                favoritesLink.style.display = 'none';
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+      fetch('/config')
+              .then(response => response.json())
+              .then(data => {
+                if (!data.features.searchPosts) {
+                  searchPostsLink.style.display = 'none';
+                }
+                if (!data.features.favorites) {
+                  favoritesLink.style.display = 'none';
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
     });
   </script>
 </body>

@@ -27,10 +27,6 @@
     <h3>Enable/Disable Features</h3>
     <div>
       <label>
-        <input type="checkbox" id="feed-feature" />
-        Feed
-      </label>
-      <label>
         <input type="checkbox" id="feed-filter-feature" />
         Feed Filter
       </label>
@@ -39,17 +35,10 @@
         Feed Filter
       </label>
       <label>
-        <input type="checkbox" id="feed-save-feature" />
-        Feed Save
-      </label>
-      <label>
         <input type="checkbox" id="favorites-feature" />
         Favorites
       </label>
-      <label>
-        <input type="checkbox" id="search-feature" />
-        Search
-      </label>
+
       <label>
         <input type="checkbox" id="search-posts-feature" />
         Search Posts
@@ -66,12 +55,9 @@
 
   <script>
     const activityList = document.getElementById('activity-list');
-    const feedFeature = document.getElementById('feed-feature');
     const feedFilterFeature = document.getElementById('feed-filter-feature');
     const feedSortFeature = document.getElementById('feed-sort-feature');
-    const feedSaveFeature = document.getElementById('feed-save-feature');
     const favoritesFeature = document.getElementById('favorites-feature');
-    const searchFeature = document.getElementById('search-feature');
     const searchPostsFeature = document.getElementById('search-posts-feature');
     const updateFeaturesButton = document.getElementById('update-features');
     const userList = document.getElementById('user-list');
@@ -133,13 +119,12 @@
         const config = await response.json();
 
         if (response.ok) {
-          feedFeature.checked = config.features.feed;
+
           feedFilterFeature.checked = config.features.feedFilter;
           feedSortFeature.checked = config.features.feedSort;
-          feedSaveFeature.checked = config.features.feedSave;
           favoritesFeature.checked = config.features.favorites;
-          searchFeature.checked = config.features.search;
           searchPostsFeature.checked = config.features.searchPosts;
+
         } else {
           console.error(config.error);
         }
@@ -155,12 +140,9 @@
 
     updateFeaturesButton.addEventListener('click', async () => {
       const features = {
-        feed: feedFeature.checked,
         feedFilter: feedFilterFeature.checked,
         feedSort: feedSortFeature.checked,
-        feedSave: feedSaveFeature.checked,
         favorites: favoritesFeature.checked,
-        search: searchFeature.checked,
         searchPosts: searchPostsFeature.checked,
       };
 
@@ -186,9 +168,7 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       const adminLink = document.getElementById('admin-link');
-      const searchLink = document.getElementById('search-link');
       const searchPostsLink = document.getElementById('search-posts-link');
-      const feedLink = document.getElementById('feed-link');
       const favoritesLink = document.getElementById('favorites-link');
 
       const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
@@ -203,14 +183,8 @@
       fetch('/config')
           .then(response => response.json())
           .then(data => {
-            if (!data.features.search) {
-              searchLink.style.display = 'none';
-            }
             if (!data.features.searchPosts) {
               searchPostsLink.style.display = 'none';
-            }
-            if (!data.features.feed) {
-              feedLink.style.display = 'none';
             }
             if (!data.features.favorites) {
               favoritesLink.style.display = 'none';
