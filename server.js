@@ -86,6 +86,10 @@ app.get('/search.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/search.html'));
 });
 
+app.get('/searchPosts.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'screens/searchPosts.html'));
+});
+
 app.get('/favorites.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/favorites.html'));
 });

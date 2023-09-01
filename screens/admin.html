@@ -12,6 +12,7 @@
       <a href="/feed.html" class="nav-link" id="feed-link">Feed</a>
       <a href="/favorites.html" class="nav-link" id="favorites-link">Favorites</a>
       <a href="/search.html" class="nav-link" id="search-link">Search</a>
+      <a href="/searchPosts.html" class="nav-link" id="search-posts-link">SearchPosts</a>
       <a href="/admin.html" class="nav-link" id="admin-link">Admin</a>
       <a href="#" class="nav-link" id="logout-link">Logout</a>
     </nav>
@@ -49,6 +50,10 @@
         <input type="checkbox" id="search-feature" />
         Search
       </label>
+      <label>
+        <input type="checkbox" id="search-posts-feature" />
+        Search Posts
+      </label>
     </div>
     <button id="update-features">Update Features</button>
     
@@ -67,6 +72,7 @@
     const feedSaveFeature = document.getElementById('feed-save-feature');
     const favoritesFeature = document.getElementById('favorites-feature');
     const searchFeature = document.getElementById('search-feature');
+    const searchPostsFeature = document.getElementById('search-posts-feature');
     const updateFeaturesButton = document.getElementById('update-features');
     const userList = document.getElementById('user-list');
 
@@ -133,6 +139,7 @@
           feedSaveFeature.checked = config.features.feedSave;
           favoritesFeature.checked = config.features.favorites;
           searchFeature.checked = config.features.search;
+          searchPostsFeature.checked = config.features.searchPosts;
         } else {
           console.error(config.error);
         }
@@ -154,6 +161,7 @@
         feedSave: feedSaveFeature.checked,
         favorites: favoritesFeature.checked,
         search: searchFeature.checked,
+        searchPosts: searchPostsFeature.checked,
       };
 
       try {
@@ -179,6 +187,7 @@
     document.addEventListener('DOMContentLoaded', () => {
       const adminLink = document.getElementById('admin-link');
       const searchLink = document.getElementById('search-link');
+      const searchPostsLink = document.getElementById('search-posts-link');
       const feedLink = document.getElementById('feed-link');
       const favoritesLink = document.getElementById('favorites-link');
 
@@ -196,6 +205,9 @@
           .then(data => {
             if (!data.features.search) {
               searchLink.style.display = 'none';
+            }
+            if (!data.features.searchPosts) {
+              searchPostsLink.style.display = 'none';
             }
             if (!data.features.feed) {
               feedLink.style.display = 'none';
