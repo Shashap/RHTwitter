@@ -181,12 +181,16 @@
       const searchLink = document.getElementById('search-link');
       const feedLink = document.getElementById('feed-link');
       const favoritesLink = document.getElementById('favorites-link');
+
       const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
       const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
-      decodedValue = decodeURIComponent(sessionCookie[1]);
-      if (!sessionCookie || decodedValue !== 'j:{"username":"admin"}') {
+      const decodedValue = decodeURIComponent(sessionCookie[1]);
+      const username = JSON.parse(decodeURIComponent(decodedValue.slice(2))).username;
+
+      if (!sessionCookie || username !== 'admin') {
         adminLink.style.display = 'none';
       }
+
       fetch('/config')
           .then(response => response.json())
           .then(data => {
