@@ -1,10 +1,10 @@
 {
   "features": {
     "feed": true,
-    "search": true,
     "feedFilter": true,
     "feedSort": true,
     "feedSave": true,
-    "favorites": true
+    "favorites": true,
+    "search": true
   }
 }
