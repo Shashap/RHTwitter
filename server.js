@@ -65,6 +65,11 @@ app.get('/', (req, res) => {
 app.get('/register.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'register.html'));
 });
+
+app.get('/readme.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'readme.html'));
+});
+
 // Following and feed routes
 
 app.use(requireAuthentication);
