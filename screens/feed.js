@@ -27,12 +27,17 @@ router.get('/feed', (req, res) => {
     return res.status(404).json({ error: 'User not found.' });
   }
 
+  const following = user.following;
   const postsWithUserLikes = postsData.map(post => ({
     ...post,
+    editor: post.username,
     userHasLiked: post.likedUsers.includes(username),
     userHasSaved: user.savedPosts.includes(post.timestamp.toString()),
   }));
-  res.json(postsWithUserLikes);
+
+  const filteredPosts = postsWithUserLikes.filter((post) => following.includes(post.username)  || post.username === username);
+
+  res.json(filteredPosts);
 });
 
 // Like a post
