@@ -33,8 +33,7 @@ router.post('/login', async (req, res) => {
   saveUserData(usersData);
 
   // Set session cookie
-  //const sessionExpiration = rememberMe ? 10 * 24 * 60 * 60 * 1000 : 30 * 60 * 1000; // 10 days or 30 minutes
-  const sessionExpiration = rememberMe ? 1 * 60 * 1000 : 1; // 1min or none
+  const sessionExpiration = rememberMe ? 10 * 24 * 60 * 60 * 1000 : 30 * 60 * 1000; // 10 days or 30 minutes
   res.cookie('session', {username}, {maxAge: sessionExpiration, httpOnly: false});
 
   res.json({
