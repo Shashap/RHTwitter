@@ -19,8 +19,7 @@ router.get('/search', (req, res) => {
   const usersData = readUserData();
 
   // Filter users based on the query
-  console.info(query);
-  const matchedUsers = usersData.filter(user => user.username.includes(query));
+  const matchedUsers = usersData.filter(user => user.username.startsWith(query));
 
   res.json(matchedUsers);
 });

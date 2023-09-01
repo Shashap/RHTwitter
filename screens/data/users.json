@@ -2,10 +2,10 @@
   {
     "username": "admin",
     "password": "$2b$10$DNPXL7AhmVUGSCBih6IDdebyeWiT6TvDG/SySAw1SxDrBBU7/qWMO",
-    "followers": [],
-    "following": [
-      "hadas"
+    "followers": [
+      "roee"
     ],
+    "following": [],
     "activityHistory": [
       {
         "event": "login",
@@ -107,7 +107,8 @@
     "password": "$2b$10$OTiFsSxwMQB0EAXnfZ9Hd.k/JhHg5/uKjfbRSkva.66y3MfPZ03LS",
     "followers": [],
     "following": [
-      "hadas"
+      "test",
+      "admin"
     ],
     "activityHistory": [
       {
@@ -265,9 +266,85 @@
       {
         "event": "login",
         "timestamp": "2023-08-31T06:45:52.485Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T08:33:09.576Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T08:50:09.968Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T08:50:12.690Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T08:56:51.467Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T08:56:54.387Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T09:01:38.020Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T09:01:41.206Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T09:03:55.160Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T09:03:58.131Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T09:07:23.958Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T09:07:27.773Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T09:08:00.562Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T09:08:04.165Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T09:10:32.837Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T09:10:36.975Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T09:23:44.417Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T09:23:47.954Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-01T09:25:36.888Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-01T09:25:40.718Z"
       }
     ],
-    "lastLogin": "2023-08-31T06:45:52.485Z",
+    "lastLogin": "2023-09-01T09:25:40.718Z",
     "savedPosts": [
       "1691593408537",
       "1658600000000",
@@ -275,15 +352,12 @@
       "1659500000000",
       "1659200000000"
     ],
-    "lastLogout": "2023-08-29T15:46:43.173Z"
+    "lastLogout": "2023-09-01T09:25:36.890Z"
   },
   {
     "username": "hadas",
     "password": "$2b$10$Q5peZpFnaF0RKvP4uPuOHe2uyChMfaJ85K9XjGmiyNsJ9HFMMBoTO",
-    "followers": [
-      "roee",
-      "admin"
-    ],
+    "followers": [],
     "following": [],
     "activityHistory": [
       {
@@ -361,7 +435,9 @@
   {
     "username": "test",
     "password": "$2b$10$DNPXL7AhmVUGSCBih6IDdebyeWiT6TvDG/SySAw1SxDrBBU7/qWMO",
-    "followers": [],
+    "followers": [
+      "roee"
+    ],
     "following": [],
     "activityHistory": [],
     "savedPosts": []

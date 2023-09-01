@@ -29,7 +29,19 @@
   </main>
 
   <script>
-    const searchInput = document.getElementById('search-input');
+  // Function to get the value of a specific cookie by its name
+  function getCookie(cookieName) {
+    const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
+    const cookie = cookies.find(cookie => cookie[0] === cookieName);
+    if (cookie) {
+      return decodeURIComponent(cookie[1]);
+    }
+    return null;
+  }
+
+  const sessionCookieValue = getCookie('session');
+
+  const searchInput = document.getElementById('search-input');
   const searchButton = document.getElementById('search-button');
   const userList = document.getElementById('user-list');
 
@@ -46,7 +58,14 @@
       });
       const users = await response.json();
       if (response.ok) {
-        const currentUser = 'YOUR_CURRENT_USERNAME'; // Replace with the actual username
+
+        // Get current user from session cookie
+        const jsonStartIndex = sessionCookieValue.indexOf('{');
+        const jsonValue = jsonStartIndex !== -1 ? sessionCookieValue.substring(jsonStartIndex) : sessionCookieValue;
+        const sessionData = JSON.parse(jsonValue);
+        const currentUser = sessionData.username;
+
+
         userList.innerHTML = users.map(user => `
           <li data-username="${user.username}" data-following="${user.followers.includes(currentUser)}">
             <span>${user.username}</span>
@@ -72,7 +91,6 @@
 
       const data = await response.json();
       if (response.ok) {
-        console.log(data.message);
         listItem.setAttribute('data-following', isFollowing ? 'false' : 'true');
         listItem.querySelector('button').textContent = isFollowing ? 'Follow' : 'Unfollow';
       } else {
@@ -91,7 +109,6 @@
 
       const data = await response.json();
       if (response.ok) {
-        console.log(data.message);
         updateButton(username, true);
       } else {
         console.error(data.error);
@@ -144,7 +161,6 @@
       const response = await fetch('/logout', {
         method: 'POST',
       });
-      console.info('res', response);
       const data = await response.json();
       if (response.ok) {
         // Redirect to the login page or perform other actions
