@@ -51,13 +51,13 @@
       if (response.ok) {
         const sortedPosts = sortPostsByTimestamp(posts);
         postList.innerHTML = sortedPosts.map(post => `
-          <div>
+          <li>
             <p>Editor: ${post.editor}</p>
             <p>${post.text}</p>
             <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
             <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
             <p>Likes: ${post.likes}</p>
-          </div>
+          </li>
             `).join('');
       } else {
         console.error(posts.error);
