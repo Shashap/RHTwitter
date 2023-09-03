@@ -161,3 +161,56 @@ textarea {
 #logout-link {
   background-color: #e74c3c; /* You can adjust the color code */
 }
+
+/* Common styles for login and register pages */
+.login-register-container {
+  background-color: #3498db; /* You can adjust the color code */
+  color: white;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 400px;
+  margin: 0 auto;
+  margin-top: 50px;
+}
+
+.login-register-container h1 {
+  font-size: 24px;
+}
+
+.login-register-container p {
+  margin-top: 20px;
+}
+
+.login-register-container a {
+  color: white;
+  text-decoration: underline;
+}
+
+/* Style the button for both login and register pages */
+.login-register-container button {
+  background-color: #1877f2; /* You can adjust the color code */
+  color: white;
+  font-size: 16px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.login-register-container button:hover {
+  background-color: #1558d6; /* Hover color */
+}
+
+.login-register-container input[type="text"],
+.login-register-container input[type="password"],
+.login-register-container input[type="checkbox"] {
+  width: 100%; /* Set the width to 100% to make them fill the container */
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}

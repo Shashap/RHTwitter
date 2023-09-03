@@ -1,23 +1,26 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <link rel="stylesheet" href="/style.css">
+    <link rel="stylesheet" href="screens/style.css">
     <title>Login</title>
   </head>
   <body>
-    <h1>Login</h1>
-    <form id="login-form">
-      <label for="username">Username:</label>
-      <input type="text" id="username" name="username" required><br><br>
+    <div class="login-register-container">
+      <h1>Login</h1>
+      <form id="login-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
 
-      <label for="password">Password:</label>
-      <input type="password" id="password" name="password" required><br><br>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required><br><br>
 
-      <label for="rememberMe">Remember Me:</label>
-      <input type="checkbox" id="rememberMe" name="rememberMe"><br><br>
+        <label for="rememberMe">Remember Me:</label>
+        <input type="checkbox" id="rememberMe" name="rememberMe"><br><br>
 
-      <button type="submit">Login</button>
-    </form>
+        <button type="submit">Login</button>
+      </form>
+      <p>Don't have an account? <a href="/register.html">Register</a></p>
+    </div>
 
     <script>
       document.getElementById('login-form').addEventListener('submit', async function(event) {
