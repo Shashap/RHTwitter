@@ -72,7 +72,7 @@
 
         if (response.ok) {
           activityList.innerHTML = activity.map(user => `
-        <li>
+        <div class="user">
           <strong>${user.username}</strong>: <br>
           activity: <br>
           ${user.activityHistory.map(event => `
@@ -80,7 +80,7 @@
           `).join('')}
           <br>
           Posts: ${user.posts.length} <br><br>
-        </li>
+        </div>
       `).join('');
         } else {
           console.error(activity.error);

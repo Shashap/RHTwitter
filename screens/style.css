@@ -4,10 +4,16 @@ body, h1, h2, h3, p, ul, li {
   padding: 0;
 }
 
+/* Add padding to the main content container */
+.main-content {
+  padding: 20px; /* Adjust the amount of padding as needed */
+}
+
 /* Apply a background color and font styles to the entire page */
 body {
   background-color: #f0f2f5;
   font-family: Arial, sans-serif;
+  padding: 20px;
 }
 
 /* Define styles for the header and navigation bar */
@@ -51,6 +57,10 @@ body {
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
 }
 
+.post + .post {
+  border-top: 1px solid #ddd;
+}
+
 .post-header {
   display: flex;
   align-items: center;
@@ -77,7 +87,8 @@ body {
 button {
   background-color: #1877f2;
   color: #fff;
-  padding: 10px 20px;
+  font-size: 14px;
+  padding: 5px 10px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
@@ -108,8 +119,31 @@ textarea {
   border-radius: 3px;
 }
 
-/* Add more specific styles for your website components here */
+/* Add margin to the bottom of the filter section */
+#feed-filter {
+  margin-bottom: 20px; /* Adjust the margin as needed */
+}
 
-/* Media queries for responsive design (if needed) */
+/* Add margin to the bottom of the sort section */
+#feed-sort {
+  margin-bottom: 20px; /* Adjust the margin as needed */
+}
 
-/* Add more styles as needed for your specific website components */
+/* Add margin to the bottom of the search bar */
+.search-bar {
+  margin-bottom: 20px; /* Adjust the margin as needed */
+}
+
+.user {
+  background-color: #fff; /* Add background color to each post */
+  border: 1px solid #ddd;
+  margin-bottom: 30px; /* Increase spacing between posts */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.user + .user {
+  border-top: 1px solid #ddd;
+}
+

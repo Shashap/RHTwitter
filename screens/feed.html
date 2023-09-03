@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="/style.css">
   <title>My Social Media App - Feed</title>
 </head>
-<header>
+<header class="header">
   <nav class="nav">
     <a href="/feed.html" class="nav-link" id="feed-link">Feed</a>
     <a href="/favorites.html" class="nav-link" id="favorites-link">Favorites</a>
@@ -96,7 +96,7 @@
         if (response.ok) {
           const sortedPosts = sortPostsByTimestamp(posts);
           feedPosts.innerHTML = sortedPosts.map(post => `
-              <div>
+              <div class="post">
                 <p>Editor: ${post.editor}</p>
                 <p>${post.text}</p>
                 <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
