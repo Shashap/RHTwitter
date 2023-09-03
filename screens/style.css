@@ -1,127 +1,115 @@
-/* styles.css */
-body {
-  font-family: Arial, sans-serif;
+/* Reset some default styles to ensure consistency */
+body, h1, h2, h3, p, ul, li {
   margin: 0;
   padding: 0;
 }
 
+/* Apply a background color and font styles to the entire page */
+body {
+  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+}
+
+/* Define styles for the header and navigation bar */
 .header {
   background-color: #1877f2;
   color: #fff;
   padding: 10px 0;
 }
 
-.header-container {
+.nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 20px;
 }
 
-.logo {
-  font-size: 24px;
-}
-
-.nav-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-}
-
-.nav-item {
-  margin-right: 15px;
-}
-
 .nav-link {
   text-decoration: none;
-  color: #fff;
+  color: #333; /* Change link color to gray */
+  margin-right: 20px;
   font-weight: bold;
-  transition: color 0.3s ease-in-out;
 }
 
-.nav-link:hover {
-  color: #cfe0ff;
-}
-
-.main-content {
+/* Define styles for the main content area */
+.container {
+  max-width: 1200px;
+  margin: 20px auto;
   padding: 20px;
-}
-
-.section-heading {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
-
-.post-form {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-.post-input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
+  background-color: #fff;
   border-radius: 5px;
-  margin-bottom: 10px;
-  resize: vertical;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.post-button {
+/* Define styles for posts */
+.post {
+  background-color: #fff; /* Add background color to each post */
+  border: 1px solid #ddd;
+  margin-bottom: 30px; /* Increase spacing between posts */
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.post-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.post-author {
+  font-weight: bold;
+  color: #333;
+}
+
+.post-content {
+  margin-top: 10px;
+}
+
+/* Define styles for buttons */
+button {
   background-color: #1877f2;
   color: #fff;
+  padding: 10px 20px;
   border: none;
-  padding: 8px 15px;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease-in-out;
-}
-
-.post-button:hover {
-  background-color: #166fe5;
-}
-
-.feed-posts {
-  border-top: 1px solid #ccc;
-  padding-top: 10px;
-  margin-top: 20px;
-}
-
-.feed-posts > div {
-  margin-bottom: 20px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-.header {
-  background-color: #1877f2;
-  color: #fff;
-  padding: 10px 0;
-}
-
-.header .logo {
-  font-size: 24px;
-  margin-left: 20px;
-}
-
-.nav {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: #f0f2f5;
-  padding: 10px 0;
-}
-
-.nav-link {
-  text-decoration: none;
-  color: #1877f2;
   font-weight: bold;
-  font-size: 16px;
-  margin: 0 10px;
-  transition: color 0.3s ease-in-out;
 }
 
-.nav-link:hover {
-  color: #166fe5;
+button:hover {
+  background-color: #1558d6;
 }
+
+/* Define styles for forms and input elements */
+form {
+  margin: 20px 0;
+}
+
+label {
+  display: block;
+  margin-bottom: 5px;
+}
+
+input[type="text"],
+input[type="password"],
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+}
+
+/* Add more specific styles for your website components here */
+
+/* Media queries for responsive design (if needed) */
+
+/* Add more styles as needed for your specific website components */
