@@ -4,10 +4,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="style-feed.css">
+  <link rel="stylesheet" href="/style.css">
   <title>My Social Media App - Feed</title>
 </head>
-<header>
+<header class="header">
   <nav class="nav">
     <a href="/feed.html" class="nav-link" id="feed-link">Feed</a>
     <a href="/favorites.html" class="nav-link" id="favorites-link">Favorites</a>
@@ -96,7 +96,7 @@
         if (response.ok) {
           const sortedPosts = sortPostsByTimestamp(posts);
           feedPosts.innerHTML = sortedPosts.map(post => `
-              <div>
+              <div class="post">
                 <p>Editor: ${post.editor}</p>
                 <p>${post.text}</p>
                 <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
@@ -310,12 +310,11 @@
 
     document.addEventListener('DOMContentLoaded', () => {
       const adminLink = document.getElementById('admin-link');
-      const searchLink = document.getElementById('search-link');
       const searchPostsLink = document.getElementById('search-posts-link');
-      const feedLink = document.getElementById('feed-link');
       const favoritesLink = document.getElementById('favorites-link');
       const feedFilter = document.getElementById('feed-filter');
       const feedSort = document.getElementById('feed-sort');
+      const feedSave = document.querySelectorAll('[id^="feed-save"]');
 
       const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
       const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
@@ -328,14 +327,8 @@
       fetch('/config')
               .then(response => response.json())
               .then(data => {
-                if (!data.features.search) {
-                  searchLink.style.display = 'none';
-                }
                 if (!data.features.searchPosts) {
                   searchPostsLink.style.display = 'none';
-                }
-                if (!data.features.feed) {
-                  feedLink.style.display = 'none';
                 }
                 if (!data.features.feedFilter) {
                   feedFilter.style.display = 'none';
@@ -345,10 +338,6 @@
                 }
                 if (!data.features.favorites) {
                   favoritesLink.style.display = 'none';
-                }
-
-                const feedSave = document.querySelectorAll('[id^="feed-save"]');
-                if (!data.features.feedSave) {
                   feedSave.forEach(element => {
                     element.hidden = true;
                   });

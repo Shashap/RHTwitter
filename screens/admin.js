@@ -50,20 +50,17 @@ router.post('/users/delete', (req, res) => {
 
 
 router.post('/features', (req, res) => {
-  const { feed, feedFilter, feedSort, feedSave, favorites, search, searchPost } = req.body;
+  const { feedFilter, feedSort, favorites, searchPosts } = req.body;
   try {
     const configFilePath = path.join(__dirname, 'data', 'config.json');
     const configFileContent = fs.readFileSync(configFilePath, 'utf8');
     const config = JSON.parse(configFileContent);
 
     // Update the feature statuses in the config
-    config.features.feed = feed;
     config.features.feedFilter = feedFilter;
     config.features.feedSort = feedSort;
-    config.features.feedSave = feedSave;
     config.features.favorites = favorites;
-    config.features.search = search;
-    config.features.searchPosts = searchPost;
+    config.features.searchPosts = searchPosts;
     fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2));
 
     res.json({ message: 'Feature status updated successfully.' });

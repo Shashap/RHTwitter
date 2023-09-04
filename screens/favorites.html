@@ -3,13 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
   <title>My Social Media App - Favorites</title>
 </head>
 <header class="header">
   <nav class="nav">
     <a href="/feed.html" class="nav-link" id="feed-link">Feed</a>
+    <a href="/favorites.html" class="nav-link" id="favorites-link">Favorites</a>
     <a href="/search.html" class="nav-link" id="search-link">Search</a>
+    <a href="/searchPosts.html" class="nav-link" id="search-posts-link">SearchPosts</a>
     <a href="/admin.html" class="nav-link" id="admin-link">Admin</a>
     <a href="#" class="nav-link" id="logout-link">Logout</a>
   </nav>
@@ -67,41 +69,33 @@
     }
   });
 
-  document.addEventListener('DOMContentLoaded', () => {
-    const adminLink = document.getElementById('admin-link');
-    const searchLink = document.getElementById('search-link');
-    const searchPostsLink = document.getElementById('search-posts-link');
-    const feedLink = document.getElementById('feed-link');
-    const favoritesLink = document.getElementById('favorites-link');
+    document.addEventListener('DOMContentLoaded', () => {
+      const adminLink = document.getElementById('admin-link');
+      const searchPostsLink = document.getElementById('search-posts-link');
+      const favoritesLink = document.getElementById('favorites-link');
 
-    const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
-    const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
-    const decodedValue = decodeURIComponent(sessionCookie[1]);
-    const username = JSON.parse(decodeURIComponent(decodedValue.slice(2))).username;
+      const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
+      const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
+      const decodedValue = decodeURIComponent(sessionCookie[1]);
+      const username = JSON.parse(decodeURIComponent(decodedValue.slice(2))).username;
 
-    if (!sessionCookie || username !== 'admin') {
-      adminLink.style.display = 'none';
-    }
+      if (!sessionCookie || username !== 'admin') {
+        adminLink.style.display = 'none';
+      }
 
-    fetch('/config')
-            .then(response => response.json())
-            .then(data => {
-              if (!data.features.search) {
-                searchLink.style.display = 'none';
-              }
-              if (!data.features.searchPosts) {
-                searchPostsLink.style.display = 'none';
-              }
-              if (!data.features.feed) {
-                feedLink.style.display = 'none';
-              }
-              if (!data.features.favorites) {
-                favoritesLink.style.display = 'none';
-              }
-            })
-            .catch(error => {
-              console.error('Error:', error);
-            });
+      fetch('/config')
+              .then(response => response.json())
+              .then(data => {
+                if (!data.features.searchPosts) {
+                  searchPostsLink.style.display = 'none';
+                }
+                if (!data.features.favorites) {
+                  favoritesLink.style.display = 'none';
+                }
+              })
+              .catch(error => {
+                console.error('Error:', error);
+              });
     });
   </script>
 </body>

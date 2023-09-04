@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
   <title>My Social Media App - Search Users</title>
 </head>
 <header class="header">
@@ -11,6 +11,7 @@
     <a href="/feed.html" class="nav-link" id="feed-link">Feed</a>
     <a href="/favorites.html" class="nav-link" id="favorites-link">Favorites</a>
     <a href="/search.html" class="nav-link" id="search-link">Search</a>
+    <a href="/searchPosts.html" class="nav-link" id="search-posts-link">SearchPosts</a>
     <a href="/admin.html" class="nav-link" id="admin-link">Admin</a>
     <a href="#" class="nav-link" id="logout-link">Logout</a>
   </nav>
@@ -24,7 +25,9 @@
         <input type="text" id="search-input" class="search-input" placeholder="Search users...">
         <button id="search-button" class="search-button">Search</button>
       </div>
-      <ul id="user-list" class="user-list"></ul>
+      <div>
+        <ul id="user-list" class="user-list"></ul>
+      </div>
     </section>
   </main>
 
@@ -46,6 +49,10 @@
   const userList = document.getElementById('user-list');
 
   searchButton.addEventListener('click', async () => {
+    performSearch();
+  });
+
+  async function performSearch() {
     const searchTerm = searchInput.value.trim();
     if (!searchTerm) {
       userList.innerHTML = '';
@@ -78,7 +85,7 @@
     } catch (error) {
       console.error('Error:', error);
     }
-  });
+  }
 
   async function toggleFollow(username) {
     const listItem = userList.querySelector(`li[data-username="${username}"]`);
@@ -174,38 +181,45 @@
     }
   });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const adminLink = document.getElementById('admin-link');
-      const searchLink = document.getElementById('search-link');
-      const feedLink = document.getElementById('feed-link');
-      const favoritesLink = document.getElementById('favorites-link');
+  // Add an event listener for "keydown" on the search input
+  searchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      // Prevent the default form submission behavior
+      event.preventDefault();
 
-      const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
-      const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
-      const decodedValue = decodeURIComponent(sessionCookie[1]);
-      const username = JSON.parse(decodeURIComponent(decodedValue.slice(2))).username;
+      // Trigger the search function when Enter is pressed
+      performSearch();
+    }
+  });
 
-      if (!sessionCookie || username !== 'admin') {
-        adminLink.style.display = 'none';
-      }
+  document.addEventListener('DOMContentLoaded', () => {
+    const adminLink = document.getElementById('admin-link');
+    const searchPostsLink = document.getElementById('search-posts-link');
+    const favoritesLink = document.getElementById('favorites-link');
 
-      fetch('/config')
-              .then(response => response.json())
-              .then(data => {
-                if (!data.features.search) {
-                  searchLink.style.display = 'none';
-                }
-                if (!data.features.feed) {
-                  feedLink.style.display = 'none';
-                }
-                if (!data.features.favorites) {
-                  favoritesLink.style.display = 'none';
-                }
-              })
-              .catch(error => {
-                console.error('Error:', error);
-              });
-    });
+    const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
+    const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
+    const decodedValue = decodeURIComponent(sessionCookie[1]);
+    const username = JSON.parse(decodeURIComponent(decodedValue.slice(2))).username;
+
+    if (!sessionCookie || username !== 'admin') {
+      adminLink.style.display = 'none';
+    }
+
+    fetch('/config')
+            .then(response => response.json())
+            .then(data => {
+              if (!data.features.searchPosts) {
+                searchPostsLink.style.display = 'none';
+              }
+              if (!data.features.favorites) {
+                favoritesLink.style.display = 'none';
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  });
   </script>
 </body>
 </html>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
   <title>My Social Media App - Search Posts</title>
 </head>
 <header class="header">
@@ -36,6 +36,10 @@
   const username = "";
 
   searchButton.addEventListener('click', async () => {
+    await performSearch();
+  });
+
+  async function performSearch() {
     const searchTerm = searchInput.value.trim();
     if (!searchTerm) {
       postList.innerHTML = '';
@@ -51,22 +55,21 @@
       if (response.ok) {
         const sortedPosts = sortPostsByTimestamp(posts);
         postList.innerHTML = sortedPosts.map(post => `
-          <div>
-            <p>Editor: ${post.editor}</p>
-            <p>${post.text}</p>
-            <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
-            <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
-            <p>Likes: ${post.likes}</p>
-          </div>
-            `).join('');
+        <div class="post">
+          <p>Editor: ${post.editor}</p>
+          <p>${post.text}</p>
+          <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
+          <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
+          <p>Likes: ${post.likes}</p>
+        </div>
+      `).join('');
       } else {
         console.error(posts.error);
       }
     } catch (error) {
       console.error('Error:', error);
     }
-  });
-
+  }
   async function fetchPosts() {
     try {
       // Fetch and update the post list here
@@ -190,11 +193,19 @@
     }
   });
 
+  searchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      // Prevent the default form submission behavior
+      event.preventDefault();
+
+      // Trigger the search function when Enter is pressed
+      performSearch();
+    }
+  });
+
   document.addEventListener('DOMContentLoaded', () => {
     const adminLink = document.getElementById('admin-link');
-    const searchLink = document.getElementById('search-link');
     const searchPostsLink = document.getElementById('search-posts-link');
-    const feedLink = document.getElementById('feed-link');
     const favoritesLink = document.getElementById('favorites-link');
 
     const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
@@ -209,14 +220,8 @@
     fetch('/config')
             .then(response => response.json())
             .then(data => {
-              if (!data.features.search) {
-                searchLink.style.display = 'none';
-              }
               if (!data.features.searchPosts) {
                 searchPostsLink.style.display = 'none';
-              }
-              if (!data.features.feed) {
-                feedLink.style.display = 'none';
               }
               if (!data.features.favorites) {
                 favoritesLink.style.display = 'none';

@@ -11,7 +11,8 @@ const feed = require('./screens/feed');
 const admin = require('./screens/admin');
 const search = require('./screens/search');
 const favorites = require('./screens/favorites');
-// const features = require('./screens/features');
+const config = require('./screens/data/config.json');
+
 
 // Middleware to check if the user is authenticated
 function requireAuthentication(req, res, next) {
@@ -40,7 +41,34 @@ function isAdmin(req, res, next) {
   next();
 }
 
+// Middleware to check if the search feature us enabled
+function searchEnabled(req, res, next) {
+  if (!config.features.search) {
+    return res.status(403).json({ error: 'Access denied.' });
+  }
+  next();
+}
+
+// Middleware to check if the search feature us enabled
+function searchPostEnabled(req, res, next) {
+  if (!config.features.searchPosts) {
+    return res.status(403).json({ error: 'Access denied.' });
+  }
+  next();
+}
+
+// Middleware to check if the user is admin
+function favoritesEnabled(req, res, next) {
+  if (!config.features.favorites) {
+    return res.status(403).json({ error: 'Access denied.' });
+  }
+  next();
+}
+
 const app = express();
+// Serve static files (including CSS) from a directory
+app.use(express.static('public'));
+
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
@@ -73,10 +101,17 @@ app.get('/readme.html', (req, res) => {
 // Following and feed routes
 
 app.use(requireAuthentication);
-app.use(following);
 app.use(feed);
+app.use(following);
 app.use(search);
-app.use(favorites);
+
+
+if (config.features.favorites) {
+  app.use(favorites);
+}
+app.get('/style.css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'screens/style.css'));
+});
 
 app.get('/feed.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/feed.html'));
@@ -86,11 +121,11 @@ app.get('/search.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/search.html'));
 });
 
-app.get('/searchPosts.html', (req, res) => {
+app.get('/searchPosts.html', searchPostEnabled, (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/searchPosts.html'));
 });
 
-app.get('/favorites.html', (req, res) => {
+app.get('/favorites.html', favoritesEnabled, (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/favorites.html'));
 });
 

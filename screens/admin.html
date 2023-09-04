@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
   <title>Admin Page</title>
 </head>
 <body>
@@ -19,17 +19,10 @@
   </header>
 
   <main class="main-content">
-    <h2>Admin Panel</h2>
-    
-    <h3>User Activity</h3>
-    <ul id="activity-list"></ul>
+    <h2>Admin Panel</h2> <br>
     
     <h3>Enable/Disable Features</h3>
     <div>
-      <label>
-        <input type="checkbox" id="feed-feature" />
-        Feed
-      </label>
       <label>
         <input type="checkbox" id="feed-filter-feature" />
         Feed Filter
@@ -39,39 +32,32 @@
         Feed Filter
       </label>
       <label>
-        <input type="checkbox" id="feed-save-feature" />
-        Feed Save
-      </label>
-      <label>
         <input type="checkbox" id="favorites-feature" />
         Favorites
       </label>
-      <label>
-        <input type="checkbox" id="search-feature" />
-        Search
-      </label>
+
       <label>
         <input type="checkbox" id="search-posts-feature" />
         Search Posts
       </label>
     </div>
-    <button id="update-features">Update Features</button>
+    <button id="update-features">Update Features</button> <br><br>
     
     <h3>Remove Users</h3>
     <form id="delete-users-form">
       <ul id="user-list"></ul>
       <button type="submit">Delete Selected Users</button>
     </form>
+
+    <h3>User Activity</h3>
+    <ul id="activity-list"></ul>
   </main>
 
   <script>
     const activityList = document.getElementById('activity-list');
-    const feedFeature = document.getElementById('feed-feature');
     const feedFilterFeature = document.getElementById('feed-filter-feature');
     const feedSortFeature = document.getElementById('feed-sort-feature');
-    const feedSaveFeature = document.getElementById('feed-save-feature');
     const favoritesFeature = document.getElementById('favorites-feature');
-    const searchFeature = document.getElementById('search-feature');
     const searchPostsFeature = document.getElementById('search-posts-feature');
     const updateFeaturesButton = document.getElementById('update-features');
     const userList = document.getElementById('user-list');
@@ -86,7 +72,7 @@
 
         if (response.ok) {
           activityList.innerHTML = activity.map(user => `
-        <li>
+        <div class="user">
           <strong>${user.username}</strong>: <br>
           activity: <br>
           ${user.activityHistory.map(event => `
@@ -94,7 +80,7 @@
           `).join('')}
           <br>
           Posts: ${user.posts.length} <br><br>
-        </li>
+        </div>
       `).join('');
         } else {
           console.error(activity.error);
@@ -113,10 +99,8 @@
         const users = await response.json();
         if (response.ok) {
           userList.innerHTML = users.map(user => `
-        <li>
           <input type="checkbox" name="user" value="${user.username}">
-          <strong>${user.username}</strong>
-        </li>
+          <strong>${user.username}</strong> <br>
       `).join('');
         } else {
           console.error(users.error);
@@ -133,13 +117,12 @@
         const config = await response.json();
 
         if (response.ok) {
-          feedFeature.checked = config.features.feed;
+
           feedFilterFeature.checked = config.features.feedFilter;
           feedSortFeature.checked = config.features.feedSort;
-          feedSaveFeature.checked = config.features.feedSave;
           favoritesFeature.checked = config.features.favorites;
-          searchFeature.checked = config.features.search;
           searchPostsFeature.checked = config.features.searchPosts;
+
         } else {
           console.error(config.error);
         }
@@ -155,12 +138,9 @@
 
     updateFeaturesButton.addEventListener('click', async () => {
       const features = {
-        feed: feedFeature.checked,
         feedFilter: feedFilterFeature.checked,
         feedSort: feedSortFeature.checked,
-        feedSave: feedSaveFeature.checked,
         favorites: favoritesFeature.checked,
-        search: searchFeature.checked,
         searchPosts: searchPostsFeature.checked,
       };
 
@@ -184,11 +164,44 @@
       }
     });
 
+    const deleteUsersForm = document.getElementById('delete-users-form');
+
+    deleteUsersForm.addEventListener('submit', async (event) => {
+      event.preventDefault(); // Prevent the form from submitting and refreshing the page
+
+      const selectedUsers = Array.from(deleteUsersForm.querySelectorAll('input[name="user"]:checked'))
+              .map(input => input.value);
+
+      if (selectedUsers.length === 0) {
+        console.log("No users selected to delete.");
+        return;
+      }
+
+      try {
+        const response = await fetch('/admin/users/delete', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ usersToDelete: selectedUsers }),
+        });
+
+        const data = await response.json();
+        if (response.ok) {
+          console.log(data.message);
+          fetchUserList(); // Update the user list after deletion
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+
+
     document.addEventListener('DOMContentLoaded', () => {
       const adminLink = document.getElementById('admin-link');
-      const searchLink = document.getElementById('search-link');
       const searchPostsLink = document.getElementById('search-posts-link');
-      const feedLink = document.getElementById('feed-link');
       const favoritesLink = document.getElementById('favorites-link');
 
       const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
@@ -203,14 +216,8 @@
       fetch('/config')
           .then(response => response.json())
           .then(data => {
-            if (!data.features.search) {
-              searchLink.style.display = 'none';
-            }
             if (!data.features.searchPosts) {
               searchPostsLink.style.display = 'none';
-            }
-            if (!data.features.feed) {
-              feedLink.style.display = 'none';
             }
             if (!data.features.favorites) {
               favoritesLink.style.display = 'none';
@@ -220,6 +227,29 @@
             console.error('Error:', error);
           });
     });
+    const logoutLink = document.getElementById('logout-link');
+
+    logoutLink.addEventListener('click', async (event) => {
+      event.preventDefault();
+
+      try {
+        const response = await fetch('/logout', {
+          method: 'POST',
+        });
+        console.info('res', response);
+        const data = await response.json();
+        if (response.ok) {
+          // Redirect to the login page or perform other actions
+          window.location.href = '/login.html';
+          console.log(data.message);
+        } else {
+          console.error(data.error);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    });
+
   </script>
 </body>
 </html>
