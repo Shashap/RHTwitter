@@ -5,6 +5,7 @@
     "feedSort": true,
     "feedSave": true,
     "favorites": true,
-    "search": true
+    "search": true,
+    "searchPosts": true
   }
 }

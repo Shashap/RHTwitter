@@ -94,10 +94,18 @@
       {
         "event": "login",
         "timestamp": "2023-08-29T15:56:12.976Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-04T07:29:10.300Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-04T07:29:31.623Z"
       }
     ],
-    "lastLogin": "2023-08-29T15:56:12.976Z",
-    "lastLogout": "2023-08-27T16:27:58.316Z",
+    "lastLogin": "2023-09-04T07:29:10.300Z",
+    "lastLogout": "2023-09-04T07:29:31.623Z",
     "savedPosts": [
       "1660000000000"
     ]
@@ -390,17 +398,74 @@
       {
         "event": "login",
         "timestamp": "2023-09-01T10:45:13.232Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-04T06:14:52.605Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-04T06:15:52.448Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-04T06:50:53.713Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-04T07:10:55.519Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-04T07:12:46.596Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-04T07:29:04.446Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-04T07:29:35.434Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-04T07:29:48.675Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-04T07:29:56.805Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-04T07:55:26.942Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-04T08:49:57.580Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-04T08:56:58.009Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-04T09:11:24.548Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-04T16:32:40.415Z"
       }
     ],
-    "lastLogin": "2023-09-01T10:45:13.232Z",
+    "lastLogin": "2023-09-04T16:32:40.415Z",
     "savedPosts": [
       "1691593408537",
       "1658600000000",
       "1660000000000",
       "1659500000000",
-      "1659200000000"
+      "1659200000000",
+      "1692348740638"
     ],
-    "lastLogout": "2023-09-01T10:38:39.100Z"
+    "lastLogout": "2023-09-04T08:56:58.009Z"
   },
   {
     "username": "hadas",

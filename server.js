@@ -98,6 +98,10 @@ app.get('/readme.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'readme.html'));
 });
 
+app.get('/aboutus.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'aboutus.html'));
+});
+
 // Following and feed routes
 
 app.use(requireAuthentication);
