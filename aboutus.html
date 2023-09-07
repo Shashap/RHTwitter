@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="style.css">
   <title>About Us - SocialFit</title>
 </head>
 <body>
@@ -19,6 +19,7 @@
 </header>
 
   <main class="main-content">
+    <img src="logo.png" alt="SocialFit Logo" class="logo-image-small">
     <section class="about-section">
       <h2>About Us - SocialFit</h2>
       <p>Welcome to the story of SocialFit, your favorite fitness social network!</p>
@@ -29,9 +30,71 @@
       <p>Thank you for being part of the SocialFit family!</p>
     </section>
   </main>
-  <img src="/pictures/logo.png" alt="SocialFit Logo" class="logo-image">
   <footer class="footer">
     <p>&copy; 2023 SocialFit</p>
   </footer>
+<script>
+  const logoutLink = document.getElementById('logout-link');
+
+  logoutLink.addEventListener('click', async (event) => {
+    event.preventDefault();
+
+    try {
+      const response = await fetch('/logout', {
+        method: 'POST',
+      });
+      const data = await response.json();
+      if (response.ok) {
+        // Redirect to the login page or perform other actions
+        window.location.href = '/login.html';
+        console.log(data.message);
+      } else {
+        console.error(data.error);
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  });
+
+  // Add an event listener for "keydown" on the search input
+  searchInput.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      // Prevent the default form submission behavior
+      event.preventDefault();
+
+      // Trigger the search function when Enter is pressed
+      performSearch();
+    }
+  });
+
+  document.addEventListener('DOMContentLoaded', () => {
+    const adminLink = document.getElementById('admin-link');
+    const searchPostsLink = document.getElementById('search-posts-link');
+    const favoritesLink = document.getElementById('favorites-link');
+
+    const cookies = document.cookie.split(';').map(cookie => cookie.trim().split('='));
+    const sessionCookie = cookies.find(cookie => cookie[0] === 'session');
+    const decodedValue = decodeURIComponent(sessionCookie[1]);
+    const username = JSON.parse(decodeURIComponent(decodedValue.slice(2))).username;
+
+    if (!sessionCookie || username !== 'admin') {
+      adminLink.style.display = 'none';
+    }
+
+    fetch('/config')
+            .then(response => response.json())
+            .then(data => {
+              if (!data.features.searchPosts) {
+                searchPostsLink.style.display = 'none';
+              }
+              if (!data.features.favorites) {
+                favoritesLink.style.display = 'none';
+              }
+            })
+            .catch(error => {
+              console.error('Error:', error);
+            });
+  });
+</script>
 </body>
 </html>

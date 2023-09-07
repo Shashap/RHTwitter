@@ -190,7 +190,7 @@ textarea {
 
 /* Style the button for both login and register pages */
 .login-register-container button {
-  background-color: #1877f2; /* You can adjust the color code */
+  background-color: #1877f2;
   color: white;
   font-size: 16px;
   padding: 10px 20px;
@@ -202,15 +202,21 @@ textarea {
 }
 
 .login-register-container button:hover {
-  background-color: #1558d6; /* Hover color */
+  background-color: #1558d6;
 }
 
 .login-register-container input[type="text"],
 .login-register-container input[type="password"],
 .login-register-container input[type="checkbox"] {
-  width: 100%; /* Set the width to 100% to make them fill the container */
-  padding: 10px;
+  width: 80%;
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 3px;
+}
+
+.logo-image {
+  display: block;
+  margin: 0 auto; /* Center the logo horizontally */
+  max-width: 100%; /* Ensure the logo doesn't exceed its original size */
+  margin-top: 20px; /* Add top margin to separate from the content */
 }
