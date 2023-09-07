@@ -4,9 +4,16 @@ body, h1, h2, h3, p, ul, li {
   padding: 0;
 }
 
+.logo-image {
+  display: block;
+  margin: 0 auto;
+  max-width: 80%;
+  margin-top: 20px;
+}
+
 /* Add padding to the main content container */
 .main-content {
-  padding: 20px; /* Adjust the amount of padding as needed */
+  padding: 20px;
 }
 
 /* Apply a background color and font styles to the entire page */
@@ -30,7 +37,7 @@ body {
 }
 
 .nav-link {
-  background-color: #3498db; /* You can adjust the color code */
+  background-color: #3498db;
   color: white;
   padding: 10px 20px;
   margin: 5px;
@@ -60,9 +67,9 @@ body {
 
 /* Define styles for posts */
 .post {
-  background-color: #fff; /* Add background color to each post */
+  background-color: #fff;
   border: 1px solid #ddd;
-  margin-bottom: 30px; /* Increase spacing between posts */
+  margin-bottom: 30px;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -130,25 +137,17 @@ textarea {
   border-radius: 3px;
 }
 
-/* Add margin to the bottom of the filter section */
-#feed-filter {
-  margin-bottom: 20px; /* Adjust the margin as needed */
-}
-
-/* Add margin to the bottom of the sort section */
-#feed-sort {
-  margin-bottom: 20px; /* Adjust the margin as needed */
-}
-
-/* Add margin to the bottom of the search bar */
+/* Add margin to the bottom of the filter and sort section and for the search bar */
+#feed-filter,
+#feed-sort,
 .search-bar {
-  margin-bottom: 20px; /* Adjust the margin as needed */
+  margin-bottom: 20px;
 }
 
 .user {
-  background-color: #fff; /* Add background color to each post */
+  background-color: #fff;
   border: 1px solid #ddd;
-  margin-bottom: 30px; /* Increase spacing between posts */
+  margin-bottom: 30px;
   padding: 20px;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
@@ -159,12 +158,12 @@ textarea {
 }
 
 #logout-link {
-  background-color: #e74c3c; /* You can adjust the color code */
+  background-color: #e74c3c;
 }
 
-/* Common styles for login and register pages */
+/* styles for login and register pages */
 .login-register-container {
-  background-color: #3498db; /* You can adjust the color code */
+  background-color: #3498db;
   color: white;
   padding: 20px;
   border-radius: 5px;
@@ -188,7 +187,6 @@ textarea {
   text-decoration: underline;
 }
 
-/* Style the button for both login and register pages */
 .login-register-container button {
   background-color: #1877f2;
   color: white;
@@ -206,17 +204,16 @@ textarea {
 }
 
 .login-register-container input[type="text"],
-.login-register-container input[type="password"],
-.login-register-container input[type="checkbox"] {
+.login-register-container input[type="password"] {
   width: 80%;
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 3px;
 }
 
-.logo-image {
-  display: block;
-  margin: 0 auto; /* Center the logo horizontally */
-  max-width: 100%; /* Ensure the logo doesn't exceed its original size */
-  margin-top: 20px; /* Add top margin to separate from the content */
+.remember-me-container {
+  display: flex;
+  align-items: center;
+  margin-left: 20px;
+  margin-bottom: 10px;
 }

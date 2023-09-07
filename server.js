@@ -86,7 +86,10 @@ app.get('/login.html', (req, res) => {
 app.get('/logo.png', (req, res) => {
   res.sendFile(path.join(__dirname, '/pictures/logo.png'));
 });
-// http://localhost:3000/
+
+app.get('/style.css', (req, res) => {
+  res.sendFile(path.join(__dirname, 'screens/style.css'));
+});
 
 app.get('/', (req, res) => {
   // Render login template
@@ -117,9 +120,6 @@ app.use(search);
 if (config.features.favorites) {
   app.use(favorites);
 }
-app.get('/style.css', (req, res) => {
-  res.sendFile(path.join(__dirname, 'screens/style.css'));
-});
 
 app.get('/feed.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/feed.html'));
