@@ -39,7 +39,6 @@ router.get('/searchPosts', (req, res) => {
   }
 
   // Filter users based on the query
-  console.info(query);
   const matchedPosts = postsData.filter(post => post.text.includes(query));
 
   const postsWithUserLikes = matchedPosts.map(post => ({

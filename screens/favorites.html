@@ -18,7 +18,7 @@
 </header>
 
 <body>
-  <h1>My Workouts</h1>
+  <h1>My Workouts</h1> <br>
   <div id="favorites-list"></div>
   <script>
     document.addEventListener('DOMContentLoaded', async () => {
@@ -30,7 +30,7 @@
       console.info(favoritePosts);
       if (response.ok) {
         favoritesList.innerHTML = favoritePosts.map(post => `
-          <div>
+          <div class="post">
             <p>${post.username}</p>
             <p>${post.text}</p>
             <p>Likes: ${post.likes}</p>

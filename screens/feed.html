@@ -196,7 +196,7 @@
         if (response.ok) {
           const filteredPosts = filterPostsByLikes(posts);
           feedPosts.innerHTML = filteredPosts.map(post => `
-        <div>
+        <div class="post">
           <p>Editor: ${post.editor}</p>
           <p>${post.text}</p>
           <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
@@ -245,7 +245,7 @@
           const filteredPosts = filterPostsByLikes(posts);
           const sortedPosts = sortPostsByLikes(filteredPosts);
           feedPosts.innerHTML = sortedPosts.map(post => `
-            <div>
+            <div class="post">
               <p>Editor: ${post.editor}</p>
               <p>${post.text}</p>
               <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
