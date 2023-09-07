@@ -156,7 +156,42 @@ router.delete('/feed/unsave/:postId', (req, res) => {
     saveUserData(usersData);
   }
 
-  res.json({ message: 'Post unsaved successfully.' });
+  res.
+
+  json({ message: 'Post unsaved successfully.' });
 });
+
+// Add this route to create a new post
+router.post('/feed/post', (req, res) => {
+  const { session } = req.cookies;
+  const username = session.username;
+  const { text } = req.body; // Assuming the post text is sent in the request body
+
+  const usersData = readUserData();
+  const postsData = readPostsData();
+
+  const user = usersData.find((user) => user.username === username);
+  if (!user) {
+    return res.status(404).json({ error: 'User not found.' });
+  }
+
+  // Create a new post object
+  const newPost = {
+    timestamp: Date.now(), // Generate a unique timestamp for the post
+    username: user.username,
+    text,
+    likedUsers: [],
+    likes: 0,
+  };
+
+  // Add the new post to the postsData array
+  postsData.push(newPost);
+
+  // Save the updated postsData
+  savePostsData(postsData);
+
+  res.json({ message: 'Post created successfully.', post: newPost });
+});
+
 
 module.exports = router;

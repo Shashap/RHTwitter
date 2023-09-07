@@ -67,7 +67,7 @@
       if ((!text) || text.length > 300) return;
 
       try {
-        const response = await fetch('/feed', {
+        const response = await fetch('/feed/post', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
