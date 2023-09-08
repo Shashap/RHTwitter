@@ -5,7 +5,9 @@
     "followers": [
       "roee"
     ],
-    "following": [],
+    "following": [
+      "hadas"
+    ],
     "activityHistory": [
       {
         "event": "login",
@@ -102,12 +104,54 @@
       {
         "event": "logout",
         "timestamp": "2023-09-04T07:29:31.623Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T12:13:11.048Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T12:23:20.359Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T14:44:42.729Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T14:44:46.017Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T14:51:08.157Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T14:58:23.128Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T15:30:39.829Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T18:51:37.168Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T19:49:56.262Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T19:58:57.791Z"
       }
     ],
-    "lastLogin": "2023-09-04T07:29:10.300Z",
-    "lastLogout": "2023-09-04T07:29:31.623Z",
+    "lastLogin": "2023-09-07T19:49:56.262Z",
+    "lastLogout": "2023-09-07T19:58:57.791Z",
     "savedPosts": [
-      "1660000000000"
+      "1660000000000",
+      "1671850000000",
+      "1671450000000"
     ]
   },
   {
@@ -116,7 +160,8 @@
     "followers": [],
     "following": [
       "test",
-      "admin"
+      "admin",
+      "hadas"
     ],
     "activityHistory": [
       {
@@ -454,23 +499,36 @@
       {
         "event": "login",
         "timestamp": "2023-09-04T16:32:40.415Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T19:38:17.560Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T19:49:48.745Z"
       }
     ],
-    "lastLogin": "2023-09-04T16:32:40.415Z",
+    "lastLogin": "2023-09-07T19:38:17.560Z",
     "savedPosts": [
       "1691593408537",
       "1658600000000",
       "1660000000000",
       "1659500000000",
       "1659200000000",
-      "1692348740638"
+      "1692348740638",
+      "1671400000000"
     ],
-    "lastLogout": "2023-09-04T08:56:58.009Z"
+    "lastLogout": "2023-09-07T19:49:48.745Z"
   },
   {
     "username": "hadas",
     "password": "$2b$10$Q5peZpFnaF0RKvP4uPuOHe2uyChMfaJ85K9XjGmiyNsJ9HFMMBoTO",
-    "followers": [],
+    "followers": [
+      "admin",
+      "roee",
+      "moran"
+    ],
     "following": [],
     "activityHistory": [
       {
@@ -546,13 +604,134 @@
     ]
   },
   {
-    "username": "test",
-    "password": "$2b$10$DNPXL7AhmVUGSCBih6IDdebyeWiT6TvDG/SySAw1SxDrBBU7/qWMO",
+    "username": "ohad",
+    "password": "$2b$10$G.18TF3WuNnkDQXZjTytgesvm3iiNXNEr/ZxXBSHHL2.HQew.d4Vm",
+    "followers": [],
+    "following": [],
+    "activityHistory": [
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T18:53:44.550Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T18:53:47.368Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T19:37:05.417Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T19:38:13.422Z"
+      }
+    ],
+    "lastLogin": "2023-09-07T19:37:05.417Z",
+    "lastLogout": "2023-09-07T19:38:13.422Z"
+  },
+  {
+    "username": "tal",
+    "password": "$2b$10$FIisT7fl6M8N1yNwtMJTcOOzl58I99mIwsC/ekm94bhvIOZTvWk4m",
     "followers": [
-      "roee"
+      "moran"
     ],
     "following": [],
-    "activityHistory": [],
-    "savedPosts": []
+    "activityHistory": [
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T18:54:01.134Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T18:54:39.593Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T20:10:02.334Z"
+      }
+    ],
+    "lastLogin": "2023-09-07T20:10:02.334Z",
+    "lastLogout": "2023-09-07T18:54:39.593Z",
+    "savedPosts": [
+      "1672450000000",
+      "1672550000000",
+      "1672400000000"
+    ]
+  },
+  {
+    "username": "moran",
+    "password": "$2b$10$xhr76XWVj3whz5eVDYOabeZkAj8Zhvrl9XXBy3GpY/kj0yd/MaS0i",
+    "followers": [],
+    "following": [
+      "maayan",
+      "hadas",
+      "tal"
+    ],
+    "activityHistory": [
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T18:53:51.394Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T18:53:56.484Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T19:02:53.535Z"
+      },
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T19:59:02.521Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T20:09:57.833Z"
+      }
+    ],
+    "lastLogin": "2023-09-07T19:59:02.521Z",
+    "lastLogout": "2023-09-07T20:09:57.833Z",
+    "savedPosts": [
+      "1672650000000",
+      "1672450000000"
+    ]
+  },
+  {
+    "username": "rotem",
+    "password": "$2b$10$RekHlLchutyfGL4UaZGud.AmdCN0zNUVMRvQpyyNjfIC5nt1BDacG",
+    "followers": [],
+    "following": [],
+    "activityHistory": [
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T18:53:34.035Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T18:53:39.654Z"
+      }
+    ],
+    "lastLogin": "2023-09-07T18:53:34.035Z",
+    "lastLogout": "2023-09-07T18:53:39.654Z"
+  },
+  {
+    "username": "maayan",
+    "password": "$2b$10$70jAnBSpTNGnN6YXU9zuyu6PiRVkUwsyW5cqkYvXOtuuyVtckZjGu",
+    "followers": [
+      "moran"
+    ],
+    "following": [],
+    "activityHistory": [
+      {
+        "event": "login",
+        "timestamp": "2023-09-07T18:54:54.555Z"
+      },
+      {
+        "event": "logout",
+        "timestamp": "2023-09-07T19:02:43.349Z"
+      }
+    ],
+    "lastLogin": "2023-09-07T18:54:54.555Z",
+    "lastLogout": "2023-09-07T19:02:43.349Z"
   }
 ]
