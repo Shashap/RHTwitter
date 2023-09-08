@@ -74,10 +74,12 @@
 
 
         userList.innerHTML = users.map(user => `
-          <li data-username="${user.username}" data-following="${user.followers.includes(currentUser)}">
-            <span>${user.username}</span>
-            <button onclick="toggleFollow('${user.username}')">${user.followers.includes(currentUser) ? 'Unfollow' : 'Follow'}</button>
-          </li>
+          <div class="user">
+            <p data-username="${user.username}" data-following="${user.followers.includes(currentUser)}">
+              <span>${user.username}</span>
+              <button onclick="toggleFollow('${user.username}')">${user.followers.includes(currentUser) ? 'Unfollow' : 'Follow'}</button>
+            </p>
+          </div>
         `).join('');
       } else {
         console.error(users.error);
@@ -88,7 +90,7 @@
   }
 
   async function toggleFollow(username) {
-    const listItem = userList.querySelector(`li[data-username="${username}"]`);
+    const listItem = userList.querySelector(`p[data-username="${username}"]`);
     const isFollowing = listItem.getAttribute('data-following') === 'true';
 
     try {
@@ -144,7 +146,7 @@
   }
 
   async function updateButton(username, isFollowing) {
-    const userItem = userList.querySelector(`li[data-username="${username}"]`);
+    const userItem = userList.querySelector(`p[data-username="${username}"]`);
     if (isFollowing) {
       userItem.innerHTML = `
     <span>${username}</span>

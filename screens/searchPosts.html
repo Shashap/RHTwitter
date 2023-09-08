@@ -82,7 +82,7 @@
       if (response.ok) {
         const sortedPosts = sortPostsByTimestamp(posts);
         postList.innerHTML = sortedPosts.map(post => `
-        <div>
+        <div class="post">
           <p>Editor: ${post.editor}</p>
           <p>${post.text}</p>
           <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked}, '${username}')">${post.userHasLiked ? 'Unlike' : 'Like'}</button>

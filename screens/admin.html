@@ -29,7 +29,7 @@
       </label>
       <label>
         <input type="checkbox" id="feed-sort-feature" />
-        Feed Filter
+        Feed Sort
       </label>
       <label>
         <input type="checkbox" id="favorites-feature" />
@@ -73,13 +73,13 @@
         if (response.ok) {
           activityList.innerHTML = activity.map(user => `
         <div class="user">
-          <strong>${user.username}</strong>: <br>
-          activity: <br>
+          <strong>${user.username}</strong>: <br><br>
+          <u> Posts:</u> ${user.posts.length} <br><br>
+          <u>activity:</u><br>
           ${user.activityHistory.map(event => `
             ${event.event.charAt(0).toUpperCase() + event.event.slice(1)}: ${event.timestamp}<br>
           `).join('')}
           <br>
-          Posts: ${user.posts.length} <br><br>
         </div>
       `).join('');
         } else {
