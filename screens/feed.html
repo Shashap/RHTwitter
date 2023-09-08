@@ -153,7 +153,6 @@
 
         const data = await response.json();
         if (response.ok) {
-          console.info("Post saved successfully");
           // You may want to show some visual indication that the post was saved
         } else {
           console.error(data.error);
@@ -294,7 +293,6 @@
         const response = await fetch('/logout', {
           method: 'POST',
         });
-        console.info('res', response);
         const data = await response.json();
         if (response.ok) {
           // Redirect to the login page or perform other actions

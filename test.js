@@ -252,10 +252,13 @@ async function testLogout() {
         console.log("testLogout failed");
         return false;
     }
+    const cookies = `session=${encodeURIComponent('{"username": "test"}')}`;
 
     const response = await fetch(BASE_URL + '/logout', {
         method: 'POST',
         headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookies, 
             'Authorization': token,
         },
     });
