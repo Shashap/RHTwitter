@@ -5,7 +5,7 @@ const PORT = 3000;
 const BASE_URL = `http://localhost:${PORT}`;
 
 const app = express();
-const { readUserData, readPostsData } = require('./screens/persist'); 
+const { readUserData, readPostsData } = require('./routes/persist');
 
 before(function () {
   app.listen(PORT);

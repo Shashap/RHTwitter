@@ -3,15 +3,15 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const register = require('./screens/register');
-const login = require('./screens/login');
-const logout = require('./screens/logout');
-const following = require('./screens/following');
-const feed = require('./screens/feed');
-const admin = require('./screens/admin');
-const search = require('./screens/search');
-const favorites = require('./screens/favorites');
-const { readConfigData } = require('./screens/persist');
+const register = require('./routes/register');
+const login = require('./routes/login');
+const logout = require('./routes/logout');
+const following = require('./routes/following');
+const feed = require('./routes/feed');
+const admin = require('./routes/admin');
+const search = require('./routes/search');
+const favorites = require('./routes/favorites');
+const { readConfigData } = require('./routes/persist');
 
 
 // Middleware to check if the user is authenticated
