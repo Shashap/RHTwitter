@@ -4,51 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/style.css">
-    <title>Social Network Readme</title>
+    <title>SocialFit Readme</title>
 </head>
 <body>
-    <h1>Social Network Readme</h1>
+    <h1>SocialFit Readme</h1>
 
-    <h2>Social Network Name</h2>
-    <p>Our social network is named "MySocialNetwork."</p>
+    <h2>SocialFit</h2>
+    <p>Our social network is named "SocialFit"</p>
 
     <h2>Additional Pages</h2>
     <p>We have added the following additional pages:</p>
     <ul>
         <li><a href="/feed.html">Feed</a></li>
         <li><a href="/favorites.html">My Workouts</a></li>
-        <li><a href="/search.html">Search</a></li>
-        <li><a href="/admin.html">Admin</a></li>
+        <li><a href="/search.html">Search Trainer</a></li>
+        <li><a href="/searchPosts.html">Search Workout</a></li>
+        <li><a href="/admin.html">Admin Panel</a></li>
+        <li><a href="/aboutus.html">About Us</a></li>
+    </ul>
+
+    <h2>Additional Pages</h2>
+    <p>Our social network includes the following additional pages:</p>
+    <ul>
+        <li>My Workouts - based on post saving functionality, the user can view saved posts in this page.</li>
+        <li>Search Workout - based on search in posts functionality, the user can search for a specific workout accross our social network.</li>
     </ul>
 
     <h2>Additional Features</h2>
     <p>Our social network includes the following additional features:</p>
     <ul>
-        <li>User authentication and authorization</li>
-        <li>Posting and liking posts</li>
-        <li>Favoriting posts</li>
-        <li>User search functionality</li>
-        <li>Admin panel for managing users and posts</li>
+        <li>Unliking posts</li>
+        <li>Favoriting posts (saving and unsaving)</li>
+        <li>Filtering posts based on amount of likes</li>
     </ul>
 
     <h2>Challenges</h2>
     <p>Some of the challenges we faced while developing the social network were:</p>
     <ul>
-        <li>Implementing user authentication securely</li>
+        <li>Implementing user authentication and handling cookies</li>
         <li>Handling real-time updates of the feed</li>
-        <li>Ensuring data consistency and security</li>
+        <li>Learning how to write tests using node-fetch module</li>
     </ul>
 
     <h2>Partners</h2>
     <p>Our development team consists of two partners:</p>
     <ul>
-        <li>Partner 1: John Doe (ID: 12345)
+        <li>Partner 1: Hadas Spier (ID: 318514981)
             <ul>
                 <li>Implemented user authentication</li>
                 <li>Developed the admin panel</li>
             </ul>
         </li>
-        <li>Partner 2: Jane Smith (ID: 67890)
+        <li>Partner 2: Roee Sagi (ID: 209011097)
             <ul>
                 <li>Implemented posting and liking functionality</li>
                 <li>Implemented favoriting posts</li>
@@ -60,10 +67,24 @@
     <h2>Server Routes</h2>
     <p>Our social network supports the following server routes:</p>
     <ul>
+        <li><code>POST /login</code> - Log in with username and password</li>
         <li><code>GET /feed</code> - Retrieve the user's feed</li>
-        <li><code>POST /feed</code> - Create a new post</li>
         <li><code>POST /feed/like/:postId</code> - Like a post</li>
-        <!-- Add more routes as needed -->
+        <li><code>DELETE /feed/like/:postId</code> - Unlike a post</li>
+        <li><code>POST /feed/save/:postId</code> - Save a post</li>
+        <li><code>DELETE /feed/unsave/:postId</code> - Unsave a post</li>
+        <li><code>GET /search?query={query}</code> - Search for posts</li>
+        <li><code>POST /register</code> - Register a new user</li>
+        <li><code>POST /logout</code> - Log out</li>
+        <li><code>GET /following/{username}</code> - Retrieve the list of users followed by a user</li>
+        <li><code>POST /follow/{username}</code> - Follow a user</li>
+        <li><code>POST /unfollow/{username}</code> - Unfollow a user</li>
+        <li><code>GET /favorites</code> - Retrieve the user's favorite posts</li>
+        <li><code>GET /activity</code> - Retrieve user activity</li>
+        <li><code>GET /users</code> - Retrieve user list</li>
+        <li><code>POST /users/delete</code> - Delete a user</li>
+        <li><code>POST /features</code> - Toggle features</li>
+        <li><code>GET /config</code> - Get configuration settings</li>
     </ul>
 
 </body>
