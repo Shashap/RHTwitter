@@ -53,16 +53,20 @@
       const posts = await response.json();
 
       if (response.ok) {
-        const sortedPosts = sortPostsByTimestamp(posts);
-        postList.innerHTML = sortedPosts.map(post => `
-        <div class="post">
-          <p>Editor: ${post.editor}</p>
-          <p>${post.text}</p>
-          <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
-          <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
-          <p>Likes: ${post.likes}</p>
-        </div>
-      `).join('');
+        if(posts.length === 0) {
+          postList.innerHTML = '<p>No workouts found for your search.</p>';
+        } else {
+          const sortedPosts = sortPostsByTimestamp(posts);
+          postList.innerHTML = sortedPosts.map(post => `
+            <div class="post">
+              <p>Editor: ${post.editor}</p>
+              <p>${post.text}</p>
+              <button onclick="toggleLike(${post.timestamp}, ${post.userHasLiked})">${post.userHasLiked ? 'Unlike' : 'Like'}</button>
+              <button onclick="saveOrUnsavePost(${post.timestamp}, ${post.userHasLiked}, ${post.userHasSaved})" id="feed-save-${post.timestamp}">${post.userHasSaved ? 'Unsave' : 'Save'}</button>
+              <p>Likes: ${post.likes}</p>
+            </div>
+          `).join('');
+        }
       } else {
         console.error(posts.error);
       }

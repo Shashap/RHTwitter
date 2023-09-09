@@ -1,8 +1,9 @@
 // persist.js
 const fs = require('fs');
 
-const userDataFilePath = './screens/data/users.json';
-const postsDataFilePath = './screens/data/posts.json';
+const userDataFilePath = './data/users.json';
+const postsDataFilePath = './data/posts.json';
+const configDataFilePath = './data/config.json';
 
 function readUserData() {
   try {
@@ -40,9 +41,29 @@ function savePostsData(postsData) {
   }
 }
 
+function readConfigData() {
+  try {
+    const configData = JSON.parse(fs.readFileSync(configDataFilePath, 'utf-8'));
+    return configData;
+  } catch (error) {
+    console.error('Error reading config data:', error);
+    return {};
+  }
+}
+
+function saveConfigData(configData) {
+  try {
+    fs.writeFileSync(configDataFilePath, JSON.stringify(configData, null, 2));
+  } catch (error) {
+    console.error('Error saving config data:', error);
+  }
+}
+
 module.exports = {
   readUserData,
   saveUserData,
   readPostsData,
   savePostsData,
+  readConfigData,
+  saveConfigData
 };

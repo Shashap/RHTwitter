@@ -20,6 +20,8 @@
           <label for="rememberMe">Remember Me</label>
         </div>
 
+        <div id="error-message" style="color: red;"></div>
+
         <button type="submit">Login</button>
       </form>
       <p>Don't have an account? <a href="/register.html">Register</a></p>
@@ -45,9 +47,10 @@
         if (response.ok) {
           window.location.href = '/feed.html';
         } else {
-          alert(data.error);
+          document.getElementById('error-message').textContent = data.error;
         }
       });
+
     </script>
   </body>
 </html>

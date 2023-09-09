@@ -4,6 +4,25 @@ body, h1, h2, h3, p, ul, li {
   padding: 0;
 }
 
+h1 {
+  font-size: 2em;
+}
+
+h2 {
+  font-size: 1.75em;
+}
+
+h3 {
+  font-size: 1.5em;
+}
+
+body {
+  background-color: #f0f2f5;
+  font-family: Arial, sans-serif;
+  padding: 20px;
+  font-size: 16px;
+}
+
 .logo-image {
   display: block;
   margin: 0 auto;
@@ -13,13 +32,6 @@ body, h1, h2, h3, p, ul, li {
 
 /* Add padding to the main content container */
 .main-content {
-  padding: 20px;
-}
-
-/* Apply a background color and font styles to the entire page */
-body {
-  background-color: #f0f2f5;
-  font-family: Arial, sans-serif;
   padding: 20px;
 }
 
@@ -131,11 +143,12 @@ label {
 input[type="text"],
 input[type="password"],
 textarea {
-  width: 100%;
   padding: 10px;
-  margin-bottom: 10px;
-  border: 1px solid #ddd;
-  border-radius: 3px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+  margin-bottom: 15px;
 }
 
 /* Add margin to the bottom of the filter and sort section and for the search bar */
@@ -162,17 +175,18 @@ textarea {
   background-color: #e74c3c;
 }
 
-/* styles for login and register pages */
+/* Enhancing Visual Design of Forms */
 .login-register-container {
-  background-color: #3498db;
-  color: white;
   padding: 20px;
+  margin-top: 50px;
+  background-color: #3498db;
   border-radius: 5px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  text-align: center;
   max-width: 400px;
-  margin: 0 auto;
-  margin-top: 50px;
+  margin-left: auto;
+  margin-right: auto;
+  color: white;
+  text-align: center;
 }
 
 .login-register-container h1 {
@@ -217,4 +231,11 @@ textarea {
   align-items: center;
   margin-left: 20px;
   margin-bottom: 10px;
+}
+
+/* Responsiveness */
+@media only screen and (max-width: 768px) {
+  .nav {
+    flex-direction: row;
+  }
 }
