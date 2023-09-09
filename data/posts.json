@@ -1,0 +1,372 @@
+[
+  {
+    "username": "hadas",
+    "text": "Just finished a great HIIT workout! Feeling energized 💪 #FitnessGoals",
+    "timestamp": 1672650000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "maayan"
+    ]
+  },
+  {
+    "username": "roee",
+    "text": "Early morning run to kickstart the day. #MorningMotivation",
+    "timestamp": 1672600000000,
+    "likes": 2,
+    "likedUsers": [
+      "hadas",
+      "ohad"
+    ]
+  },
+  {
+    "username": "ohad",
+    "text": "Leg day at the gym. The burn is real! 🔥 #LegDay",
+    "timestamp": 1672550000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "tal"
+    ]
+  },
+  {
+    "username": "admin",
+    "text": "Working on a new feature for SocialFit. Stay tuned for updates! 💻 #TechLife",
+    "timestamp": 1672500000000,
+    "likes": 1,
+    "likedUsers": [
+      "roee"
+    ]
+  },
+  {
+    "username": "tal",
+    "text": "Yoga session in the park this morning. Perfect way to relax and stay fit. 🧘‍♀️ #YogaLife",
+    "timestamp": 1672450000000,
+    "likes": 2,
+    "likedUsers": [
+      "maayan",
+      "moran"
+    ]
+  },
+  {
+    "username": "rotem",
+    "text": "Trying out a new CrossFit workout today. Intense but fun! 💥 #CrossFit",
+    "timestamp": 1672400000000,
+    "likes": 1,
+    "likedUsers": [
+      "roee"
+    ]
+  },
+  {
+    "username": "moran",
+    "text": "Healthy meal prep for the week ahead. Eating clean is key! 🥦 #MealPrep",
+    "timestamp": 1672350000000,
+    "likes": 2,
+    "likedUsers": [
+      "hadas",
+      "maayan"
+    ]
+  },
+  {
+    "username": "maayan",
+    "text": "Outdoor cycling adventure with breathtaking views. Nature and fitness combined! 🚴‍♀️ #Cycling",
+    "timestamp": 1672300000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "ohad"
+    ]
+  },
+  {
+    "username": "hadas",
+    "text": "Completed my first half-marathon! Proud of this achievement. 🏃‍♀️ #RunningGoals",
+    "timestamp": 1672250000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "maayan"
+    ]
+  },
+  {
+    "username": "roee",
+    "text": "Staying consistent with my daily push-up challenge. 💪 #FitnessRoutine",
+    "timestamp": 1672200000000,
+    "likes": 2,
+    "likedUsers": [
+      "hadas",
+      "ohad"
+    ]
+  },
+  {
+    "username": "ohad",
+    "text": "Late-night gym session to clear the mind and boost energy. 🌙 #LateNightWorkout",
+    "timestamp": 1672150000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "tal"
+    ]
+  },
+  {
+    "username": "admin",
+    "text": "Exciting updates coming to SocialFit soon! Stay active and connected. 💪 #SocialFit",
+    "timestamp": 1672100000000,
+    "likes": 1,
+    "likedUsers": [
+      "hadas"
+    ]
+  },
+  {
+    "username": "tal",
+    "text": "Hiking adventure in the mountains today. Nature and fitness go hand in hand. ⛰️ #Hiking",
+    "timestamp": 1672050000000,
+    "likes": 2,
+    "likedUsers": [
+      "maayan",
+      "moran"
+    ]
+  },
+  {
+    "username": "rotem",
+    "text": "Practicing my jump rope skills. Great cardio workout! 🏋️‍♀️ #JumpRope",
+    "timestamp": 1672000000000,
+    "likes": 1,
+    "likedUsers": [
+      "roee"
+    ]
+  },
+  {
+    "username": "moran",
+    "text": "Reaching new personal bests in weightlifting. Hard work pays off! 💪 #StrengthTraining",
+    "timestamp": 1671950000000,
+    "likes": 2,
+    "likedUsers": [
+      "hadas",
+      "maayan"
+    ]
+  },
+  {
+    "username": "maayan",
+    "text": "Sunset yoga by the beach. Serenity and fitness in one. 🌅 #BeachYoga",
+    "timestamp": 1671900000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "ohad"
+    ]
+  },
+  {
+    "username": "hadas",
+    "text": "Morning meditation to start the day with a clear mind. 🧘‍♀️ #Meditation",
+    "timestamp": 1671850000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "maayan"
+    ]
+  },
+  {
+    "username": "roee",
+    "text": "New personal record in the 5K run. Hard work pays off! 🏃‍♂️ #Running",
+    "timestamp": 1671800000000,
+    "likes": 2,
+    "likedUsers": [
+      "hadas",
+      "ohad"
+    ]
+  },
+  {
+    "username": "ohad",
+    "text": "Healthy smoothie after a tough workout. Refueling with the good stuff! 🥤 #HealthyEating",
+    "timestamp": 1671750000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "tal"
+    ]
+  },
+  {
+    "username": "admin",
+    "text": "SocialFit app update: Bug fixes and performance improvements. Keep sharing your fitness journey! 💪 #AppUpdate",
+    "timestamp": 1671700000000,
+    "likes": 1,
+    "likedUsers": [
+      "hadas"
+    ]
+  },
+  {
+    "username": "tal",
+    "text": "Paddleboarding on a sunny day. Water workouts are refreshing! 🏄‍♀️ #Paddleboarding",
+    "timestamp": 1671650000000,
+    "likes": 2,
+    "likedUsers": [
+      "maayan",
+      "moran"
+    ]
+  },
+  {
+    "username": "rotem",
+    "text": "Challenge yourself with a plank-a-day. Core strength is essential! 💪 #PlankChallenge",
+    "timestamp": 1671600000000,
+    "likes": 1,
+    "likedUsers": [
+      "roee"
+    ]
+  },
+  {
+    "username": "moran",
+    "text": "Exploring new hiking trails in the wilderness. Nature is the best gym! 🌲 #HikingAdventures",
+    "timestamp": 1671550000000,
+    "likes": 2,
+    "likedUsers": [
+      "hadas",
+      "maayan"
+    ]
+  },
+  {
+    "username": "maayan",
+    "text": "Post-workout protein shake. Recovery is key! 💪 #ProteinShake",
+    "timestamp": 1671500000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "ohad"
+    ]
+  },
+  {
+    "username": "hadas",
+    "text": "Sunrise yoga on the rooftop. Perfect way to greet the day. 🌇 #SunriseYoga",
+    "timestamp": 1671450000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "maayan"
+    ]
+  },
+  {
+    "username": "roee",
+    "text": "High-intensity interval training (HIIT) session. Short but intense! 💥 #HIIT",
+    "timestamp": 1671400000000,
+    "likes": 2,
+    "likedUsers": [
+      "hadas",
+      "ohad"
+    ]
+  },
+  {
+    "username": "ohad",
+    "text": "Evening swim at the pool. Great way to unwind after a long day. 🏊‍♂️ #Swimming",
+    "timestamp": 1671350000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "tal"
+    ]
+  },
+  {
+    "username": "admin",
+    "text": "New fitness challenges coming soon! Get ready to push your limits. 💪 #FitnessChallenges",
+    "timestamp": 1671300000000,
+    "likes": 1,
+    "likedUsers": [
+      "hadas"
+    ]
+  },
+  {
+    "username": "tal",
+    "text": "Climbing adventure in the mountains. Conquer your fears! 🧗‍♀️ #RockClimbing",
+    "timestamp": 1671250000000,
+    "likes": 2,
+    "likedUsers": [
+      "maayan",
+      "moran"
+    ]
+  },
+  {
+    "username": "rotem",
+    "text": "Staying hydrated during workouts with my trusty water bottle. 💧 #StayHydrated",
+    "timestamp": 1671200000000,
+    "likes": 1,
+    "likedUsers": [
+      "roee"
+    ]
+  },
+  {
+    "username": "moran",
+    "text": "Morning jog in the park. Fresh air and exercise make for a great start to the day. 🏃‍♀️ #MorningRun",
+    "timestamp": 1671150000000,
+    "likes": 2,
+    "likedUsers": [
+      "hadas",
+      "maayan"
+    ]
+  },
+  {
+    "username": "maayan",
+    "text": "Powerlifting session at the gym. Pushing my limits and gaining strength! 💪 #Powerlifting",
+    "timestamp": 1671100000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "ohad"
+    ]
+  },
+  {
+    "username": "hadas",
+    "text": "Healthy salad for lunch. Nourishing my body with the right nutrients. 🥗 #HealthyEating",
+    "timestamp": 1671050000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "maayan"
+    ]
+  },
+  {
+    "username": "roee",
+    "text": "Trail running through the woods. Nature's gym at its finest! 🌳 #TrailRunning",
+    "timestamp": 1671000000000,
+    "likes": 2,
+    "likedUsers": [
+      "hadas",
+      "ohad"
+    ]
+  },
+  {
+    "username": "ohad",
+    "text": "Late-night stretching routine. Relaxing the body and mind. 🌙 #Stretching",
+    "timestamp": 1670950000000,
+    "likes": 2,
+    "likedUsers": [
+      "roee",
+      "tal"
+    ]
+  },
+  {
+    "username": "admin",
+    "text": "SocialFit community, you're amazing! Keep inspiring and supporting each other. 💪 #SocialFitFamily",
+    "timestamp": 1670900000000,
+    "likes": 1,
+    "likedUsers": [
+      "hadas"
+    ]
+  },
+  {
+    "username": "tal",
+    "text": "Cross-country biking adventure. Exploring new terrain! 🚵‍♂️ #Biking",
+    "timestamp": 1670850000000,
+    "likes": 2,
+    "likedUsers": [
+      "maayan",
+      "moran"
+    ]
+  },
+  {
+    "username": "rotem",
+    "text": "Daily 10-minute meditation. Mindfulness is key to a balanced life. 🧘‍♂️ #Mindfulness",
+    "timestamp": 1670800000000,
+    "likes": 1,
+    "likedUsers": [
+      "roee"
+    ]
+  }
+]
