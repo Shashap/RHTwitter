@@ -213,7 +213,7 @@
         adminLink.style.display = 'none';
       }
 
-      fetch('/config')
+      fetch('/admin/config')
           .then(response => response.json())
           .then(data => {
             if (!data.features.searchPosts) {

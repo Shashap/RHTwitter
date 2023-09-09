@@ -13,13 +13,8 @@ router.post('/login', async (req, res) => {
   
   const user = usersData.find((user) => user.username === username);
 
-  if (!user) {
-    return res.status(401).json({error: 'Invalid credentials.'});
-  }
-
-  const isPasswordValid = await bcrypt.compare(password, user.password);
-  if (!isPasswordValid) {
-    return res.status(401).json({error: 'Invalid password.'});
+  if (!user || !await bcrypt.compare(password, user.password)) {
+    return res.status(401).json({ error: 'Invalid credentials.' });
   }
 
   // Add login event to activityHistory

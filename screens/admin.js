@@ -1,9 +1,14 @@
 // admin.js
 const express = require('express');
 const router = express.Router();
-const { readUserData, readPostsData, saveUserData, savePostsData } = require('./persist');
-const path = require("path");
-const fs = require("fs");
+const {
+  readUserData,
+  readPostsData,
+  saveUserData,
+  savePostsData,
+  readConfigData,
+  saveConfigData
+} = require('./persist');
 
 // Get all user activity (login/logout/post new story)
 router.get('/activity', (req, res) => {
@@ -52,18 +57,26 @@ router.post('/users/delete', (req, res) => {
 router.post('/features', (req, res) => {
   const { feedFilter, feedSort, favorites, searchPosts } = req.body;
   try {
-    const configFilePath = path.join(__dirname, 'data', 'config.json');
-    const configFileContent = fs.readFileSync(configFilePath, 'utf8');
-    const config = JSON.parse(configFileContent);
+    const config = readConfigData();
 
     // Update the feature statuses in the config
     config.features.feedFilter = feedFilter;
     config.features.feedSort = feedSort;
     config.features.favorites = favorites;
     config.features.searchPosts = searchPosts;
-    fs.writeFileSync(configFilePath, JSON.stringify(config, null, 2));
+    saveConfigData(config);
 
     res.json({ message: 'Feature status updated successfully.' });
+  } catch (error) {
+    console.error('Error:', error);
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+});
+
+router.get('/config', (req, res) => {
+  try {
+    const config = readConfigData();
+    res.json(config);
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal server error.' });

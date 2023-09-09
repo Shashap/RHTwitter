@@ -11,7 +11,7 @@ const feed = require('./screens/feed');
 const admin = require('./screens/admin');
 const search = require('./screens/search');
 const favorites = require('./screens/favorites');
-const config = require('./screens/data/config.json');
+const { readConfigData } = require('./screens/persist');
 
 
 // Middleware to check if the user is authenticated
@@ -41,85 +41,49 @@ function isAdmin(req, res, next) {
   next();
 }
 
-// Middleware to check if the search feature us enabled
-function searchEnabled(req, res, next) {
-  if (!config.features.search) {
-    return res.status(403).json({ error: 'Access denied.' });
-  }
-  next();
-}
-
-// Middleware to check if the search feature us enabled
-function searchPostEnabled(req, res, next) {
-  if (!config.features.searchPosts) {
-    return res.status(403).json({ error: 'Access denied.' });
-  }
-  next();
-}
-
-// Middleware to check if the user is admin
-function favoritesEnabled(req, res, next) {
-  if (!config.features.favorites) {
-    return res.status(403).json({ error: 'Access denied.' });
-  }
-  next();
+function featureEnabled(feature) {
+  return function(req, res, next) {
+    const config = readConfigData();
+    if (!config.features[feature]) {
+      return res.status(403).json({ error: 'Access denied.' });
+    }
+    next();
+  };
 }
 
 const app = express();
-// Serve static files (including CSS) from a directory
-app.use(express.static('public'));
 
+// Middlewares
 app.use(express.json());
 app.use(bodyParser.json());
 app.use(cookieParser());
+// Serve static files (including CSS) from a directory
+app.use(express.static('public'));
 
-// Register and login routes
-// Serve public pages without authentication
+// // Routes
 app.use(login);
 app.use(logout);
 app.use(register);
-
-app.get('/login.html', (req, res) => {
-  res.sendFile(path.join(__dirname, '/login.html'));
-});
-
-app.get('/logo.png', (req, res) => {
-  res.sendFile(path.join(__dirname, '/pictures/logo.png'));
-});
-
-app.get('/style.css', (req, res) => {
-  res.sendFile(path.join(__dirname, 'screens/style.css'));
-});
-
-app.get('/', (req, res) => {
-  // Render login template
-  res.sendFile(path.join(__dirname + '/login.html'));
-});
-// Serve public pages without authentication
-
-app.get('/register.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'register.html'));
-});
-
-app.get('/readme.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'readme.html'));
-});
-
-app.get('/aboutus.html', (req, res) => {
-  res.sendFile(path.join(__dirname, 'aboutus.html'));
-});
-
-// Following and feed routes
-
 app.use(requireAuthentication);
 app.use(feed);
 app.use(following);
 app.use(search);
-
-
-if (config.features.favorites) {
+if (featureEnabled('favorites')) {
   app.use(favorites);
 }
+
+app.get('/logo.png', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/logo.png'));
+});
+
+app.get('/style.css', (req, res) => {
+  res.sendFile(path.join(__dirname, '/public/style.css'));
+});
+
+app.get('/', (req, res) => {
+  // Render login template
+  res.sendFile(path.join(__dirname + '/public/login.html'));
+});
 
 app.get('/feed.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/feed.html'));
@@ -129,11 +93,11 @@ app.get('/search.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/search.html'));
 });
 
-app.get('/searchPosts.html', searchPostEnabled, (req, res) => {
+app.get('/searchPosts.html', featureEnabled('searchPosts'), (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/searchPosts.html'));
 });
 
-app.get('/favorites.html', favoritesEnabled, (req, res) => {
+app.get('/favorites.html', featureEnabled('favorites'), (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/favorites.html'));
 });
 
