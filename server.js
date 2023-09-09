@@ -144,9 +144,6 @@ app.get('/admin.html', isAdmin, (req, res) => {
   res.sendFile(path.join(__dirname, 'screens/admin.html'));
 });
 
-// app.use('/admin/features', isAdmin, features);
-// app.use('/admin/config', isAdmin, features);
-
 // Start the server
 const PORT = 3000;
 app.listen(PORT, () => {
