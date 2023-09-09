@@ -167,7 +167,7 @@
     const deleteUsersForm = document.getElementById('delete-users-form');
 
     deleteUsersForm.addEventListener('submit', async (event) => {
-      event.preventDefault(); // Prevent the form from submitting and refreshing the page
+      event.preventDefault();
 
       const selectedUsers = Array.from(deleteUsersForm.querySelectorAll('input[name="user"]:checked'))
               .map(input => input.value);
@@ -189,7 +189,7 @@
         const data = await response.json();
         if (response.ok) {
           console.log(data.message);
-          fetchUserList(); // Update the user list after deletion
+          fetchUserList();
         } else {
           console.error(data.error);
         }

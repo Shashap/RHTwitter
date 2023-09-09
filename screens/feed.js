@@ -1,7 +1,7 @@
 // feed.js
 const express = require('express');
 const router = express.Router();
-const { readUserData, readPostsData, savePostsData, saveUserData } = require('./persist');
+const { readUserData, readPostsData, savePostsData, saveUserData, readConfigData} = require('./persist');
 const path = require("path");
 const fs = require("fs");
 
@@ -102,11 +102,8 @@ router.delete('/feed/like/:postId', (req, res) => {
 
 router.get('/config', (req, res) => {
   try {
-    const configFilePath = path.join(__dirname, 'data/config.json');
-    const configFileContent = fs.readFileSync(configFilePath, 'utf8');
-    const config = JSON.parse(configFileContent);
-
-    res.json({ features: config.features });
+    const config = readConfigData();
+    res.json(config);
   } catch (error) {
     console.error('Error:', error);
     res.status(500).json({ error: 'Internal server error.' });
