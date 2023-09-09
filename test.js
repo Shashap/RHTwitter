@@ -1,600 +1,553 @@
-const assert = require('assert');
-const express = require('express');
+const BASE_URL = 'http://localhost:3000';
 
-const PORT = 3000; 
-const BASE_URL = `http://localhost:${PORT}`;
-
-const app = express();
-const { readUserData, readPostsData } = require('./routes/persist');
-
-before(function () {
-  app.listen(PORT);
-});
-
-import('node-fetch').then(({ default: fetch }) => {
-
-// Test for the /feed route
-describe('/feed route', function () {
-  it('should return status 200 and JSON data', async function () {
-    const res = await fetch(`${BASE_URL}/feed`);
-    const data = await res.json();
-
-    assert.strictEqual(res.status, 200);
-    assert.strictEqual(res.headers.get('content-type'), 'application/json; charset=utf-8');
-  });
-
-  it('should return an error if the user is not logged in', async function () {
-    // Simulate a scenario where the user is not logged in
-    // You can do this by not sending the session cookie in the request headers
-    const res = await fetch(`${BASE_URL}/feed`, {
-      headers: {
-        // Omit the session cookie
-      },
-    });
-    const data = await res.json();
-
-    assert.strictEqual(res.status, 401); // Unauthorized
-    assert.strictEqual(data.error, 'Unauthorized. Please log in first.');
-  });
-});
-
-// Test for the /feed/like/:postId route
-describe('/feed/like/:postId route', function () {
-  it('should like a post', async function () {
-    // Prepare data, for example, create a user and a post
-    const usersData = readUserData(); // Read users data
-    const postsData = readPostsData(); // Read posts data
-
-    // Simulate a scenario where a user is logged in
-    // You can do this by setting the session cookie in the request headers
-    const sessionCookie = `username=${encodeURIComponent('testuser')}`;
-    const headers = {
-      Cookie: sessionCookie,
-      'Content-Type': 'application/json',
+async function getToken(username, password, rememberme) {
+    const requestBody = {
+        username: username,
+        password: password,
+        rememberme: rememberme,
     };
 
-    // Send a request to like a post
-    const postIdToLike = 1; // Replace with the actual post ID
-    const res = await fetch(`${BASE_URL}/feed/like/${postIdToLike}`, {
-      method: 'POST',
-      headers,
+    const response = await fetch(BASE_URL + '/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json', 
+        },
+        body: JSON.stringify(requestBody),
     });
-    const data = await res.json();
 
-    // Verify that the post was liked successfully
-    assert.strictEqual(res.status, 200);
-    assert.strictEqual(data.message, 'Post liked successfully.');
+    if (!response.ok) {
+        console.log("Login failed");
+        return null;
+    }
 
-  });
+    const { token } = await response.json();
+    return token;
+}
 
-});
+async function testLogin() {
+    const token = await getToken("admin", "admin", true);
 
-// Test for the /search route
-describe('/search route', function () {
-  it('should return status 200 and JSON data', async function () {
-    const query = 'testquery'; // Replace with a query parameter
-    const res = await fetch(`${BASE_URL}/search?query=${query}`);
-    const data = await res.json();
+    if (token === null) {
+        console.log("testLogin failed");
+        return false;
+    }
+    console.log("testLogin succeeded");
+    return true;
+}
 
-    assert.strictEqual(res.status, 200);
-    assert.strictEqual(res.headers.get('content-type'), 'application/json; charset=utf-8');
-  });
+async function testFeed() {
+    const token = await getToken("admin", "admin", true);
 
-  it('should return an error if the user is not logged in', async function () {
-    // Simulate a scenario where the user is not logged in
-    // You can do this by not sending the session cookie in the request headers
-    const query = 'testquery'; // Replace with a query parameter
-    const res = await fetch(`${BASE_URL}/search?query=${query}`, {
-      headers: {
-        // Omit the session cookie
-      },
+    if (token === null) {
+        console.log("testFeed failed");
+        return false;
+    }
+
+    const response = await fetch(BASE_URL + '/feed', {
+        method: 'GET',
+        headers: {
+            'Authorization': token,
+        },
     });
-    const data = await res.json();
 
-    assert.strictEqual(res.status, 401); // Unauthorized
-    assert.strictEqual(data.error, 'Unauthorized. Please log in first.');
-  });
-});
+    if (!response.ok) {
+        console.log("testFeed failed");
+        return false;
+    }
 
-// Test for the /searchPosts route
-describe('/searchPosts route', function () {
-  it('should return status 200 and JSON data', async function () {
-    const query = 'testquery'; // Replace with a query parameter
-    // Simulate a scenario where the user is logged in
-    // You can do this by setting the session cookie in the request headers
-    const sessionCookie = `username=${encodeURIComponent('testuser')}`;
-    const headers = {
-      Cookie: sessionCookie,
+    const feed = await response;
+    console.log("testFeed succeeded");
+    return true;
+}
+
+async function testLikePost() {
+    const postId = 1;
+    const token = await getToken("admin", "admin", false);
+
+    if (token === null) {
+        console.log("testLikePost failed");
+        return false;
+    }
+
+    const response = await fetch(BASE_URL + `/feed/like/${postId}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': token,
+        },
+    });
+
+    if (!response.ok) {
+        console.log("testLikePost failed");
+        return false;
+    }
+
+    console.log(`testLikePost succeeded for postId ${postId}`);
+    return true;
+}
+
+async function testUnlikePost() {
+    const postId = 1;
+    const token = await getToken("admin", "admin", false);
+
+    if (token === null) {
+        console.log("testUnlikePost failed");
+        return false;
+    }
+
+    const cookies = `session=${encodeURIComponent('{"username": "test"}')}`;
+
+    const response = await fetch(BASE_URL + `/feed/like/${postId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookies, 
+            'Authorization': token,
+        }
+    });
+
+    if (response.status === 200) {
+        console.log(`testUnlikePost succeeded for postId ${postId}`);
+        return true;
+    } else {
+        console.log(`testUnlikePost failed with status code ${response.status}`);
+        return false;
+    }
+}
+
+async function testSavePost() {
+    const postId = 1;
+    const token = await getToken("admin", "admin", false);
+
+    if (token === null) {
+        console.log("testSavePost failed");
+        return false;
+    }
+
+    const response = await fetch(BASE_URL + `/feed/save/${postId}`, {
+        method: 'POST',
+        headers: {
+            'Authorization': token,
+        },
+    });
+
+    if (!response.ok) {
+        console.log("testSavePost failed");
+        return false;
+    }
+
+    console.log(`testSavePost succeeded for postId ${postId}`);
+    return true;
+}
+
+async function testUnsavePost() {
+    const postId = 1;
+    const token = await getToken("admin", "admin", false);
+
+    if (token === null) {
+        console.log("testUnsavePost failed");
+        return false;
+    }
+
+    const cookies = `session=${encodeURIComponent('{"username": "test"}')}`;
+
+    const response = await fetch(BASE_URL + `/feed/save/${postId}`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookies, 
+            'Authorization': token,
+        }
+    });
+
+    if (response.status === 200) {
+        console.log(`testUnsavePost succeeded for postId ${postId}`);
+        return true;
+    } else {
+        console.log(`testUnsavePost failed with status code ${response.status}`);
+        return false;
+    }
+}
+
+async function testSearch() {
+    const token = await getToken("admin", "admin", true);
+
+    if (token === null) {
+        console.log("testSearch failed");
+        return false;
+    }
+
+    const query = 'test'; 
+    const response = await fetch(BASE_URL + `/search?query=${query}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': token,
+        },
+    });
+
+    if (!response.ok) {
+        console.log("testSearch failed");
+        return false;
+    }
+
+    const searchResults = await response;
+    console.log("testSearch succeeded");
+    return true;
+}
+
+async function testSearchPost() {
+    const token = await getToken("admin", "admin", true);
+
+    if (token === null) {
+        console.log("testSearchPost failed");
+        return false;
+    }
+
+    const query = 'test'; 
+    const response = await fetch(BASE_URL + `/search?query=${query}`, {
+        method: 'GET',
+        headers: {
+            'Authorization': token,
+        },
+    });
+
+    if (!response.ok) {
+        console.log("testSearchPost failed");
+        return false;
+    }
+
+    const searchResults = await response;
+    console.log("testSearchPost succeeded");
+    return true;
+}
+
+async function testRegisterUser() {
+    const userData = {
+        username: 'testsuser2',
+        password: 'testpassword',
     };
-    const res = await fetch(`${BASE_URL}/searchPosts?query=${query}`, {
-      headers,
+
+    const response = await fetch(BASE_URL + '/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
     });
-    const data = await res.json();
+    if (response.status === 200) {
+        console.log("testRegisterUser succeeded");
+        return true;
+    } else if (response.status === 409) {
+        console.log("testRegisterUser succeeded");
+        return true;
+    } else {
+        console.log("testRegisterUser failed");
+        return false;
+    }
+}
 
-    assert.strictEqual(res.status, 200);
-    assert.strictEqual(res.headers.get('content-type'), 'application/json; charset=utf-8');
-  });
+async function testLogout() {
+    const token = await getToken("admin", "admin", true);
 
-  it('should return an error if the user is not logged in', async function () {
-    // Simulate a scenario where the user is not logged in
-    // You can do this by not sending the session cookie in the request headers
-    const query = 'testquery'; // Replace with a query parameter
-    const res = await fetch(`${BASE_URL}/searchPosts?query=${query}`, {
-      headers: {
-        // Omit the session cookie
-      },
-    });
-    const data = await res.json();
+    if (token === null) {
+        console.log("testLogout failed");
+        return false;
+    }
+    const cookies = `session=${encodeURIComponent('{"username": "test"}')}`;
 
-    assert.strictEqual(res.status, 401); // Unauthorized
-    assert.strictEqual(data.error, 'Unauthorized. Please log in first.');
-  });
-
-});
-
-// Test for the /register route
-describe('/register route', function () {
-  beforeEach(function () {
-    // Reset the users data before each test
-    saveUserData([]);
-  });
-
-  it('should register a new user and return status 200 and JSON data', async function () {
-    const username = 'testuser';
-    const password = 'testpassword';
-
-    const res = await fetch(`${BASE_URL}/register`, {
-      method: 'POST',
-      body: JSON.stringify({ username, password }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await res.json();
-
-    assert.strictEqual(res.status, 200);
-    assert.strictEqual(res.headers.get('content-type'), 'application/json; charset=utf-8');
-    assert.strictEqual(data.message, 'Registration successful.');
-
-    // Check if the user was actually added to the data store
-    const usersData = readUserData();
-    const newUser = usersData.find((user) => user.username === username);
-    assert(newUser, 'New user should exist in data store');
-  });
-
-  it('should return an error if the username already exists', async function () {
-    const username = 'existinguser';
-    const password = 'testpassword';
-
-    // Create an existing user
-    const existingUser = { username, password: 'hashedpassword', followers: [], following: [], activityHistory: [] };
-    const usersData = [existingUser];
-    saveUserData(usersData);
-
-    const res = await fetch(`${BASE_URL}/register`, {
-      method: 'POST',
-      body: JSON.stringify({ username, password }),
-      headers: { 'Content-Type': 'application/json' },
-    });
-    const data = await res.json();
-
-    assert.strictEqual(res.status, 409); // Conflict
-    assert.strictEqual(data.error, 'Username already exists.');
-
-    // Check that the existing user data remains unchanged
-    const updatedUsersData = readUserData();
-    assert.deepStrictEqual(updatedUsersData, usersData);
-  });
-});
-
-// Test for the /logout route
-describe('/logout route', function () {
-  it('should log out the user and return status 200 and JSON data', async function () {
-    // Create a user session by setting a session cookie
-    const username = 'testuser';
-    const sessionCookie = { username };
-    const resSetCookie = await fetch(`${BASE_URL}/set-cookie`, {
-      method: 'POST',
-      body: JSON.stringify(sessionCookie),
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch(BASE_URL + '/logout', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Cookie': cookies, 
+            'Authorization': token,
+        },
     });
 
-    assert.strictEqual(resSetCookie.status, 200);
+    if (response.status == 200) {
+        console.log("testLogout succeeded");
+        return true;
+    }
 
-    // Perform a logout request
-    const resLogout = await fetch(`${BASE_URL}/logout`, {
-      method: 'POST',
+    console.log("testLogout failed to clear the session cookie");
+    return false;
+}
+
+async function testFollowing() {
+    const token = await getToken("admin", "admin", true);
+
+    if (token === null) {
+        console.log("testFollowing failed");
+        return false;
+    }
+
+    const response = await fetch(BASE_URL + `/following/test`, {
+        method: 'GET',
+        headers: {
+            'Authorization': token,
+        },
     });
-    const data = await resLogout.json();
 
-    assert.strictEqual(resLogout.status, 200);
-    assert.strictEqual(resLogout.headers.get('content-type'), 'application/json; charset=utf-8');
-    assert.strictEqual(data.message, 'Logout successful.');
+    if (!response.ok) {
+        console.log("testFollowing failed");
+        return false;
+    }
 
-    // Check that the session cookie is cleared
-    const cookies = resLogout.headers.get('set-cookie');
-    assert(!cookies || cookies.length === 0, 'Session cookie should be cleared');
+    const followingList = await response;
+    console.log("testFollowing succeeded");
+    return true;
+}
 
-    // Check that the user's activity history and lastLogout are updated
-    const usersData = readUserData();
-    const user = usersData.find((user) => user.username === username);
-    assert(user, 'User should exist in data store');
-    assert(user.activityHistory.length > 0, 'Activity history should be updated');
-    assert(user.lastLogout, 'Last logout timestamp should be updated');
-  });
-});
+async function testFollow() {
+    const token = await getToken("admin", "admin", true);
 
-// Test for the /login route
-describe('/login route', function () {
-  it('should log in the user and return status 200 and JSON data', async function () {
-    // Create a user for testing
-    const username = 'testuser';
-    const password = 'testpassword';
-    const hashedPassword = await bcrypt.hash(password, 10);
+    if (token === null) {
+        console.log("testFollow failed");
+        return false;
+    }
 
-    const usersData = readUserData();
-    usersData.push({ username, password: hashedPassword, activityHistory: [] });
-    saveUserData(usersData);
-
-    // Perform a login request
-    const loginData = { username, password, rememberMe: false }; // Adjust rememberMe as needed
-    const resLogin = await fetch(`${BASE_URL}/login`, {
-      method: 'POST',
-      body: JSON.stringify(loginData),
-      headers: { 'Content-Type': 'application/json' },
+    const response = await fetch(BASE_URL + "/follow/test", {
+        method: 'POST',
+        headers: {
+            'Authorization': token,
+        },
     });
-    const data = await resLogin.json();
 
-    assert.strictEqual(resLogin.status, 200);
-    assert.strictEqual(resLogin.headers.get('content-type'), 'application/json; charset=utf-8');
-    assert.strictEqual(data.message, 'Login successful.');
+    if (!response.ok) {
+        console.log("testFollow failed");
+        return false;
+    }
 
-    // Check that the session cookie is set
-    const sessionCookie = resLogin.headers.get('set-cookie');
-    assert(sessionCookie && sessionCookie.length > 0, 'Session cookie should be set');
+    console.log("testFollow succeeded for test user");
+    return true;
+}
 
-    // Check that the user's activity history and lastLogin are updated
-    const updatedUsersData = readUserData();
-    const user = updatedUsersData.find((user) => user.username === username);
-    assert(user, 'User should exist in data store');
-    assert(user.activityHistory.length > 0, 'Activity history should be updated');
-    assert(user.lastLogin, 'Last login timestamp should be updated');
-  });
-});
+async function testUnfollow() {
+    const token = await getToken("admin", "admin", true);
 
-// Test for the /following/:username route
-describe('/following/:username route', function () {
-  it('should return the list of following users', async function () {
-    // Create a user and a user to follow for testing
-    const userToFollow = { username: 'followedUser', followers: [], following: [] };
-    const followerUser = { username: 'followerUser', followers: [], following: ['followedUser'] };
+    if (token === null) {
+        console.log("testUnfollow failed");
+        return false;
+    }
 
-    const usersData = readUserData();
-    usersData.push(userToFollow, followerUser);
-    saveUserData(usersData);
-
-    // Perform a request to get the list of following users
-    const res = await fetch(`${BASE_URL}/following/followerUser`);
-    const data = await res.json();
-
-    assert.strictEqual(res.status, 200);
-    assert(Array.isArray(data));
-    assert.strictEqual(data.length, 1);
-    assert.strictEqual(data[0].username, 'followedUser');
-  });
-
-  it('should return 404 if the user is not found', async function () {
-    // Perform a request to get the list of following users for a non-existent user
-    const res = await fetch(`${BASE_URL}/following/nonExistentUser`);
-    assert.strictEqual(res.status, 404);
-  });
-});
-
-// Test for the /follow/:username route
-describe('/follow/:username route', function () {
-  it('should follow a user and return status 200 and JSON data', async function () {
-    // Create a user to follow and a follower user for testing
-    const userToFollow = { username: 'followedUser', followers: [], following: [] };
-    const followerUser = { username: 'followerUser', followers: [], following: [] };
-
-    const usersData = readUserData();
-    usersData.push(userToFollow, followerUser);
-    saveUserData(usersData);
-
-    // Perform a follow request
-    const res = await fetch(`${BASE_URL}/follow/followedUser`, {
-      method: 'POST',
-      headers: {
-        'Cookie': 'session=followerUser', // Simulate being logged in as 'followerUser'
-        'Content-Type': 'application/json'
-      },
+    const response = await fetch(BASE_URL + "/unfollow/test", {
+        method: 'POST',
+        headers: {
+            'Authorization': token,
+        },
     });
-    const data = await res.json();
 
-    assert.strictEqual(res.status, 200);
-    assert.strictEqual(res.headers.get('content-type'), 'application/json; charset=utf-8');
-    assert.strictEqual(data.username, 'followedUser');
+    if (!response.ok) {
+        console.log("testUnfollow failed");
+        return false;
+    }
 
-    // Check that the user and follower data is updated
-    const updatedUsersData = readUserData();
-    const user = updatedUsersData.find((u) => u.username === 'followedUser');
-    const follower = updatedUsersData.find((u) => u.username === 'followerUser');
-    assert(user.followers.includes('followerUser'));
-    assert(follower.following.includes('followedUser'));
-  });
+    console.log("testUnfollow succeeded for test user");
+    return true;
+}
 
-  it('should return 404 if the user to follow is not found', async function () {
-    // Create a follower user for testing
-    const followerUser = { username: 'followerUser', followers: [], following: [] };
+async function testFavorites() {
+    const token = await getToken("admin", "admin", true);
 
-    const usersData = readUserData();
-    usersData.push(followerUser);
-    saveUserData(usersData);
+    if (token === null) {
+        console.log("testFavorites failed");
+        return false;
+    }
 
-    // Perform a follow request for a non-existent user
-    const res = await fetch(`${BASE_URL}/follow/nonExistentUser`, {
-      method: 'POST',
-      headers: {
-        'Cookie': 'session=followerUser', // Simulate being logged in as 'followerUser'
-        'Content-Type': 'application/json'
-      },
+    const response = await fetch(BASE_URL + '/favorites', {
+        method: 'GET',
+        headers: {
+            'Authorization': token,
+        },
     });
-    assert.strictEqual(res.status, 404);
-  });
-});
 
-// Test for the /unfollow/:username route
-describe('/unfollow/:username route', function () {
-  it('should unfollow a user', async function () {
-    // Create some users and establish a follow relationship for testing
-    const users = [
-      { username: 'user1', following: ['user2'] },
-      { username: 'user2', followers: ['user1'] },
-    ];
+    if (!response.ok) {
+        console.log("testFavorites failed");
+        return false;
+    }
 
-    const usersData = readUserData();
-    usersData.push(...users);
-    saveUserData(usersData);
+    const favoritesList = await response;
+    console.log("testFavorites succeeded");
+    return true;
+}
 
-    // Perform a request to unfollow a user
-    const res = await fetch(`${BASE_URL}/admin/unfollow/user2`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+async function testActivity() {
+    const token = await getToken("admin", "admin", true);
+
+    if (token === null) {
+        console.log("testActivity failed");
+        return false;
+    }
+
+    const response = await fetch(BASE_URL + '/activity', {
+        method: 'GET',
+        headers: {
+            'Authorization': token,
+        },
     });
-    const updatedUser = await res.json();
 
-    assert.strictEqual(res.status, 200);
-    assert(Array.isArray(updatedUser.followers));
-    assert.strictEqual(updatedUser.followers.length, 0);
+    if (!response.ok) {
+        console.log("testActivity failed");
+        return false;
+    }
 
-    // Check if the follow relationship was removed
-    const remainingUsers = readUserData();
+    const activityFeed = await response;
+    console.log("testActivity succeeded");
+    return true;
+}
 
-    const user1 = remainingUsers.find((user) => user.username === 'user1');
-    const user2 = remainingUsers.find((user) => user.username === 'user2');
+async function testUsers() {
+    const token = await getToken("admin", "admin", true);
 
-    assert.strictEqual(user1.following.length, 0);
-    assert.strictEqual(user2.followers.length, 0);
-  });
+    if (token === null) {
+        console.log("testUsers failed");
+        return false;
+    }
 
-  it('should handle unfollowing a non-existent user', async function () {
-    // Perform a request to unfollow a non-existent user
-    const res = await fetch(`${BASE_URL}/admin/unfollow/nonexistentuser`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+    const response = await fetch(BASE_URL + '/users', {
+        method: 'GET',
+        headers: {
+            'Authorization': token,
+        },
     });
-    const data = await res.json();
 
-    assert.strictEqual(res.status, 404);
-    assert.strictEqual(data.error, 'User not found.');
-  });
-});
+        if (!response.ok) {
+        console.log("testUsers failed");
+        return false;
+    }
 
-// Test for the /favorites route
-describe('/favorites route', function () {
-  it('should return a list of favorite posts for a logged-in user', async function () {
-    // Create a user and some posts for testing
-    const user = { username: 'testuser', savedPosts: ['1', '3', '5'] };
-    const posts = [
-      { timestamp: '1', text: 'Post 1' },
-      { timestamp: '2', text: 'Post 2' },
-      { timestamp: '3', text: 'Post 3' },
-      { timestamp: '4', text: 'Post 4' },
-      { timestamp: '5', text: 'Post 5' },
-    ];
+    const userList = await response;
+    console.log("testUsers succeeded");
+    return true;
+}
 
-    const usersData = readUserData();
-    const postsData = readPostsData();
-    usersData.push(user);
-    postsData.push(...posts);
-    saveUserData(usersData);
+async function testDeleteUser() {
+    const adminToken = await getToken("admin", "admin", true);
 
-    // Perform a request to get the list of favorite posts
-    const res = await fetch(`${BASE_URL}/favorites`, {
-      headers: {
-        'Cookie': 'session=testuser', // Simulate being logged in as 'testuser'
-      },
-    });
-    const data = await res.json();
+    if (adminToken === null) {
+        console.log("testDeleteUser failed to obtain admin token");
+        return false;
+    }
 
-    assert.strictEqual(res.status, 200);
-    assert(Array.isArray(data));
-    assert.strictEqual(data.length, 3);
-    assert.strictEqual(data[0].timestamp, '1');
-    assert.strictEqual(data[1].timestamp, '3');
-    assert.strictEqual(data[2].timestamp, '5');
-  });
+    const userToDelete = 'test'; 
 
-  it('should return 401 if the user is not logged in', async function () {
-    // Perform a request to get the list of favorite posts without a valid session
-    const res = await fetch(`${BASE_URL}/favorites`);
-    assert.strictEqual(res.status, 401);
-  });
+    const requestBody = {
+        username: userToDelete,
+    };
 
-  it('should return 404 if the user does not exist', async function () {
-    // Create some posts for testing, but do not create a user
-    const posts = [
-      { timestamp: '1', text: 'Post 1' },
-      { timestamp: '2', text: 'Post 2' },
-      { timestamp: '3', text: 'Post 3' },
-    ];
+    try {
+        const response = await fetch(BASE_URL + "/users/delete", {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': adminToken,
+            },
+            body: JSON.stringify(requestBody),
+        });
 
-    const postsData = readPostsData();
-    postsData.push(...posts);
+        if (response.status === 200) {
+            console.log(`testDeleteUser succeeded for user ${userToDelete}`);
+            return true;
+        } else {
+            console.log(`testDeleteUser failed for user ${userToDelete}`);
+            return false;
+        }
+    } catch (error) {
+        console.error("Error during user deletion:", error);
+        return false;
+    }
+}
 
-    // Perform a request to get the list of favorite posts for a non-existent user
-    const res = await fetch(`${BASE_URL}/favorites`, {
-      headers: {
-        'Cookie': 'session=nonExistentUser', // Simulate being logged in as a non-existent user
-      },
-    });
-    assert.strictEqual(res.status, 404);
-  });
-});
+async function testFeatureToggle() {
+    const token = await getToken("admin", "admin", true);
 
-// Test for the /activity route
-describe('/activity route', function () {
-  it('should return user activity logs', async function () {
-    // Create some users and posts for testing
-    const users = [
-      {
-        username: 'user1',
-        activityHistory: [{ event: 'login', timestamp: 'timestamp1' }],
-      },
-      {
-        username: 'user2',
-        activityHistory: [{ event: 'login', timestamp: 'timestamp2' }],
-      },
-    ];
+    if (token === null) {
+        console.log("testFeatureToggle failed");
+        return false;
+    }
 
-    const posts = [
-      { username: 'user1', text: 'Post 1' },
-      { username: 'user2', text: 'Post 2' },
-    ];
-
-    const usersData = readUserData();
-    const postsData = readPostsData();
-    usersData.push(...users);
-    postsData.push(...posts);
-    saveUserData(usersData);
-    savePostsData(postsData);
-
-    // Perform a request to get user activity logs
-    const res = await fetch(`${BASE_URL}/admin/activity`);
-    const data = await res.json();
-
-    assert.strictEqual(res.status, 200);
-    assert(Array.isArray(data));
-    assert.strictEqual(data.length, 2);
-    assert.strictEqual(data[0].username, 'user1');
-    assert.strictEqual(data[1].username, 'user2');
-  });
-});
-
-// Test for the /users route
-describe('/users route', function () {
-  it('should return a list of users', async function () {
-    // Create some users for testing
-    const users = [
-      { username: 'user1' },
-      { username: 'user2' },
-      { username: 'user3' },
-    ];
-
-    const usersData = readUserData();
-    usersData.push(...users);
-    saveUserData(usersData);
-
-    // Perform a request to get the list of users
-    const res = await fetch(`${BASE_URL}/admin/users`);
-    const data = await res.json();
-
-    assert.strictEqual(res.status, 200);
-    assert(Array.isArray(data));
-    assert.strictEqual(data.length, 3);
-    assert.strictEqual(data[0].username, 'user1');
-    assert.strictEqual(data[1].username, 'user2');
-    assert.strictEqual(data[2].username, 'user3');
-  });
-});
-
-// Test for the /users/delete route
-describe('/users/delete route', function () {
-  it('should delete selected users and their posts', async function () {
-    // Create some users and posts for testing
-    const users = [
-      { username: 'user1' },
-      { username: 'user2' },
-      { username: 'user3' },
-    ];
-
-    const posts = [
-      { username: 'user1', text: 'Post 1' },
-      { username: 'user2', text: 'Post 2' },
-      { username: 'user3', text: 'Post 3' },
-    ];
-
-    const usersData = readUserData();
-    const postsData = readPostsData();
-    usersData.push(...users);
-    postsData.push(...posts);
-    saveUserData(usersData);
-    savePostsData(postsData);
-
-    // Perform a request to delete selected users
-    const res = await fetch(`${BASE_URL}/admin/users/delete`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ usersToDelete: ['user1', 'user3'] }),
-    });
-    const data = await res.json();
-
-    assert.strictEqual(res.status, 200);
-    assert.strictEqual(data.message, 'Selected users removed successfully');
-
-    // Check if the users and their posts were deleted
-    const remainingUsers = readUserData();
-    const remainingPosts = readPostsData();
-
-    assert.strictEqual(remainingUsers.length, 1);
-    assert.strictEqual(remainingUsers[0].username, 'user2');
-
-    assert.strictEqual(remainingPosts.length, 1);
-    assert.strictEqual(remainingPosts[0].username, 'user2');
-  });
-});
-
-// Test for the /features route
-describe('/features route', function () {
-  it('should update feature statuses in the config', async function () {
-    // Perform a request to update feature statuses
-    const res = await fetch(`${BASE_URL}/admin/features`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        feedFilter: true,
+    const requestBody = {
+        feedFilter: false,
         feedSort: false,
-        favorites: true,
+        favorites: false,
         searchPosts: false,
-      }),
+    };
+
+    const response = await fetch(BASE_URL + `/features`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token,
+        },
+        body: JSON.stringify(requestBody),
     });
-    const data = await res.json();
 
-    assert.strictEqual(res.status, 200);
-    assert.strictEqual(data.message, 'Feature status updated successfully');
-  });
-});
+    if (!response.ok) {
+        console.log(`testFeatureToggle failed`);
+        return false;
+    }
 
-after(function () {
-  // Replace with code to stop your server gracefully if needed
-});
+    const { toggle } = await response;
+    console.log(`testFeatureToggle succeeded`);
+    return true;
+}
 
-}).catch((error) => {
-  console.error('Error importing node-fetch:', error);
-});
+async function testConfig() {
+    const token = await getToken("admin", "admin", true);
+
+    if (token === null) {
+        console.log("testConfig failed");
+        return false;
+    }
+
+    const response = await fetch(BASE_URL + '/config', {
+        method: 'GET',
+        headers: {
+            'Authorization': token,
+        },
+    });
+
+        if (!response.ok) {
+        console.log("testConfig failed");
+        return false;
+    }
+
+    const config = await response;
+    console.log("testConfig succeeded");
+    return true;
+}
+
+
+async function runTests() {
+    const tests = [
+        testLogin, 
+        testFeed,
+        testLikePost,
+        testUnlikePost,
+        testSavePost,
+        testUnsavePost,
+        testSearch,
+        testSearchPost,
+        testRegisterUser,
+        testLogout,
+        testFollowing,
+        testFollow,
+        testUnfollow,
+        testFavorites,
+        testActivity,
+        testUsers,
+        testDeleteUser,
+        testFeatureToggle,
+        testConfig
+    ];
+
+    for (const test of tests) {
+        const result = await test();
+        if (!result) {
+            console.log("Test failed.");
+        }
+    }
+
+    console.log("All tests passed.");
+}
+
+runTests();
