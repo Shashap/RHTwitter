@@ -72,8 +72,10 @@
         const sessionData = JSON.parse(jsonValue);
         const currentUser = sessionData.username;
 
-
-        userList.innerHTML = users.map(user => `
+        if(users.length === 0) {
+          userList.innerHTML = '<p>No trainers found for your search.</p>';
+        } else {
+          userList.innerHTML = users.map(user => `
           <div class="user">
             <p data-username="${user.username}" data-following="${user.followers.includes(currentUser)}">
               <span>${user.username}</span>
@@ -81,6 +83,7 @@
             </p>
           </div>
         `).join('');
+        }
       } else {
         console.error(users.error);
       }
