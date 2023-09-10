@@ -31,8 +31,8 @@ router.get('/feed', (req, res) => {
   const postsWithUserLikes = postsData.map(post => ({
     ...post,
     editor: post.username,
-    userHasLiked: post.likedUsers.includes(username),
-    userHasSaved: user.savedPosts.includes(post.timestamp.toString()),
+    userHasLiked: Array.isArray(post.likedUsers) && post.likedUsers.includes(username),
+    userHasSaved: Array.isArray(user.savedPosts) && user.savedPosts.includes(post.timestamp.toString()),
   }));
 
   const filteredPosts = postsWithUserLikes.filter((post) => following.includes(post.username)  || post.username === username);
